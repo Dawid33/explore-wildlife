@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        function api(url) {
+            let output = document.getElementById("output")
+            let users = fetch(url).then((res) =>{
+                res.text().then((text) => { output.innerText = text })
+            })
+        }
+    </script>
+</head>
+<body>
+    <h2>Test Page</h2>
+
+    <ul>
+        <li>
+            <button onclick="api('http://localhost:8080/api/users')">/api/users</button>
+        </li>
+    </ul>
+
+    <h3>Output</h3>
+    <p id="output">
+        Default text
+    </p>
+</body>
+</html>

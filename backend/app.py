@@ -1,11 +1,20 @@
-from flask import Flask, request
+from flask import Flask
 import multiprocessing
-from test import blueprint as test_blueprint
+from src.login import bp as login_blueprint
 import gunicorn.app.base
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 app = Flask(__name__)
-app.register_blueprint(test_blueprint)
-port = 8080
+app.register_blueprint(login_blueprint)
+
+app.wsgi_app = ProxyFix(
+    app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
+)
+
+
+@app.route("/health_check")
+def health_check():
+    return "GOOD"
 
 
 class StandaloneApplication(gunicorn.app.base.BaseApplication):
@@ -26,7 +35,7 @@ class StandaloneApplication(gunicorn.app.base.BaseApplication):
 
 if __name__ == '__main__':
     options = {
-        'bind': '%s:%s' % ('127.0.0.1', '8080'),
+        'bind': '%s:%s' % ('0.0.0.0', '8080'),
         'workers': (multiprocessing.cpu_count() * 2) + 1,
     }
     StandaloneApplication(app, options).run()

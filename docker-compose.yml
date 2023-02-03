@@ -1,18 +1,43 @@
-version: "3.1"
-
 services:
+  gateway:
+    container_name: gateway
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "80:80"
+      - "443:443"
+    links:
+      - backend
+    build:
+      context: docker
+      dockerfile: gateway.dockerfile
+
   backend:
+    container_name: backend
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
     build:
       context: backend
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/health_check || exit 1"]
+      interval: 1s
+      timeout: 2s
+      retries: 10
 
-  cs4084-postgres:
-    container_name: cs4084-postgres
+
+  postgres:
+    container_name: postgres
     environment:
       - "POSTGRES_DB=${PG_DB}"
       - "POSTGRES_USER=${PG_USER}"
       - "POSTGRES_PASSWORD=${PG_PASSWORD}"
     volumes:
       - "./docker/postgres_database:/var/lib/postgresql/data"
+    ports:
+      - "5432:5432"
     build:
       context: docker
       dockerfile: postgres.dockerfile
