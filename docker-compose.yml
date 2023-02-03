@@ -1,0 +1,18 @@
+version: "3.1"
+
+services:
+  backend:
+    build:
+      context: backend
+
+  cs4084-postgres:
+    container_name: cs4084-postgres
+    environment:
+      - "POSTGRES_DB=${PG_DB}"
+      - "POSTGRES_USER=${PG_USER}"
+      - "POSTGRES_PASSWORD=${PG_PASSWORD}"
+    volumes:
+      - "./docker/postgres_database:/var/lib/postgresql/data"
+    build:
+      context: docker
+      dockerfile: postgres.dockerfile
