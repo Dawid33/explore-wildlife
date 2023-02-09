@@ -6,6 +6,8 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA app;
 CREATE TABLE app.users (
 	user_id uuid NOT NULL DEFAULT uuid_generate_v4(),
 	display_name varchar NULL DEFAULT 'Display name not set',
+	email varchar NOT NULL,
+	password varchar NOT NULL,
 	CONSTRAINT users_pk PRIMARY KEY (user_id)
 );
 
@@ -24,5 +26,5 @@ CREATE TABLE app.comments_edges (
 	child uuid NOT NULL
 );
 
-INSERT INTO app.users (display_name) VALUES ('John Doe');
-INSERT INTO app.users (display_name) VALUES ('test user');
+INSERT INTO app.users (display_name, email, password) VALUES ('John Doe', 'jdoe@example.com', 'jdoe');
+INSERT INTO app.users (display_name, email, password) VALUES ('test', 'test@example.com', 'test');
