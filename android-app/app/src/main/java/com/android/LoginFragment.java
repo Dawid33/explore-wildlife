@@ -9,8 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.android.databinding.FragmentRegistrationBinding;
 import com.android.databinding.FragmentLoginBinding;
+
 
 public class LoginFragment extends Fragment {
     private FragmentLoginBinding binding;
@@ -26,6 +26,13 @@ public class LoginFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        binding.goToRegistrationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(LoginFragment.this)
+                        .navigate(R.id.action_LoginFragment_to_registerFragment);
+            }
+        });
     }
 
     @Override

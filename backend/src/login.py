@@ -58,7 +58,7 @@ def login():
     cursor = db_conn.cursor()
     error = None
     cursor.execute(
-        "SELECT password FROM app.users WHERE email = %s", (email,))
+        "SELECT password, user_id FROM app.users WHERE email = %s", (email,))
     db_result = cursor.fetchone()
     print(db_result)
 
@@ -74,6 +74,7 @@ def login():
         return {
             "success": True,
             "session_token": "",
+            "user_id": db_result[1]
         }
     else:
         return {
