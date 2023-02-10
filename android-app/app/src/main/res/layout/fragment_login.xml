@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,7 +20,7 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            android:text="Don't have an account?"
             android:textColor="@color/myrtle_green"
             tools:text="Don't have an account?" />
 
@@ -38,17 +38,17 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:background="@color/app_background"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHeight_percent=".5"
+        app:layout_constraintHeight_percent=".75"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.49"
-        app:layout_constraintWidth_percent=".5">
+        app:layout_constraintWidth_percent=".75">
 
         <ImageView
             android:id="@+id/imageView"
@@ -69,6 +69,10 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="5dp" />
+
         <TextView
             android:id="@+id/textView3"
             android:layout_width="match_parent"
@@ -76,17 +80,28 @@
             android:text="Please sign in to continue."
             android:textColor="@color/myrtle_green" />
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="19dp" />
+
         <EditText
             android:id="@+id/editTextTextEmailAddress"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30sp"
             android:background="@drawable/edit_round"
-            android:drawableLeft="@android:drawable/btn_star"
-            android:drawablePadding="60sp"
+            android:backgroundTint="#040909"
+            android:drawableLeft="@drawable/email"
+            android:drawablePadding="10sp"
+            android:drawableTint="@color/myrtle_green"
             android:ems="10"
+            android:hint="EMAIL"
             android:inputType="textEmailAddress"
+            android:paddingLeft="10sp"
+            android:textAlignment="textStart"
             android:textAllCaps="false"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textColorHint="@color/myrtle_green"
+            android:textSize="10sp" />
 
         <Space
             android:layout_width="match_parent"
@@ -95,11 +110,20 @@
         <EditText
             android:id="@+id/editTextTextPassword2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30sp"
             android:background="@drawable/edit_round"
-            android:drawableLeft="@android:drawable/btn_star"
+            android:backgroundTint="@color/editText"
+            android:drawableLeft="@drawable/padlock_draw"
+            android:drawablePadding="10sp"
+            android:drawableTint="@color/myrtle_green"
             android:ems="10"
-            android:inputType="textPassword" />
+            android:hint="PASSWORD"
+            android:inputType="textPassword"
+            android:paddingLeft="10sp"
+            android:textAlignment="textStart"
+            android:textColor="#FFFFFF"
+            android:textColorHint="@color/myrtle_green"
+            android:textSize="10sp" />
 
         <Space
             android:layout_width="match_parent"
@@ -116,12 +140,12 @@
         <Button
             android:id="@+id/forgot"
             android:layout_width="match_parent"
-            android:layout_height="24dp"
+            android:layout_height="25dp"
             android:background="#00FFFFFF"
             android:paddingBottom="0dp"
             android:text="Forgot Password?"
             android:textColor="#FFFFFF"
-            android:textSize="8sp" />
+            android:textSize="6sp" />
 
         <Space
             android:layout_width="match_parent"
