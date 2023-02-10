@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/rich_black"
-    tools:context=".ui.LoginFragment">
+    tools:context=".LoginFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="0dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,24 +20,20 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/don_t_have_an_account"
+            android:text="Don't have an account?"
             android:textColor="@color/myrtle_green"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Don't have an account?"
-            android:textSize="12sp"/>
+            tools:text="Don't have an account?" />
 
         <Button
             android:id="@+id/goToRegistrationButton"
-            android:layout_width="86dp"
+            android:layout_width="71dp"
             android:layout_height="44dp"
             android:background="#00FFFFFF"
-            android:paddingLeft="0dp"
-            android:text="@string/sign_up"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:textColor="@color/columbia_blue"
+            android:text="Sign up"
+            android:textSize="8sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/textView"
             app:layout_constraintStart_toEndOf="@+id/textView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -60,9 +56,8 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:src="@drawable/main_icon"
-            android:contentDescription="@string/logo" />
+            android:layout_height="125dp"
+            android:src="@drawable/main_icon" />
 
         <Space
             android:layout_width="match_parent"
@@ -72,8 +67,8 @@
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/login"
-            android:textColor="@color/columbia_blue"
+            android:text="Login"
+            android:textColor="#FFFFFF"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -85,106 +80,86 @@
             android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/please_sign_in_to_continue"
+            android:text="Please sign in to continue."
             android:textColor="@color/myrtle_green" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="19dp" />
 
-        <com.google.android.material.textfield.TextInputLayout
+        <EditText
+            android:id="@+id/editTextFirstName"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:hint="@string/email"
+            android:layout_height="30sp"
+            android:background="@drawable/edit_round"
+            android:backgroundTint="#040909"
+            android:drawableLeft="@drawable/email"
+            android:drawablePadding="10sp"
+            android:drawableTint="@color/myrtle_green"
+            android:ems="10"
+            android:hint="EMAIL"
+            android:inputType="textEmailAddress"
+            android:paddingLeft="10sp"
+            android:textAlignment="textStart"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
             android:textColorHint="@color/myrtle_green"
-            app:boxStrokeColor="#000"
-            app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp"
-            app:hintAnimationEnabled="true"
-            app:hintEnabled="true"
-            app:hintTextColor="@color/myrtle_green"
-            app:startIconDrawable="@drawable/email"
-            app:startIconTint="@color/myrtle_green">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/emailInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/edit_round"
-                android:backgroundTint="#040909"
-                android:inputType="textEmailAddress"
-                android:text="test@example.com"
-                android:textColor="@color/columbia_blue"
-                android:textColorHint="@color/myrtle_green"
-                android:textCursorDrawable="@drawable/color_cursor"
-                android:textSize="11sp" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+            android:textSize="10sp" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="12dp" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/wagabooga"
+        <EditText
+            android:id="@+id/editTextTextPassword2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/password"
+            android:layout_height="30sp"
+            android:background="@drawable/edit_round"
+            android:backgroundTint="@color/editText"
+            android:drawableLeft="@drawable/padlock_draw"
+            android:drawablePadding="10sp"
+            android:drawableTint="@color/myrtle_green"
+            android:ems="10"
+            android:hint="PASSWORD"
+            android:inputType="textPassword"
+            android:paddingLeft="10sp"
+            android:textAlignment="textStart"
+            android:textColor="#FFFFFF"
             android:textColorHint="@color/myrtle_green"
-            app:boxStrokeColor="#000"
-            app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp"
-            app:hintEnabled="true"
-            app:hintTextColor="@color/myrtle_green"
-            app:passwordToggleEnabled="true"
-            app:passwordToggleTint="@color/myrtle_green"
-            app:startIconDrawable="@drawable/padlock_draw"
-            app:startIconTint="@color/myrtle_green">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/passwordInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/edit_round"
-                android:backgroundTint="#040909"
-                android:inputType="textPassword"
-                android:text="test"
-                android:textColor="@color/columbia_blue"
-                android:textCursorDrawable="@drawable/color_cursor"
-                android:textSize="11sp" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+            android:textSize="10sp" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="20dp" />
 
         <Button
-            style="@style/Widget.Material3.Button.ElevatedButton"
-            android:id="@+id/loginButton"
+            android:id="@+id/button"
             android:layout_width="119dp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/aquamarine"
-            android:text="@string/login"
-            android:textSize="16sp"
-            android:textAllCaps="true"
-            android:textColor="@color/app_background"
-            android:textStyle="bold"/>
+            android:text="Login"
+            android:textColor="@color/app_background" />
 
         <Button
-            android:id="@+id/goToForgotPasswordButton"
+            android:id="@+id/forgot"
             android:layout_width="match_parent"
             android:layout_height="25dp"
             android:background="#00FFFFFF"
             android:paddingBottom="0dp"
-            android:text="@string/forgot_password"
-            android:textColor="@color/columbia_blue"
-            android:textSize="7sp" />
+            android:text="Forgot Password?"
+            android:textColor="#FFFFFF"
+            android:textSize="6sp" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <!--        <Button-->
+        <!--            android:id="@+id/goToRegistrationButton"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:text="Go to Registration" />-->
+
 
     </LinearLayout>
 
