@@ -7,6 +7,34 @@
     android:background="@color/rich_black"
     tools:context=".LoginFragment">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textColor="@color/myrtle_green"
+            tools:text="Don't have an account?" />
+
+        <Button
+            android:id="@+id/goToRegistrationButton"
+            android:layout_width="71dp"
+            android:layout_height="44dp"
+            android:background="#00FFFFFF"
+            android:text="Sign up"
+            android:textSize="8sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textView"
+            app:layout_constraintStart_toEndOf="@+id/textView" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
@@ -52,17 +80,24 @@
             android:id="@+id/editTextTextEmailAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/aquamarine"
+            android:background="@drawable/edit_round"
+            android:drawableLeft="@android:drawable/btn_star"
+            android:drawablePadding="60sp"
             android:ems="10"
             android:inputType="textEmailAddress"
             android:textAllCaps="false"
             android:textColor="@color/white" />
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="12dp" />
+
         <EditText
             android:id="@+id/editTextTextPassword2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/aquamarine"
+            android:background="@drawable/edit_round"
+            android:drawableLeft="@android:drawable/btn_star"
             android:ems="10"
             android:inputType="textPassword" />
 
@@ -79,13 +114,18 @@
             android:textColor="@color/app_background" />
 
         <Button
-            android:id="@+id/forgotPassword"
+            android:id="@+id/forgot"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="24dp"
             android:background="#00FFFFFF"
+            android:paddingBottom="0dp"
             android:text="Forgot Password?"
             android:textColor="#FFFFFF"
             android:textSize="8sp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <!--        <Button-->
         <!--            android:id="@+id/goToRegistrationButton"-->
@@ -95,31 +135,5 @@
 
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textColor="@color/myrtle_green"
-        app:layout_constraintBottom_toBottomOf="@+id/goToRegistrationButton"
-        app:layout_constraintEnd_toStartOf="@+id/goToRegistrationButton"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/goToRegistrationButton"
-        tools:text="Don't have an account?" />
-
-    <Button
-        android:id="@+id/goToRegistrationButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="36dp"
-        android:background="#00FFFFFF"
-        android:text="Sign up"
-        android:textSize="8sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
