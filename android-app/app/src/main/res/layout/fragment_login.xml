@@ -20,8 +20,10 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:text="Don't have an account?"
             android:textColor="@color/myrtle_green"
+            app:layout_constraintBottom_toBottomOf="parent"
             tools:text="Don't have an account?" />
 
         <Button
@@ -54,7 +56,7 @@
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="125dp"
-            android:src="@drawable/pawprint" />
+            android:src="@drawable/main_icon" />
 
         <Space
             android:layout_width="match_parent"
