@@ -21,6 +21,7 @@ public class RegisterFragment extends Fragment {
     ) {
         binding = FragmentRegistrationBinding.inflate(inflater, container, false);
         return binding.getRoot();
+//        return null;
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
