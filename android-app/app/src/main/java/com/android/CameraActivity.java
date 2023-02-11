@@ -65,7 +65,7 @@ public class CameraActivity extends AppCompatActivity {
         int aspectRatio = aspectRatio(previewView.getWidth(), previewView.getHeight());
 
         // This is the camera provider.
-        ListenableFuture<ProcessCameraProvider> listenableFuture = ProcessCameraProvider.getInstance(this);
+        ListenableFuture listenableFuture = ProcessCameraProvider.getInstance(this);
 
         listenableFuture.addListener(() -> {
             try {
@@ -116,9 +116,9 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     // This method will take the picture and save it to external storage.
-    private void takePicture(ImageCapture imageCapture) {
+    public void takePicture(ImageCapture imageCapture) {
         // This is the file where the image will be saved and it's name.
-        final File file = new File(getExternalFilesDir(null),  System.currentTimeMillis() + ".jpg");
+        final File file = new File(getExternalFilesDir(null), System.currentTimeMillis() + ".jpg");
 
         // This is the output file options.
         ImageCapture.OutputFileOptions outputFileOptions = new ImageCapture.OutputFileOptions.Builder(file).build();
