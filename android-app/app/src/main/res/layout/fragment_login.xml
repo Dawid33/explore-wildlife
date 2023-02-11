@@ -87,46 +87,61 @@
             android:layout_width="match_parent"
             android:layout_height="19dp" />
 
-        <EditText
-            android:id="@+id/editTextFirstName"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="40sp"
-            android:background="@drawable/edit_round"
-            android:backgroundTint="#040909"
-            android:drawableLeft="@drawable/email"
-            android:drawablePadding="10sp"
-            android:drawableTint="@color/myrtle_green"
-            android:ems="10"
+            android:layout_height="wrap_content"
+
             android:hint="EMAIL"
-            android:inputType="textEmailAddress"
-            android:paddingLeft="10sp"
-            android:textAlignment="textStart"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
             android:textColorHint="@color/myrtle_green"
-            android:textSize="10sp" />
+            app:boxStrokeColor="#00FFFFFF"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true"
+            app:hintTextColor="@color/myrtle_green"
+            app:startIconDrawable="@drawable/email"
+            app:startIconTint="@color/myrtle_green">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_round"
+                android:backgroundTint="#040909"
+                android:inputType="textEmailAddress"
+                android:textColor="#FFFFFF"
+                android:textColorHint="@color/myrtle_green"
+                android:textCursorDrawable="@drawable/color_cursor"
+                android:textSize="10sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="12dp" />
 
-        <EditText
-            android:id="@+id/editTextTextPassword2"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/wagabooga"
             android:layout_width="match_parent"
-            android:layout_height="40sp"
-            android:background="@drawable/edit_round"
-            android:backgroundTint="@color/editText"
-            android:drawableLeft="@drawable/padlock_draw"
-            android:drawablePadding="10sp"
-            android:drawableTint="@color/myrtle_green"
-            android:ems="10"
+
+            android:layout_height="wrap_content"
             android:hint="PASSWORD"
-            android:inputType="textPassword"
-            android:paddingLeft="10sp"
-            android:textAlignment="textStart"
-            android:textColor="#FFFFFF"
             android:textColorHint="@color/myrtle_green"
-            android:textSize="10sp" />
+            app:boxStrokeColor="#00297373"
+            app:hintEnabled="true"
+            app:hintTextColor="@color/myrtle_green"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/myrtle_green"
+            app:startIconDrawable="@drawable/padlock_draw"
+            app:startIconTint="@color/myrtle_green">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_round"
+                android:backgroundTint="#040909"
+                android:inputType="textPassword"
+                android:textCursorDrawable="@drawable/color_cursor"
+                android:textSize="10sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Space
             android:layout_width="match_parent"
@@ -153,13 +168,6 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
-        <!--        <Button-->
-        <!--            android:id="@+id/goToRegistrationButton"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text="Go to Registration" />-->
-
 
     </LinearLayout>
 
