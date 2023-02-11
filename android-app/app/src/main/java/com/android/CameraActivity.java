@@ -26,7 +26,7 @@ import java.io.File;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 
-public class activity_camera extends AppCompatActivity {
+public class CameraActivity extends AppCompatActivity {
     // Two buttons in the application.
     private ImageButton capture, toggleFlash;
 
@@ -53,7 +53,7 @@ public class activity_camera extends AppCompatActivity {
         capture = findViewById(R.id.capture);
 
         // Again checking permissions.
-        if (ContextCompat.checkSelfPermission(activity_camera.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(CameraActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             activityResultLauncher.launch(Manifest.permission.CAMERA);
         } else {
             startCamera();
@@ -97,7 +97,7 @@ public class activity_camera extends AppCompatActivity {
                 // This is the function that takes the picture.
                 capture.setOnClickListener(v -> {
                     // Checking for the write permission.
-                    if (ContextCompat.checkSelfPermission(activity_camera.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    if (ContextCompat.checkSelfPermission(CameraActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                         activityResultLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
                     } else {
                         takePicture(imageCapture);
@@ -128,14 +128,14 @@ public class activity_camera extends AppCompatActivity {
             // This is the function that will be called when the image is saved.
             @Override
             public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
-                runOnUiThread(() -> Toast.makeText(activity_camera.this, "Image Saved: " + file.getPath(), Toast.LENGTH_SHORT).show());
+                runOnUiThread(() -> Toast.makeText(CameraActivity.this, "Image Saved: " + file.getPath(), Toast.LENGTH_SHORT).show());
                 startCamera();
             }
 
             // This is the function that will be called when the image is not saved.
             @Override
             public void onError(@NonNull ImageCaptureException error) {
-                runOnUiThread(() -> Toast.makeText(activity_camera.this, "Failed to Save: " + error.getMessage(), Toast.LENGTH_SHORT).show());
+                runOnUiThread(() -> Toast.makeText(CameraActivity.this, "Failed to Save: " + error.getMessage(), Toast.LENGTH_SHORT).show());
                 startCamera();
             }
         });
@@ -159,7 +159,7 @@ public class activity_camera extends AppCompatActivity {
             }
         } else {
             // If the flash is not available then show a toast.
-            runOnUiThread(() -> Toast.makeText(activity_camera.this, "Flash is Not Available Currently", Toast.LENGTH_SHORT).show());
+            runOnUiThread(() -> Toast.makeText(CameraActivity.this, "Flash is Not Available Currently", Toast.LENGTH_SHORT).show());
         }
     }
 
