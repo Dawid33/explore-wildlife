@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity_camera">
+    tools:context=".CameraActivity">
 
     <androidx.camera.view.PreviewView
         android:id="@+id/camPreview"
@@ -19,13 +19,13 @@
         android:scaleType="centerCrop"
         android:layout_alignParentEnd="true"
         android:layout_margin="10sp"
-        android:src="@drawable/ic_baseline_flash_on_24" />
+        android:src="@drawable/baseline_flash_on_24" />
 
     <ImageButton
         android:id="@+id/capture"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:background="@drawable/button_bg"
+        android:background="@drawable/baseline_photo_camera_24"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="100sp"
