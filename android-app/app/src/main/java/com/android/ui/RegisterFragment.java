@@ -1,4 +1,4 @@
-package com.android;
+package com.android.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,28 +9,29 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.android.databinding.FragmentLoginBinding;
+import com.android.R;
+import com.android.databinding.FragmentRegistrationBinding;
 
-
-public class LoginFragment extends Fragment {
-    private FragmentLoginBinding binding;
+public class RegisterFragment extends Fragment {
+    private FragmentRegistrationBinding binding;
 
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-        binding = FragmentLoginBinding.inflate(inflater, container, false);
+        binding = FragmentRegistrationBinding.inflate(inflater, container, false);
         return binding.getRoot();
+//        return null;
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding.goToRegistrationButton.setOnClickListener(new View.OnClickListener() {
+        binding.goToLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavHostFragment.findNavController(LoginFragment.this)
-                        .navigate(R.id.action_LoginFragment_to_registerFragment);
+                NavHostFragment.findNavController(RegisterFragment.this)
+                        .navigate(R.id.action_registerFragment_to_LoginFragment);
             }
         });
     }

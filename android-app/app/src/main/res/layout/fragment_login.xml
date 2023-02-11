@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/rich_black"
-    tools:context=".LoginFragment">
+    tools:context=".ui.LoginFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout2"
@@ -149,7 +149,7 @@
             android:layout_height="20dp" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/loginButton"
             android:layout_width="119dp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/aquamarine"

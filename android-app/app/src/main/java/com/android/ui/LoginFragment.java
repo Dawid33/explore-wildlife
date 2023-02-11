@@ -1,5 +1,6 @@
-package com.android;
+package com.android.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,28 +10,37 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.android.databinding.FragmentRegistrationBinding;
+import com.android.AppActivity;
+import com.android.R;
+import com.android.databinding.FragmentLoginBinding;
 
-public class RegisterFragment extends Fragment {
-    private FragmentRegistrationBinding binding;
+
+public class LoginFragment extends Fragment {
+    private FragmentLoginBinding binding;
 
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-        binding = FragmentRegistrationBinding.inflate(inflater, container, false);
+        binding = FragmentLoginBinding.inflate(inflater, container, false);
+
         return binding.getRoot();
-//        return null;
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding.goToLoginButton.setOnClickListener(new View.OnClickListener() {
+
+        binding.goToRegistrationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavHostFragment.findNavController(RegisterFragment.this)
-                        .navigate(R.id.action_registerFragment_to_LoginFragment);
+                NavHostFragment.findNavController(LoginFragment.this)
+                        .navigate(R.id.action_LoginFragment_to_registerFragment);
+            }
+        });
+        binding.loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
             }
         });
     }
