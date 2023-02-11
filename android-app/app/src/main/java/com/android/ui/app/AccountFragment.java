@@ -2,20 +2,22 @@ package com.android.ui.app;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import com.android.AppActivity;
 import com.android.LoginAndRegisterActivity;
-import com.android.databinding.FragmentHomeBinding;
+import com.android.databinding.FragmentAccountBinding;
+import com.android.databinding.FragmentPostsBinding;
 
-public class HomeFragment extends Fragment {
+public class AccountFragment extends Fragment {
 
-    private FragmentHomeBinding binding;
+    private FragmentAccountBinding binding;
 
     @Override
     public View onCreateView(
@@ -23,7 +25,7 @@ public class HomeFragment extends Fragment {
             Bundle savedInstanceState
     ) {
 
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding = FragmentAccountBinding.inflate(inflater, container, false);
         return binding.getRoot();
 
     }
@@ -37,8 +39,6 @@ public class HomeFragment extends Fragment {
                 AppActivity app = (AppActivity) getActivity();
                 Intent loginIntent = new Intent(app, LoginAndRegisterActivity.class);
                 startActivity(loginIntent);
-//                NavHostFragment.findNavController(HomeFragment.this)
-//                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
             }
         });
     }
@@ -48,5 +48,4 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
 }

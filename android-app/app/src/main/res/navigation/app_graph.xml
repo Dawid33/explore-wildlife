@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph2"
-    app:startDestination="@id/homeFragment">
-    <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.android.ui.app.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/mobile_navigation"
+app:startDestination="@+id/bottom_nav_home">
+
+<fragment
+    android:id="@+id/bottom_nav_home"
+    android:name="com.android.ui.app.HomeFragment"
+    android:label="Home"
+    tools:layout="@layout/fragment_home" />
+
+<fragment
+    android:id="@+id/bottom_nav_account"
+    android:name="com.android.ui.app.AccountFragment"
+    android:label="Account"
+    tools:layout="@layout/fragment_account" />
+
+<fragment
+    android:id="@+id/bottom_nav_posts"
+    android:name="com.android.ui.app.PostsFragment"
+    android:label="Posts"
+    tools:layout="@layout/fragment_posts" />
 </navigation>
