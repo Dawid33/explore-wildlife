@@ -36,10 +36,11 @@ public class AppActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
+    }
+}
+
 //        NavigationBarView.OnItemSelectedListener onItemSelectedListener = (MenuItem item) -> {
 //            System.out.println(item.getTitle());
 //            return true;
 //        };
 //        bottomNav.setOnItemSelectedListener(onItemSelectedListener);
-    }
-}

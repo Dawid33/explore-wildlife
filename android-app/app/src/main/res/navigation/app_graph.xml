@@ -5,21 +5,27 @@ xmlns:tools="http://schemas.android.com/tools"
 android:id="@+id/mobile_navigation"
 app:startDestination="@+id/bottom_nav_home">
 
-<fragment
-    android:id="@+id/bottom_nav_home"
-    android:name="com.android.ui.app.HomeFragment"
-    android:label="Home"
-    tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/bottom_nav_home"
+        android:name="com.android.ui.app.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home" />
 
-<fragment
-    android:id="@+id/bottom_nav_account"
-    android:name="com.android.ui.app.AccountFragment"
-    android:label="Account"
-    tools:layout="@layout/fragment_account" />
+    <fragment
+        android:id="@+id/bottom_nav_account"
+        android:name="com.android.ui.app.AccountFragment"
+        android:label="Account"
+        tools:layout="@layout/fragment_account" />
 
-<fragment
-    android:id="@+id/bottom_nav_posts"
-    android:name="com.android.ui.app.PostsFragment"
-    android:label="Posts"
-    tools:layout="@layout/fragment_posts" />
+    <fragment
+        android:id="@+id/bottom_nav_posts"
+        android:name="com.android.ui.app.PostsFragment"
+        android:label="Posts"
+        tools:layout="@layout/fragment_posts" />
+
+    <fragment
+        android:id="@+id/bottom_nav_camera"
+        android:name="com.android.ui.app.CameraFragment"
+        android:label="Camera"
+        tools:layout="@layout/fragment_camera" />
 </navigation>
