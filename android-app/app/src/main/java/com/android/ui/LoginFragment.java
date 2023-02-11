@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.android.AppActivity;
+import com.android.LoginAndRegisterActivity;
 import com.android.R;
 import com.android.databinding.FragmentLoginBinding;
 
@@ -41,6 +42,10 @@ public class LoginFragment extends Fragment {
         binding.loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Assume this fragment can only be in the LoginAndRegisterActivity
+                LoginAndRegisterActivity currentActivity = (LoginAndRegisterActivity)getActivity();
+                Intent app = new Intent(currentActivity, AppActivity.class);
+                startActivity(app);
             }
         });
     }

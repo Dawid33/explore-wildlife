@@ -1,5 +1,6 @@
 package com.android;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +24,6 @@ public class LoginAndRegisterActivity extends AppCompatActivity {
 
         binding = ActivityLoginAndRegistrationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
