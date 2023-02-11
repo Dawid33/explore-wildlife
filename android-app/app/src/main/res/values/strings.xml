@@ -9,4 +9,18 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign up</string>
+    <string name="logo">Logo</string>
+    <string name="login">Login</string>
+    <string name="please_sign_in_to_continue">Please sign in to continue.</string>
+    <string name="email">EMAIL</string>
+    <string name="password">PASSWORD</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="please_fill_out_all_the_details_to_continue">Please fill out all the details to continue.</string>
+    <string name="first_name">FIRST NAME</string>
+    <string name="last_name">LAST NAME</string>
+    <string name="password_confirm">PASSWORD CONFIRM</string>
+    <string name="phone_number">PHONE NUMBER</string>
+    <string name="back_to_login">Back to login</string>
 </resources>
