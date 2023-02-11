@@ -1,4 +1,4 @@
-package com.android;
+package com.android.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.android.R;
 import com.android.databinding.FragmentRegistrationBinding;
 
 public class RegisterFragment extends Fragment {
