@@ -45,9 +45,8 @@
                 android:id="@+id/textView2"
                 android:layout_width="140sp"
                 android:layout_height="match_parent"
-                android:gravity="center"
+                android:gravity="center|left"
                 android:text="Sergiu\nMereacre"
-                android:textAlignment="textStart"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -118,6 +117,7 @@
             android:textAllCaps="false"
             android:textColor="@color/myrtle_green" />
 
+
         <Space
             android:layout_width="match_parent"
             android:layout_height="15sp" />
@@ -127,25 +127,50 @@
             android:layout_height="match_parent"
             android:background="@drawable/edit_round"
             android:backgroundTint="#040909"
-            app:trackTint="@drawable/track_color"
-            app:thumbTint="@drawable/thumb_color"
+            android:drawableLeft="@drawable/bell_draw"
+            android:drawablePadding="15sp"
+            android:drawableTint="#FFFFFF"
+            android:paddingLeft="10sp"
+
+            android:text="Notifications"
+            android:textColor="@color/myrtle_green"
+
+            app:thumbTint="@color/aquamarine"
+            app:trackTint="@color/myrtle_green" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15sp" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchCompat"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/edit_round"
+            android:backgroundTint="#040909"
             android:drawableLeft="@drawable/email"
             android:drawablePadding="15sp"
-            android:drawableTint="@color/myrtle_green"
+            android:drawableTint="#FFFFFF"
+
             android:paddingLeft="15sp"
-            android:text="Notifications"
-            android:textColor="@color/myrtle_green" />
+            android:text="Marketing Emails"
+
+            android:textColor="@color/myrtle_green"
+            app:thumbTint="@color/aquamarine"
+            app:trackTint="@color/myrtle_green" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="40dp" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="124dp"
+            android:layout_height="38dp"
+            android:background="@drawable/edit_round"
             android:backgroundTint="#E91E63"
             android:drawableLeft="@drawable/logout_draw"
+            android:paddingHorizontal="15sp"
             android:text="SIGN OUT"
             android:textColor="@color/app_background" />
 
