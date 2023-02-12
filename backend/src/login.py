@@ -18,66 +18,98 @@ def get_users():
 
 @bp.route('/register', methods=['POST'])
 def register():
-    email = request.form['email']
-    password = request.form['password']
-    display_name = request.form['display_name']
-    db_conn = db.get_db()
-    cursor = db_conn.cursor()
-    error = None
+    result = {
+        "success": False,
+    }
+    try:
+        email = request.form['email']
+        password = request.form['password']
+        display_name = request.form['display_name']
+    except Exception as e:
+        print(e)
+        result['error'] = 'Internal Error: Failed while reading post request form data'
+        return result
 
-    cursor.execute('SELECT email FROM app.users WHERE email = %s', (email,))
-    possible_user = cursor.fetchone()
+    try:
+        db_conn = db.get_db()
+    except Exception as e:
+        print(e)
+        result['error'] = 'Internal Error: Cannot connect to database'
+        return result
+
+    try:
+        cursor = db_conn.cursor()
+        cursor.execute('SELECT email FROM app.users WHERE email = %s', (email,))
+        possible_user = cursor.fetchone()
+    except Exception as e:
+        print(e)
+        result['error'] = 'Internal Error: Failed to execute SQL query'
+        db_conn.close()
+        return result
 
     if not email:
-        error = 'Email is required.'
+        result['error'] = 'Email is required.'
     elif not password:
-        error = 'Password is required.'
+        result['error'] = 'Password is required.'
     elif not display_name:
-        error = 'Display name is required.'
+        result['error'] = 'Display name is required.'
     elif possible_user is not None:
-        error = f"User with email '{email}' is already registered."
+        result['error'] = f"User with email '{email}' is already registered."
 
-    if error is None:
-        cursor.execute('INSERT INTO app.users (display_name, email, password) VALUES (%s, %s, %s)',
-            (display_name, email, password))
-        db_conn.commit()
-        db_conn.close()
-        return {
-            "success": True
-        }
-    else:
-        db_conn.close()
-        return error
+    if result.get('error') is None:
+        try:
+            cursor.execute('INSERT INTO app.users (display_name, email, password) VALUES (%s, %s, %s)',
+                           (display_name, email, password))
+            db_conn.commit()
+        except Exception as e:
+            print(e)
+            result['error'] = 'Internal Error: Database request failed, unable to register user'
+        result['success'] = True
+
+    db_conn.close()
+    return result
 
 
 @bp.route('/login', methods=['POST'])
 def login():
-    email = request.form['email']
-    password = request.form['password']
-    db_conn = db.get_db()
-    cursor = db_conn.cursor()
-    error = None
-    cursor.execute(
-        "SELECT password, user_id FROM app.users WHERE email = %s", (email,))
-    db_result = cursor.fetchone()
-    print(db_result)
+    result = {
+        "success": False,
+    }
+    try:
+        email = request.form['email']
+        password = request.form['password']
+    except Exception as e:
+        print(e)
+        result['error'] = 'Internal Error: Failed while reading post request form data'
+        return result
+
+    try:
+        db_conn = db.get_db()
+    except Exception as e:
+        print(e)
+        result['error'] = 'Internal Error: Cannot connect to database'
+        return result
+
+    try:
+        cursor = db_conn.cursor()
+        cursor.execute("SELECT password, user_id FROM app.users WHERE email = %s", (email,))
+        db_result = cursor.fetchone()
+    except Exception as e:
+        print(e)
+        result['error'] = 'Internal Error: Failed to execute SQL query'
+        db_conn.close()
+        return result
 
     if db_result is None:
-        error = 'Incorrect email.'
+        result['error'] = 'Incorrect email or password'
     elif db_result[0] != password:
-        error = 'Incorrect password.'
+        result['error'] = 'Incorrect password'
 
     db_conn.close()
-    if error is None:
-        # session.clear()
-        # session['user_id'] = user['id']
-        return {
-            "success": True,
-            "session_token": "",
-            "user_id": db_result[1]
-        }
+    if result.get('error'):
+        result['success'] = False
+        return result
     else:
-        return {
-            "success": False,
-            "session_token": "",
-        }
+        result['success'] = True
+        return result
+
