@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_background"
+    tools:context=".CreatePost">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/app_background"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHeight_percent=".75"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.49"
+        app:layout_constraintWidth_percent=".75">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create Post"
+            android:textColor="#FFFFFF"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="5dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:hint="TITLE"
+            android:textColorHint="@color/myrtle_green"
+            app:boxStrokeColor="#00FFFFFF"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true"
+            app:hintTextColor="@color/myrtle_green"
+            app:startIconDrawable="@drawable/id_card_draw"
+            app:startIconTint="@color/myrtle_green">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_round"
+                android:backgroundTint="#040909"
+                android:inputType="textPersonName"
+                android:textColor="#FFFFFF"
+                android:textColorHint="@color/myrtle_green"
+                android:textCursorDrawable="@drawable/color_cursor"
+                android:textSize="11sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:hint="LOCATION"
+            android:textColorHint="@color/myrtle_green"
+            app:boxStrokeColor="#00FFFFFF"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true"
+            app:hintTextColor="@color/myrtle_green"
+            app:startIconDrawable="@drawable/location_pin_draw"
+            app:startIconTint="@color/myrtle_green">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_round"
+                android:backgroundTint="#040909"
+                android:inputType="textPersonName"
+                android:textColor="#FFFFFF"
+                android:textColorHint="@color/myrtle_green"
+                android:textCursorDrawable="@drawable/color_cursor"
+                android:textSize="11sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:hint="@string/email"
+            android:textColorHint="@color/myrtle_green"
+            app:boxStrokeColor="#00FFFFFF"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true"
+            app:hintTextColor="@color/myrtle_green"
+            app:startIconDrawable="@drawable/email"
+            app:startIconTint="@color/myrtle_green">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_round"
+                android:backgroundTint="#040909"
+                android:inputType="textEmailAddress"
+                android:textColor="#FFFFFF"
+                android:textColorHint="@color/myrtle_green"
+                android:textCursorDrawable="@drawable/color_cursor"
+                android:textSize="11sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
+
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="119dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/aquamarine"
+            android:text="CREATE POST"
+            android:textColor="@color/app_background" />
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/goToLoginButton2"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@null"
+        android:contentDescription="@string/back_to_login"
+        android:scaleType="fitCenter"
+        android:src="@drawable/go_back_arrow_draw"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/teal_200" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="@string/hello_blank_fragment"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
