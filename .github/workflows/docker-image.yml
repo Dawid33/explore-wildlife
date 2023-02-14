@@ -20,6 +20,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'backend/**'
+            postgres:
+              - 'docker/**'
+
       - name: Log in to the Container registry
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
         with:
@@ -28,6 +37,7 @@ jobs:
           password: test
 
       - name: Build and push backend image
+        if: steps.filter.outputs.backend == 'true'
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: backend
@@ -35,6 +45,7 @@ jobs:
           tags: ${{ env.REGISTRY }}/test/backend:latest
 
       - name: Build and push database image
+        if: steps.filter.outputs.postgres == 'true'
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: docker
