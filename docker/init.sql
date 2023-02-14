@@ -27,4 +27,5 @@ CREATE TABLE app.comments_edges (
 );
 
 INSERT INTO app.users (display_name, email, password) VALUES ('John Doe Bro', 'jdoe@example.com', 'jdoe');
+INSERT INTO app.users (display_name, email, password) VALUES ('another', 'another@example.com', 'another');
 INSERT INTO app.users (display_name, email, password) VALUES ('test', 'test@example.com', 'test');
