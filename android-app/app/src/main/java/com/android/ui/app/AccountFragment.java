@@ -50,7 +50,7 @@ public class AccountFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.goToLogin.setOnClickListener(new View.OnClickListener() {
+        binding.signOutbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AppActivity app = (AppActivity) getActivity();
