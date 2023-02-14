@@ -38,7 +38,7 @@ jobs:
 
       - name: Build and push backend image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
-        if: steps.filter.backend == 'true'
+        if: steps.filter.outputs.backend == 'true'
         with:
           context: backend
           push: true
@@ -46,9 +46,9 @@ jobs:
 
       - name: Build and push database image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
-        if: steps.filter.postgres == 'true'
+        if: steps.filter.outputs.postgres == 'true'
         with:
           context: docker
           file: docker/postgres.dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/test/postgres:latest
+          tags: ${{ env.REGISTRY }}/test/database:latest
