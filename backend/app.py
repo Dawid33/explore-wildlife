@@ -14,7 +14,7 @@ app.wsgi_app = ProxyFix(
 
 @app.route("/health_check")
 def health_check():
-    return "GOOD"
+    return "FANTASTIC"
 
 
 class StandaloneApplication(gunicorn.app.base.BaseApplication):
