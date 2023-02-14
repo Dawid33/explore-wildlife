@@ -47,7 +47,7 @@
             app:hintAnimationEnabled="true"
             app:hintEnabled="true"
             app:hintTextColor="@color/myrtle_green"
-            app:startIconDrawable="@drawable/id_card_draw"
+            app:startIconDrawable="@drawable/label_draw"
             app:startIconTint="@color/myrtle_green">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -67,9 +67,11 @@
             android:layout_width="match_parent"
             android:layout_height="15dp" />
 
+
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
 
             android:hint="LOCATION"
             android:textColorHint="@color/myrtle_green"
@@ -101,13 +103,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:hint="@string/email"
+            android:hint="CATEGORY"
             android:textColorHint="@color/myrtle_green"
             app:boxStrokeColor="#00FFFFFF"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true"
             app:hintTextColor="@color/myrtle_green"
-            app:startIconDrawable="@drawable/email"
+            app:startIconDrawable="@drawable/location_pin_draw"
             app:startIconTint="@color/myrtle_green">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -115,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_round"
                 android:backgroundTint="#040909"
-                android:inputType="textEmailAddress"
+                android:inputType="textPersonName"
                 android:textColor="#FFFFFF"
                 android:textColorHint="@color/myrtle_green"
                 android:textCursorDrawable="@drawable/color_cursor"
@@ -127,6 +129,81 @@
             android:layout_width="match_parent"
             android:layout_height="15dp" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/edit_round"
+            android:backgroundTint="@color/editText"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/description_draw"
+                android:drawablePadding="20dp"
+                android:text="DESCRIPTION"
+                android:textColor="@color/myrtle_green"
+                app:drawableTint="@color/myrtle_green" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="TYPE HERE"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white"
+                        android:textSize="8sp" />
+                </LinearLayout>
+            </ScrollView>
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+
+        <RelativeLayout
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            android:layout_margin="10dp">
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="115dp"
+                android:layout_height="115dp"
+                android:layout_centerInParent="true"
+                android:tint="@color/myrtle_green"
+                tools:src="@drawable/insert_picture_icon_draw" />
+
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:backgroundTint="#000000"
+                android:src="@drawable/trash_can_draw"
+                android:tint="#FF0000" />
+
+        </RelativeLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
 
         <Button
             android:id="@+id/button"
@@ -151,15 +228,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/teal_200" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="@string/hello_blank_fragment"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
