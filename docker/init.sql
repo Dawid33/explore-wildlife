@@ -26,5 +26,5 @@ CREATE TABLE app.comments_edges (
 	child uuid NOT NULL
 );
 
-INSERT INTO app.users (display_name, email, password) VALUES ('John Doe Bro', 'jdoe@example.com', 'jdoe');
+INSERT INTO app.users (display_name, email, password) VALUES ('John Doe test', 'jdoe@example.com', 'jdoe');
 INSERT INTO app.users (display_name, email, password) VALUES ('test', 'test@example.com', 'test');
