@@ -17,8 +17,6 @@ services:
     container_name: backend
     depends_on:
       - postgres
-    ports:
-      - "8080:8080"
     build:
       context: backend
     healthcheck:
@@ -36,8 +34,6 @@ services:
       - "POSTGRES_PASSWORD=${PG_PASSWORD}"
     volumes:
       - "./docker/postgres_database:/var/lib/postgresql/data"
-    ports:
-      - "5432:5432"
     build:
       context: docker
       dockerfile: postgres.dockerfile
