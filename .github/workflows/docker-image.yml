@@ -37,7 +37,7 @@ jobs:
           password: test
 
       - name: Build and push backend image
-        if: steps.filter.outputs.backend == 'true'
+        if: steps.filter.backend == 'true'
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: backend
@@ -45,7 +45,7 @@ jobs:
           tags: ${{ env.REGISTRY }}/test/backend:latest
 
       - name: Build and push database image
-        if: steps.filter.outputs.postgres == 'true'
+        if: steps.filter.postgres == 'true'
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: docker
