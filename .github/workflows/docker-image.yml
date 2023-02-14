@@ -3,7 +3,7 @@ name: Build and Publish Docker Image
 
 on:
   push:
-    branches: ['main', "citest"]
+    branches: ['main', "cidb"]
 
 env:
   REGISTRY: registry.explorewildlife.net
@@ -20,6 +20,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'backend/**'
+            postgres:
+              - 'docker/**'
+
       - name: Log in to the Container registry
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
         with:
@@ -27,9 +36,19 @@ jobs:
           username: test
           password: test
 
-      - name: Build and push Docker image
+      - name: Build and push backend image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        if: steps.filter.outputs.backend == 'true'
         with:
           context: backend
           push: true
           tags: ${{ env.REGISTRY }}/test/backend:latest
+
+      - name: Build and push database image
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        if: steps.filter.outputs.postgres == 'true'
+        with:
+          context: docker
+          file: docker/postgres.dockerfile
+          push: true
+          tags: ${{ env.REGISTRY }}/test/database:latest
