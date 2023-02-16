@@ -12,13 +12,17 @@ CREATE TABLE app.users (
 );
 
 CREATE TABLE app.posts (
+	post_id uuid NOT NULL DEFAULT uuid_generate_v4(),
+	content varchar NULL DEFAULT 'Default content.',
 	created_by uuid NOT NULL,
-	post_id uuid NOT NULL DEFAULT uuid_generate_v4()
+    created_at timestamp NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE app.comments (
 	parent_post_id uuid NOT NULL,
-	comment_id uuid NOT NULL DEFAULT uuid_generate_v4()
+	comment_id uuid NOT NULL DEFAULT uuid_generate_v4(),
+	created_by uuid NOT NULL,
+    created_at timestamp NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE app.comments_edges (
@@ -26,5 +30,14 @@ CREATE TABLE app.comments_edges (
 	child uuid NOT NULL
 );
 
-INSERT INTO app.users (display_name, email, password) VALUES ('John Doe test', 'jdoe@example.com', 'jdoe');
-INSERT INTO app.users (display_name, email, password) VALUES ('test', 'test@example.com', 'test');
+
+DO $$
+DECLARE
+test_id uuid := uuid_generate_v4();
+BEGIN
+    INSERT INTO app.users (display_name, email, password) VALUES ('John Doe test', 'jdoe@example.com', 'jdoe');
+    INSERT INTO app.users (user_id, display_name, email, password) VALUES (test_id, 'test', 'test@example.com', 'test');
+
+    INSERT INTO app.posts (content, created_by) VALUES ('This is my post', test_id);
+END $$;
+

@@ -2,20 +2,16 @@
 <html>
 <head>
     <script>
-        function api(url) {
-            let output = document.getElementById("output")
-            let users = fetch(url).then((res) =>{
-                res.text().then((text) => { output.innerText = text })
-            })
-        }
     </script>
 </head>
 <body>
     <h2>Test Page</h2>
-
     <ul>
         <li>
             <button onclick="api('http://localhost:8080/api/users')">/api/users</button>
+        </li>
+        <li>
+            <button onclick="api('http://localhost:8080/api/posts')">/api/posts</button>
         </li>
         <li> Login:
             <form id="login-form" method="post" action="http://localhost:8080/api/login">
@@ -43,8 +39,17 @@
     <output id="output">
         Default text
     </output>
+
     <script>
         let output = document.getElementById("output")
+        function api(url) {
+            let users = fetch(url).then((res) =>{
+                res.text().then((text) => {
+                    output.innerText = text
+                })
+            })
+        }
+
         let login_form = document.getElementById("login-form");
 
         login_form.addEventListener("submit", (e) => {

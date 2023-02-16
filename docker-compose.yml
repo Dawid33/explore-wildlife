@@ -25,9 +25,10 @@ services:
       timeout: 2s
       retries: 10
 
-
   postgres:
     container_name: postgres
+    ports:
+      - "5432:5432"
     environment:
       - "POSTGRES_DB=${PG_DB}"
       - "POSTGRES_USER=${PG_USER}"
