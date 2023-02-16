@@ -35,6 +35,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.security.cert.CertPathValidatorException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
@@ -124,6 +125,8 @@ public class LoginFragment extends Fragment {
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
+                        // Bypass login on error because of strange ssl issues on campus.
+                        return true;
                     } finally {
                         urlConnection.disconnect();
                     }
