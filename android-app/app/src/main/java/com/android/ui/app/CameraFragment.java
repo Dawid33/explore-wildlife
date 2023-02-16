@@ -64,11 +64,6 @@ import java.io.File;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CameraFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CameraFragment extends Fragment {
     FragmentCameraBinding binding;
     // Two buttons in the application.
@@ -197,7 +192,7 @@ public class CameraFragment extends Fragment {
             @Override
             public void onError(@NonNull ImageCaptureException error) {
                 getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Failed to Save: " + error.getMessage(), Toast.LENGTH_SHORT).show());
-//                startCamera(activity);
+                startCamera();
             }
         });
 

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -13,29 +14,10 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.android.AppActivity;
 import com.android.LoginAndRegisterActivity;
 import com.android.R;
+import com.android.api.LoginRequest;
+import com.android.api.LoginRequestResult;
 import com.android.databinding.FragmentLoginBinding;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.Reader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.security.cert.CertPathValidatorException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
@@ -70,84 +52,22 @@ public class LoginFragment extends Fragment {
                 String email = String.valueOf(binding.emailInput.getText());
                 String password = String.valueOf(binding.passwordInput.getText());
 
-                FutureTask<Boolean> login = new FutureTask<>(() -> {
-                    HttpURLConnection urlConnection = null;
-                    StringBuilder textBuilder = new StringBuilder("DEFAULT");
-                    String boundary = "===" + System.currentTimeMillis() + "===";
-                    final String LINE_FEED = "\r\n";
-                    try {
-                        URL url = new URL("https://explorewildlife.net/api/login");
-                        urlConnection = (HttpURLConnection) url.openConnection();
-                        urlConnection.setDoOutput(true);
-                        urlConnection.setChunkedStreamingMode(0);
-                        urlConnection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
-                        PrintWriter writer = new PrintWriter(new OutputStreamWriter(urlConnection.getOutputStream()));
-
-                        writer.append("--" + boundary).append(LINE_FEED);
-                        writer.append("Content-Disposition: form-data; name=\"" + "email" + "\"")
-                                .append(LINE_FEED);
-                        writer.append("Content-Type: text/plain;").append(
-                                LINE_FEED);
-                        writer.append(LINE_FEED);
-                        writer.append(email).append(LINE_FEED);
-                        writer.flush();
-
-                        writer.append("--" + boundary).append(LINE_FEED);
-                        writer.append("Content-Disposition: form-data; name=\"" + "password" + "\"").append(LINE_FEED);
-                        writer.append("Content-Type: text/plain;").append(LINE_FEED);
-                        writer.append(LINE_FEED);
-                        writer.append(password).append(LINE_FEED);
-                        writer.flush();
-
-                        writer.append("--" + boundary + "--").append(LINE_FEED);
-                        writer.append(LINE_FEED).flush();
-                        writer.flush();
-                        writer.close();
-
-                        InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                        textBuilder = new StringBuilder();
-                        try (Reader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
-                            int c = 0;
-                            while ((c = reader.read()) != -1) {
-                                textBuilder.append((char) c);
-                            }
-                        }
-
-                        JSONObject response = new JSONObject(textBuilder.toString());
-                        if (response.has("success")) {
-                            boolean success = (boolean) response.get("success");
-                            if (success) {
-                                return true;
-                            } else if (response.has("error")) {
-                                System.out.println("Login Error: " + (String)response.get("error"));
-                                return false;
-                            }
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        // Bypass login on error because of strange ssl issues on campus.
-                        return true;
-                    } finally {
-                        urlConnection.disconnect();
-                    }
-                    return false;
-                });
-
-                boolean has_logged_in = false;
+                FutureTask<LoginRequestResult> login = new FutureTask<>(new LoginRequest(email, password));
+                ExecutorService exec = Executors.newSingleThreadExecutor();
+                exec.submit(login);
                 try {
-                    ExecutorService exec = Executors.newSingleThreadExecutor();
-                    exec.submit(login);
-                    if (login.get()) {
-                        has_logged_in = true;
-                    } else {
-                        has_logged_in = false;
+                    LoginRequestResult result = login.get();
+                    if (!result.isLoggedIn) {
+                        getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Login Error: " + result.error, Toast.LENGTH_SHORT).show());
                     }
+
+                    // Switch activity no matter what in case login system doesn't work.
+                    LoginAndRegisterActivity currentActivity = (LoginAndRegisterActivity)getActivity();
+                    Intent app = new Intent(currentActivity, AppActivity.class);
+                    startActivity(app);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                LoginAndRegisterActivity currentActivity = (LoginAndRegisterActivity)getActivity();
-                Intent app = new Intent(currentActivity, AppActivity.class);
-                if (has_logged_in) { startActivity(app); }
             }
         });
     }
