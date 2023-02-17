@@ -36,8 +36,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/bottom_nav_background"
-            app:itemIconTint="@color/myrtle_green"
-            app:itemTextColor="@color/myrtle_green"
+            app:itemIconSize="28dp"
+            app:itemIconTint="@drawable/bottom_nav_icon_colour_selector"
+            app:labelVisibilityMode="unlabeled"
             app:menu="@menu/bottom_nav_items" />
     </FrameLayout>
 

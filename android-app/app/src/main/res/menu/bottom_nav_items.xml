@@ -3,25 +3,30 @@
     <item android:id="@+id/bottom_nav_posts"
         android:title="Posts"
         android:actionLayout="@layout/fragment_posts"
-        android:icon="@drawable/chatting" />
+        android:icon="@drawable/chatting"
+        android:enabled="true" />
 
     <item android:id="@+id/bottom_nav_pokedex"
         android:title="Pokedex"
-        android:icon="@drawable/paw_print" />
+        android:icon="@drawable/paw_print"
+        android:enabled="true" />
 
     <item android:id="@+id/bottom_nav_home"
         android:title="Home"
         android:actionLayout="@layout/fragment_home"
-        android:icon="@drawable/home" />
+        android:icon="@drawable/home"
+        android:enabled="true" />
 
     <item android:id="@+id/bottom_nav_camera"
         android:title="Camera"
         android:actionLayout="@layout/fragment_camera"
-        android:icon="@drawable/photo_camera" />
+        android:icon="@drawable/photo_camera"
+        android:enabled="true" />
 
     <item android:id="@+id/bottom_nav_maps"
         android:title="Map"
         android:actionLayout="@layout/fragment_maps"
-        android:icon="@drawable/location_pin" />
+        android:icon="@drawable/location_pin"
+        android:enabled="true" />
 
 </menu>
