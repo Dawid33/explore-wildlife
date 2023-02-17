@@ -43,7 +43,15 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(LoginFragment.this)
-                        .navigate(R.id.action_LoginFragment_to_registerFragment);
+                        .navigate(R.id.action_loginFragment_to_registerFragment);
+            }
+        });
+
+        binding.goToForgotPasswordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(LoginFragment.this)
+                        .navigate(R.id.action_loginFragment_to_forgotPasswordFragment);
             }
         });
         binding.loginButton.setOnClickListener(new View.OnClickListener() {
