@@ -11,9 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.android.api.GetImageRequest;
 import com.android.api.GetPostsRequest;
 import com.android.api.GetPostsRequest.GetPostsRequestResult;
 import com.android.databinding.FragmentPostsBinding;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -45,10 +49,21 @@ public class PostsFragment extends Fragment {
                 try {
                     GetPostsRequestResult result = getPosts.get();
                     if (result.requestSucceeded) {
-                        for (int i = 0; i < result.posts.length(); i++) {
-                            binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                            binding.recyclerView.setAdapter(new PostsAdapter(result.posts));
-                        }
+//                        for (int i = 0; i < result.posts.length(); i++) {
+//                            try {
+//                                JSONArray images = ((JSONObject) result.posts.get(i)).getJSONArray("images");
+//                                GetImageRequest.GetImageRequestResult[] api_results = new GetImageRequest.GetImageRequestResult[images.length()];
+//                                for (int j = 0; j < images.length(); j++) {
+//                                    FutureTask<GetImageRequest.GetImageRequestResult> getImage = new FutureTask<>(new GetImageRequest((String) images.get(i)));
+//                                    exec.submit(getImage);
+//                                    api_results[i] = getImage.get();
+//                                    System.out.println(api_results[i]);
+//                                }
+//                            } catch (Exception ignored) {}
+//                        }
+
+                        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                        binding.recyclerView.setAdapter(new PostsAdapter(result.posts));
                     } else {
                         getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Error getting latest posts", Toast.LENGTH_SHORT).show());
                     }

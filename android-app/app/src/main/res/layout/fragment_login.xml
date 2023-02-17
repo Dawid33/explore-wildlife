@@ -114,6 +114,7 @@
                 android:background="@drawable/edit_round"
                 android:backgroundTint="#040909"
                 android:inputType="textEmailAddress"
+                android:text="test@example.com"
                 android:textColor="@color/columbia_blue"
                 android:textColorHint="@color/myrtle_green"
                 android:textCursorDrawable="@drawable/color_cursor"
@@ -148,9 +149,10 @@
                 android:background="@drawable/edit_round"
                 android:backgroundTint="#040909"
                 android:inputType="textPassword"
+                android:text="test"
+                android:textColor="@color/columbia_blue"
                 android:textCursorDrawable="@drawable/color_cursor"
-                android:textSize="11sp"
-                android:textColor="@color/columbia_blue" />
+                android:textSize="11sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
