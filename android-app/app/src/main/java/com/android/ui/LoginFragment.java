@@ -15,7 +15,7 @@ import com.android.AppActivity;
 import com.android.LoginAndRegisterActivity;
 import com.android.R;
 import com.android.api.LoginRequest;
-import com.android.api.LoginRequestResult;
+import com.android.api.LoginRequest.LoginRequestResult;
 import com.android.databinding.FragmentLoginBinding;
 
 import java.util.concurrent.ExecutorService;

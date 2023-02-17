@@ -2,7 +2,6 @@ package com.android.ui.app;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.AspectRatio;
 import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
@@ -14,55 +13,28 @@ import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.android.AppActivity;
-import com.android.databinding.FragmentAccountBinding;
 import com.android.databinding.FragmentCameraBinding;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.camera.core.AspectRatio;
-import androidx.camera.core.Camera;
-import androidx.camera.core.CameraSelector;
-import androidx.camera.core.ImageCapture;
-import androidx.camera.core.ImageCaptureException;
-import androidx.camera.core.Preview;
-import androidx.camera.core.ImageAnalysis.Analyzer;
-import androidx.camera.lifecycle.ProcessCameraProvider;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.android.CameraActivity;
 import com.android.R;
-import com.google.common.util.concurrent.ListenableFuture;
-
-import java.io.File;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
 
 public class CameraFragment extends Fragment {
     FragmentCameraBinding binding;
@@ -118,6 +90,11 @@ public class CameraFragment extends Fragment {
         // This is the camera provider.
         ListenableFuture listenableFuture = ProcessCameraProvider.getInstance(safeContext);
 
+        AppActivity activity = (AppActivity) getActivity();
+        if (activity == null) {
+            return;
+        }
+
         listenableFuture.addListener(() -> {
             try {
                 // Camera provider is now guaranteed to be available.
@@ -128,7 +105,7 @@ public class CameraFragment extends Fragment {
 
                 // Set up the capture use case to allow users to take photos.
                 ImageCapture imageCapture = new ImageCapture.Builder().setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
-                        .setTargetRotation(getActivity().getWindowManager().getDefaultDisplay().getRotation()).build();
+                        .setTargetRotation(activity.getWindowManager().getDefaultDisplay().getRotation()).build();
 
                 // Choose the camera by requiring a lens facing.
                 CameraSelector cameraSelector = new CameraSelector.Builder()

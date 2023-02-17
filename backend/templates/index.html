@@ -13,6 +13,9 @@
         <li>
             <button onclick="api('http://localhost:8080/api/posts')">/api/posts</button>
         </li>
+        <li>
+            <button onclick="get_post()">/api/post</button>
+        </li>
         <li> Login:
             <form id="login-form" method="post" action="http://localhost:8080/api/login">
                 <label>Email: </label>
@@ -48,6 +51,13 @@
                     output.innerText = text
                 })
             })
+        }
+
+        async function get_post() {
+            let posts = fetch('http://localhost:8080/api/posts');
+            post_id = (await (await posts).json())[0].post_id;
+            let post = (await (await fetch('http://localhost:8080/api/post?id=' + post_id)).text());
+            output.innerText = post
         }
 
         let login_form = document.getElementById("login-form");

@@ -13,9 +13,19 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Callable;
 
-public class LoginRequest implements Callable<LoginRequestResult> {
+public class LoginRequest implements Callable<LoginRequest.LoginRequestResult> {
     public static final String loginApiUrl = "https://explorewildlife.net/api/login";
     String email, password;
+
+    public class LoginRequestResult {
+        public String error;
+        public boolean isLoggedIn;
+
+        public LoginRequestResult(boolean isLoggedIn, String error) {
+            this.error = error;
+            this.isLoggedIn = isLoggedIn;
+        }
+    }
 
     public LoginRequest(String email, String password) {
         this.email = email;
@@ -47,7 +57,7 @@ public class LoginRequest implements Callable<LoginRequestResult> {
             urlConnection.connect();
 
             // Read the response
-            String response = readStream(urlConnection.getInputStream());
+            String response = Utils.readStream(urlConnection.getInputStream());
 
             JSONObject json = new JSONObject(response);
             System.out.println(json);
@@ -67,18 +77,5 @@ public class LoginRequest implements Callable<LoginRequestResult> {
             if (urlConnection != null) { urlConnection.disconnect(); }
         }
         return new LoginRequestResult(false, "Unknown error occurred.");
-    }
-
-    String readStream(InputStream stream) throws IOException {
-        StringBuilder textBuilder = new StringBuilder();
-        try (Reader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
-            int c;
-            while ((c = reader.read()) != -1) {
-                textBuilder.append((char) c);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return textBuilder.toString();
     }
 }

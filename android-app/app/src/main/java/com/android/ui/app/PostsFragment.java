@@ -1,20 +1,23 @@
 package com.android.ui.app;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import com.android.AppActivity;
-import com.android.LoginAndRegisterActivity;
-import com.android.R;
-import com.android.databinding.FragmentHomeBinding;
+import com.android.api.GetPostsRequest;
+import com.android.api.GetPostsRequest.GetPostsRequestResult;
 import com.android.databinding.FragmentPostsBinding;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 
 public class PostsFragment extends Fragment {
     private FragmentPostsBinding binding;
@@ -33,12 +36,25 @@ public class PostsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.goToLogin.setOnClickListener(new View.OnClickListener() {
+        binding.getLatestPosts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AppActivity app = (AppActivity) getActivity();
-                Intent loginIntent = new Intent(app, LoginAndRegisterActivity.class);
-                startActivity(loginIntent);
+                FutureTask<GetPostsRequestResult> getPosts= new FutureTask<>(new GetPostsRequest());
+                ExecutorService exec = Executors.newSingleThreadExecutor();
+                exec.submit(getPosts);
+                try {
+                    GetPostsRequestResult result = getPosts.get();
+                    if (result.requestSucceeded) {
+                        for (int i = 0; i < result.posts.length(); i++) {
+                            binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                            binding.recyclerView.setAdapter(new PostsAdapter(result.posts));
+                        }
+                    } else {
+                        getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Error getting latest posts", Toast.LENGTH_SHORT).show());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

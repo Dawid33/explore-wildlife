@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:id="@+id/mobile_navigation"
-app:startDestination="@+id/bottom_nav_home">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/bottom_nav_posts">
 
     <fragment
         android:id="@+id/bottom_nav_home"
@@ -28,4 +28,8 @@ app:startDestination="@+id/bottom_nav_home">
         android:name="com.android.ui.app.CameraFragment"
         android:label="Camera"
         tools:layout="@layout/fragment_camera" />
+    <fragment
+        android:id="@+id/bottom_nav_maps"
+        android:name="com.android.ui.app.MapsFragment"
+        android:label="MapsFragment" />
 </navigation>

@@ -30,6 +30,8 @@ CREATE TABLE app.comments_edges (
 	child uuid NOT NULL
 );
 
+-- TODO: Test this whether it actually speeds up queries.
+CREATE INDEX latest_posts_index ON app.posts (created_at DESC);
 
 DO $$
 DECLARE
@@ -39,5 +41,6 @@ BEGIN
     INSERT INTO app.users (user_id, display_name, email, password) VALUES (test_id, 'test', 'test@example.com', 'test');
 
     INSERT INTO app.posts (content, created_by) VALUES ('This is my post', test_id);
+    INSERT INTO app.posts (content, created_by) VALUES ('This is another post', test_id);
 END $$;
 
