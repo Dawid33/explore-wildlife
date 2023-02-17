@@ -36,6 +36,7 @@ DECLARE
 test_id uuid := uuid_generate_v4();
 BEGIN
     INSERT INTO app.users (display_name, email, password) VALUES ('John Doe test', 'jdoe@example.com', 'jdoe');
+    INSERT INTO app.users (display_name, email, password) VALUES ('another', 'another@example.com', 'another');
     INSERT INTO app.users (user_id, display_name, email, password) VALUES (test_id, 'test', 'test@example.com', 'test');
 
     INSERT INTO app.posts (content, created_by) VALUES ('This is my post', test_id);
