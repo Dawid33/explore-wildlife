@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/sign_up"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/columbia_blue"
             android:textSize="30sp"
             android:textStyle="bold" />
 
@@ -52,7 +52,9 @@
 
             android:hint="@string/first_name"
             android:textColorHint="@color/myrtle_green"
-            app:boxStrokeColor="#00FFFFFF"
+            app:boxStrokeColor="#000"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true"
             app:hintTextColor="@color/myrtle_green"
@@ -65,7 +67,7 @@
                 android:background="@drawable/edit_round"
                 android:backgroundTint="#040909"
                 android:inputType="textPersonName"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/columbia_blue"
                 android:textColorHint="@color/myrtle_green"
                 android:textCursorDrawable="@drawable/color_cursor"
                 android:textSize="11sp" />
@@ -82,7 +84,9 @@
 
             android:hint="@string/last_name"
             android:textColorHint="@color/myrtle_green"
-            app:boxStrokeColor="#00FFFFFF"
+            app:boxStrokeColor="#000"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true"
             app:hintTextColor="@color/myrtle_green"
@@ -95,7 +99,7 @@
                 android:background="@drawable/edit_round"
                 android:backgroundTint="#040909"
                 android:inputType="textPersonName"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/columbia_blue"
                 android:textColorHint="@color/myrtle_green"
                 android:textCursorDrawable="@drawable/color_cursor"
                 android:textSize="11sp" />
@@ -111,7 +115,9 @@
 
             android:hint="@string/email"
             android:textColorHint="@color/myrtle_green"
-            app:boxStrokeColor="#00FFFFFF"
+            app:boxStrokeColor="#000"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true"
             app:hintTextColor="@color/myrtle_green"
@@ -124,7 +130,7 @@
                 android:background="@drawable/edit_round"
                 android:backgroundTint="#040909"
                 android:inputType="textEmailAddress"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/columbia_blue"
                 android:textColorHint="@color/myrtle_green"
                 android:textCursorDrawable="@drawable/color_cursor"
                 android:textSize="11sp" />
@@ -141,7 +147,9 @@
 
             android:hint="@string/password"
             android:textColorHint="@color/myrtle_green"
-            app:boxStrokeColor="#00FFFFFF"
+            app:boxStrokeColor="#000"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true"
             app:hintTextColor="@color/myrtle_green"
@@ -157,7 +165,8 @@
                 android:backgroundTint="#040909"
                 android:inputType="textPassword"
                 android:textCursorDrawable="@drawable/color_cursor"
-                android:textSize="11sp" />
+                android:textSize="11sp"
+                android:textColor="@color/columbia_blue"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -172,7 +181,9 @@
             android:layout_height="wrap_content"
             android:hint="@string/password_confirm"
             android:textColorHint="@color/myrtle_green"
-            app:boxStrokeColor="#00297373"
+            app:boxStrokeColor="#000"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:hintEnabled="true"
             app:hintTextColor="@color/myrtle_green"
             app:passwordToggleEnabled="true"
@@ -187,7 +198,8 @@
                 android:backgroundTint="#040909"
                 android:inputType="textPassword"
                 android:textCursorDrawable="@drawable/color_cursor"
-                android:textSize="11sp" />
+                android:textSize="11sp"
+                android:textColor="@color/columbia_blue"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -202,7 +214,9 @@
 
             android:hint="@string/phone_number"
             android:textColorHint="@color/myrtle_green"
-            app:boxStrokeColor="#00FFFFFF"
+            app:boxStrokeColor="#000"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true"
             app:hintTextColor="@color/myrtle_green"
@@ -215,7 +229,7 @@
                 android:background="@drawable/edit_round"
                 android:backgroundTint="#040909"
                 android:inputType="phone"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/columbia_blue"
                 android:textColorHint="@color/myrtle_green"
                 android:textCursorDrawable="@drawable/color_cursor"
                 android:textSize="11sp" />
@@ -227,11 +241,15 @@
             android:layout_height="40dp" />
 
         <Button
+            style="@style/Widget.Material3.Button.ElevatedButton"
             android:id="@+id/button"
             android:layout_width="119dp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/aquamarine"
             android:text="@string/sign_up"
+            android:textSize="16sp"
+            android:textAllCaps="true"
+            android:textStyle="bold"
             android:textColor="@color/app_background" />
 
     </LinearLayout>
@@ -248,6 +266,6 @@
         android:src="@drawable/go_back_arrow_draw"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/teal_200" />
+        app:tint="@color/aquamarine" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

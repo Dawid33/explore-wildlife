@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="50dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,15 +25,19 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Don't have an account?" />
+            tools:text="Don't have an account?"
+            android:textSize="12sp"/>
 
         <Button
             android:id="@+id/goToRegistrationButton"
-            android:layout_width="71dp"
+            android:layout_width="86dp"
             android:layout_height="44dp"
             android:background="#00FFFFFF"
+            android:paddingLeft="0dp"
             android:text="@string/sign_up"
-            android:textSize="8sp"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:textColor="@color/columbia_blue"
             app:layout_constraintBaseline_toBaselineOf="@+id/textView"
             app:layout_constraintStart_toEndOf="@+id/textView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -56,7 +60,7 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="125dp"
+            android:layout_height="160dp"
             android:src="@drawable/main_icon"
             android:contentDescription="@string/logo" />
 
@@ -69,7 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/login"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/columbia_blue"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -94,7 +98,9 @@
 
             android:hint="@string/email"
             android:textColorHint="@color/myrtle_green"
-            app:boxStrokeColor="#00FFFFFF"
+            app:boxStrokeColor="#000"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true"
             app:hintTextColor="@color/myrtle_green"
@@ -108,8 +114,7 @@
                 android:background="@drawable/edit_round"
                 android:backgroundTint="#040909"
                 android:inputType="textEmailAddress"
-                android:text="test@example.com"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/columbia_blue"
                 android:textColorHint="@color/myrtle_green"
                 android:textCursorDrawable="@drawable/color_cursor"
                 android:textSize="11sp" />
@@ -123,11 +128,12 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/wagabooga"
             android:layout_width="match_parent"
-
             android:layout_height="wrap_content"
             android:hint="@string/password"
             android:textColorHint="@color/myrtle_green"
-            app:boxStrokeColor="#00297373"
+            app:boxStrokeColor="#000"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:hintEnabled="true"
             app:hintTextColor="@color/myrtle_green"
             app:passwordToggleEnabled="true"
@@ -142,9 +148,9 @@
                 android:background="@drawable/edit_round"
                 android:backgroundTint="#040909"
                 android:inputType="textPassword"
-                android:text="test"
                 android:textCursorDrawable="@drawable/color_cursor"
-                android:textSize="11sp" />
+                android:textSize="11sp"
+                android:textColor="@color/columbia_blue" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -153,12 +159,16 @@
             android:layout_height="20dp" />
 
         <Button
+            style="@style/Widget.Material3.Button.ElevatedButton"
             android:id="@+id/loginButton"
             android:layout_width="119dp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/aquamarine"
             android:text="@string/login"
-            android:textColor="@color/app_background" />
+            android:textSize="16sp"
+            android:textAllCaps="true"
+            android:textColor="@color/app_background"
+            android:textStyle="bold"/>
 
         <Button
             android:id="@+id/forgot"
@@ -167,8 +177,8 @@
             android:background="#00FFFFFF"
             android:paddingBottom="0dp"
             android:text="@string/forgot_password"
-            android:textColor="#FFFFFF"
-            android:textSize="6sp" />
+            android:textColor="@color/columbia_blue"
+            android:textSize="7sp" />
 
         <Space
             android:layout_width="match_parent"
