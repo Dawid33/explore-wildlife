@@ -1,21 +1,27 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item android:id="@+id/bottom_nav_posts"
         android:title="Posts"
+        android:actionLayout="@layout/fragment_posts"
         android:icon="@drawable/chatting" />
-
-    <item android:id="@+id/bottom_nav_home"
-        android:title="Home"
-        android:icon="@drawable/home" />
-
-    <item android:id="@+id/bottom_nav_camera"
-        android:title="Camera"
-        android:icon="@drawable/photo_camera" />
 
     <item android:id="@+id/bottom_nav_pokedex"
         android:title="Pokedex"
         android:icon="@drawable/paw_print" />
 
+    <item android:id="@+id/bottom_nav_home"
+        android:title="Home"
+        android:actionLayout="@layout/fragment_home"
+        android:icon="@drawable/home" />
+
+    <item android:id="@+id/bottom_nav_camera"
+        android:title="Camera"
+        android:actionLayout="@layout/fragment_camera"
+        android:icon="@drawable/photo_camera" />
+
     <item android:id="@+id/bottom_nav_maps"
         android:title="Map"
+        android:actionLayout="@layout/fragment_maps"
         android:icon="@drawable/location_pin" />
+
 </menu>
