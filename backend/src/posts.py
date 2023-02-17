@@ -35,3 +35,15 @@ def get_post():
     output = dict(post_id=result[0], content=result[1], created_by=result[2], created_at=result[3])
     conn.close()
     return output
+
+
+@bp.route("/post", methods=['GET'])
+def get_post():
+    id = str(request.args.get('id'))
+    conn = db.get_db()
+    cur = conn.cursor()
+    cur.execute("SELECT post_id, content, created_by, created_at FROM app.posts WHERE post_id = %s;", [id])
+    result = cur.fetchone()
+    output = dict(post_id=result[0], content=result[1], created_by=result[2], created_at=result[3])
+    conn.close()
+    return output
