@@ -1,21 +1,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/bottom_nav_posts"
         android:title="Posts"
-        android:icon="@drawable/email" />
+        android:icon="@drawable/chatting" />
 
     <item android:id="@+id/bottom_nav_home"
         android:title="Home"
-        android:icon="@drawable/email" />
+        android:icon="@drawable/home" />
 
     <item android:id="@+id/bottom_nav_camera"
         android:title="Camera"
-        android:icon="@drawable/baseline_photo_camera_24" />
+        android:icon="@drawable/photo_camera" />
 
-    <item android:id="@+id/bottom_nav_account"
-        android:title="Account"
-        android:icon="@drawable/email" />
+    <item android:id="@+id/bottom_nav_pokedex"
+        android:title="Pokedex"
+        android:icon="@drawable/paw_print" />
 
     <item android:id="@+id/bottom_nav_maps"
         android:title="Map"
-        android:icon="@drawable/email" />
+        android:icon="@drawable/location_pin" />
 </menu>
