@@ -1,4 +1,4 @@
-package com.android.ui.app;
+package com.android.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
