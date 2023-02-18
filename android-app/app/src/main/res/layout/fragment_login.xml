@@ -151,7 +151,7 @@
             android:layout_height="20dp" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/loginButton"
             android:layout_width="119dp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/aquamarine"
@@ -159,7 +159,7 @@
             android:textColor="@color/app_background" />
 
         <Button
-            android:id="@+id/forgot"
+            android:id="@+id/goToForgotPasswordButton"
             android:layout_width="match_parent"
             android:layout_height="25dp"
             android:background="#00FFFFFF"

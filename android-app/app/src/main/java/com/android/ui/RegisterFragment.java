@@ -48,17 +48,28 @@ public class RegisterFragment extends Fragment {
         binding.signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String firstName = String.valueOf(binding.firstNameInput.getText());
+                String lastName = String.valueOf(binding.lastNameInput.getText());
                 String email = String.valueOf(binding.emailInput.getText());
                 String password = String.valueOf(binding.passwordInput.getText());
+                String passwordConfirm = String.valueOf(binding.passwordConfirmInput.getText());
+                String phoneNumber = String.valueOf(binding.phoneNumberInput.getText());
 
-                FutureTask<LoginRequest.LoginRequestResult> login = new FutureTask<>(new LoginRequest(email, password));
-                FutureTask<RegisterRequest.RegisterRequestResult> register = new FutureTask<>(new RegisterRequest());
+                if(!password.equals(passwordConfirm)){
+
+//                    ------------------ OUTPUT SOME SORT OF ERROR MESSAGE ------------------------
+                    getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "The passwords don't match up!!", Toast.LENGTH_SHORT).show());
+                    return;
+                }
+
+//                ---------------------------- MIGHT REPLACE WITH USERNAME? -----------------------------------
+                FutureTask<RegisterRequest.RegisterRequestResult> register = new FutureTask<>(new RegisterRequest("", firstName, lastName, email, password, phoneNumber));
                 ExecutorService exec = Executors.newSingleThreadExecutor();
-                exec.submit(login);
+                exec.submit(register);
                 try {
-                    LoginRequest.LoginRequestResult result = login.get();
-                    if (!result.isLoggedIn) {
-                        getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Login Error: " + result.error, Toast.LENGTH_SHORT).show());
+                    RegisterRequest.RegisterRequestResult result = register.get();
+                    if (!result.isRegistered) {
+                        getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Register Error: " + result.error, Toast.LENGTH_SHORT).show());
                     }
 
                     // Switch activity no matter what in case login system doesn't work.
