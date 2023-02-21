@@ -227,6 +227,6 @@
         android:src="@drawable/go_back_arrow_draw"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/teal_200" />
+        app:tint="@color/aquamarine" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
