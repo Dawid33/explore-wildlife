@@ -26,7 +26,7 @@ def get_posts():
 
 
 @bp.route("/post", methods=['GET'])
-def get_post():
+def get_single_post():
     id = str(request.args.get('id'))
     conn = db.get_db()
     cur = conn.cursor()
