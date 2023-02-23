@@ -1,20 +1,16 @@
 package com.android.api;
 
+import com.android.Global;
+
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Callable;
 
 public class LoginRequest implements Callable<LoginRequest.LoginRequestResult> {
-    public static final String loginApiUrl = "https://explorewildlife.net/api/login";
+    public static final String loginApiUrl = Global.baseUrl + "/api/login";
     String email, password;
 
     public class LoginRequestResult {
@@ -52,7 +48,7 @@ public class LoginRequest implements Callable<LoginRequest.LoginRequestResult> {
             // Open a stream to write data to the request body
             OutputStreamWriter writer = new OutputStreamWriter(urlConnection.getOutputStream());
             // Write the multipart form to the body of the request
-            writer.write(form.toString());
+//            writer.write(form.buildForm());
             writer.close();
             urlConnection.connect();
 

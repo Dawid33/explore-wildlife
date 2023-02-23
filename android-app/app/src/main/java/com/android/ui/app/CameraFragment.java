@@ -146,7 +146,7 @@ public class CameraFragment extends Fragment {
     // This method will take the picture and save it to external storage.
     public void takePicture(ImageCapture imageCapture) {
         // This is the file where the image will be saved and it's name.
-        final File file = new File(getActivity().getExternalFilesDir(null), System.currentTimeMillis() + ".jpg");
+        final File file = new File(getActivity().getExternalFilesDir(null), System.currentTimeMillis() + ".jpeg");
 
         // This is the output file options.
         ImageCapture.OutputFileOptions outputFileOptions = new ImageCapture.OutputFileOptions.Builder(file).build();

@@ -1,4 +1,5 @@
 from flask import Flask
+import psycopg2.extras
 import multiprocessing
 from src import images, login, posts
 import gunicorn.app.base
@@ -12,6 +13,8 @@ app.register_blueprint(images.bp)
 app.wsgi_app = ProxyFix(
     app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
 )
+
+psycopg2.extras.register_uuid()
 
 
 @app.route("/health_check")

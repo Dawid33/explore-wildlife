@@ -1,7 +1,13 @@
 package com.android.ui.app;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,17 +20,76 @@ import android.widget.Toast;
 import com.android.api.GetImageRequest;
 import com.android.api.GetPostsRequest;
 import com.android.api.GetPostsRequest.GetPostsRequestResult;
+import com.android.api.UploadImageRequest;
 import com.android.databinding.FragmentPostsBinding;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.FutureTarget;
+import com.bumptech.glide.request.target.Target;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
 public class PostsFragment extends Fragment {
     private FragmentPostsBinding binding;
+
+    public static final int PICK_IMAGE = 1;
+
+    ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+        new ActivityResultCallback<Uri>() {
+            @Override
+            public void onActivityResult(Uri uri) {
+                System.out.println(uri.toString());
+
+//                Glide.with(context
+//                        .load(url)
+//                        .into(new CustomTarget<Drawable>() {
+//                            @Override
+//                            public void onResourceReady(Drawable resource, Transition<Drawable> transition) {
+//                                // Do something with the Drawable here.
+//                            }
+//
+//                            @Override
+//                            public void onLoadCleared(@Nullable Drawable placeholder) {
+//                                // Remove the Drawable provided in onResourceReady from any Views and ensure
+//                                // no references to it remain.
+//                            }
+//                        });
+                FutureTarget<Bitmap> futureTarget =
+                        Glide.with(getContext())
+                                .asBitmap()
+                                .load(uri)
+                                .submit();
+
+                try {
+                    ExecutorService exec = Executors.newSingleThreadExecutor();
+                    FutureTask<Bitmap> getImage = new FutureTask<>(futureTarget::get);
+                    exec.submit(getImage);
+                    Bitmap image = getImage.get();
+
+                    FutureTask<UploadImageRequest.UploadImageRequestResult> getPosts= new FutureTask<>(new UploadImageRequest(image, getActivity().getExternalFilesDir(null)));
+                    exec.submit(getPosts);
+                    UploadImageRequest.UploadImageRequestResult result = getPosts.get();
+
+                    if (result.requestSucceeded) {
+                        getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Success!", Toast.LENGTH_SHORT).show());
+                    } else {
+                        getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Error uploading image", Toast.LENGTH_SHORT).show());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+    });
 
     @Override
     public View onCreateView(
@@ -49,19 +114,6 @@ public class PostsFragment extends Fragment {
                 try {
                     GetPostsRequestResult result = getPosts.get();
                     if (result.requestSucceeded) {
-//                        for (int i = 0; i < result.posts.length(); i++) {
-//                            try {
-//                                JSONArray images = ((JSONObject) result.posts.get(i)).getJSONArray("images");
-//                                GetImageRequest.GetImageRequestResult[] api_results = new GetImageRequest.GetImageRequestResult[images.length()];
-//                                for (int j = 0; j < images.length(); j++) {
-//                                    FutureTask<GetImageRequest.GetImageRequestResult> getImage = new FutureTask<>(new GetImageRequest((String) images.get(i)));
-//                                    exec.submit(getImage);
-//                                    api_results[i] = getImage.get();
-//                                    System.out.println(api_results[i]);
-//                                }
-//                            } catch (Exception ignored) {}
-//                        }
-
                         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                         binding.recyclerView.setAdapter(new PostsAdapter(result.posts));
                     } else {
@@ -70,6 +122,13 @@ public class PostsFragment extends Fragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+        });
+
+        binding.uploadImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mGetContent.launch("image/*");
             }
         });
     }

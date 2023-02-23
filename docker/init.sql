@@ -41,8 +41,8 @@ CREATE TABLE app.images (
 );
 
 CREATE TABLE app.post_images (
-	post_id uuid NOT NULL,
-	image_id uuid NOT NULL
+	image_id uuid NOT NULL,
+	post_id uuid NOT NULL
 );
 
 -- TODO: Test this whether it actually speeds up queries.
@@ -54,6 +54,7 @@ test_id uuid := uuid_generate_v4();
 image_id uuid := uuid_generate_v4();
 post_id uuid := uuid_generate_v4();
 BEGIN
+    INSERT INTO app.users (display_name, email, password) VALUES ('default', 'default@example.com', 'default');
     INSERT INTO app.users (display_name, email, password) VALUES ('John Doe test', 'jdoe@example.com', 'jdoe');
     INSERT INTO app.users (user_id, display_name, email, password) VALUES (test_id, 'test', 'test@example.com', 'test');
 
@@ -61,7 +62,7 @@ BEGIN
     INSERT INTO app.posts (content, created_by, has_images) VALUES ('Just text post', test_id, false);
     INSERT INTO app.posts (content, created_by, has_images) VALUES ('This is another post', test_id, false);
 
-    INSERT INTO app.images (image_id, owner, name, image_path) VALUES (image_id, test_id, 'Test Image', 'test.jpeg');
+    INSERT INTO app.images (image_id, owner, name, image_path) VALUES (image_id, test_id, 'Test Image', 'images/test.jpeg');
     INSERT INTO app.post_images (post_id, image_id) VALUES (post_id, image_id);
 END $$;
 
