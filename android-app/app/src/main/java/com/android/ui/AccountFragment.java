@@ -43,20 +43,18 @@ public class AccountFragment extends Fragment {
         String email = "TestEmail";
         String phoneNumber = "TestNumber";
 
-        FutureTask<AccountRetrievalRequest.AccountRetrievalRequestResult> account = new FutureTask<>(new AccountRetrievalRequest(email, password));
+        FutureTask<AccountRetrievalRequest.AccountRetrievalRequestResult> account = new FutureTask<>(new AccountRetrievalRequest());
         ExecutorService exec = Executors.newSingleThreadExecutor();
         exec.submit(account);
 
         try {
             AccountRetrievalRequest.AccountRetrievalRequestResult result = account.get();
-            if (!result.isLoggedIn) {
-                getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Login Error: " + result.error, Toast.LENGTH_SHORT).show());
-            }
 
-            // Switch activity no matter what in case login system doesn't work.
-            LoginAndRegisterActivity currentActivity = (LoginAndRegisterActivity)getActivity();
-            Intent app = new Intent(currentActivity, AppActivity.class);
-            startActivity(app);
+// Set the values to the appropriate elements in the JSON
+            username = result.account.get(0).toString();
+            email = result.account.get(0).toString();
+            phoneNumber = result.account.get(0).toString();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -69,8 +67,6 @@ public class AccountFragment extends Fragment {
                 startActivity(loginIntent);
             }
         });
-
-        String testString = "Hi";
 
         binding.accountUsername.setText(username);
 

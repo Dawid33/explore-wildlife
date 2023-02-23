@@ -13,17 +13,26 @@ import java.util.concurrent.Callable;
 public class AccountRetrievalRequest implements Callable<AccountRetrievalRequest.AccountRetrievalRequestResult> {
 
 //    NOT TESTED This will point to a link of a specific user
-    public static String userID;
-    public static final String userApiUrl = "https://explorewildlife.net/api/users/" + userID;
+    private String userID = "GLOBAL_VAR?";
+    public String userApiUrl = "https://explorewildlife.net/api/users/" + userID;
 
     public class AccountRetrievalRequestResult {
-        public JSONArray posts;
+        public JSONArray account;
         public boolean requestSucceeded;
 
-        public AccountRetrievalRequestResult(boolean requestSucceeded, JSONArray posts) {
+        public AccountRetrievalRequestResult(boolean requestSucceeded, JSONArray account) {
             this.requestSucceeded = requestSucceeded;
-            this.posts = posts;
+            this.account = account;
         }
+    }
+
+//    This can probably set the user ID to some sort of global value?
+    public AccountRetrievalRequest(){
+//        this.userID = "";
+    }
+
+    public AccountRetrievalRequest(String userID) {
+        this.userID = userID;
     }
 
     @Override
