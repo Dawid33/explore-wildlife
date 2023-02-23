@@ -65,7 +65,7 @@
             android:layout_height="41dp" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/login"
