@@ -172,7 +172,7 @@
 
         <Button
             android:id="@+id/forgot"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="25dp"
             android:background="#00FFFFFF"
             android:paddingBottom="0dp"
