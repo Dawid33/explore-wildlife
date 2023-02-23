@@ -1,10 +1,21 @@
 package com.android.api;
 
+import android.app.Activity;
+import android.graphics.Bitmap;
+import android.net.Uri;
+
 import androidx.annotation.NonNull;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -17,15 +28,15 @@ public class MultipartFormBody {
     public class Value {
         public Value(String str) {
             this.str = str;
-            this.path = null;
+            this.image= null;
         }
 
-        public Value(Path path) {
+        public Value(Bitmap image) {
             this.str = "";
-            this.path = null;
+            this.image = image;
         }
         public String str;
-        public Path path;
+        public Bitmap image;
     }
 
     public MultipartFormBody(String boundary) {
@@ -37,16 +48,16 @@ public class MultipartFormBody {
         this.keys.put(key, new Value(value));
     }
 
-    public void addFile(String key, Path value) {
+    public void addFile(String key, Bitmap value) {
         this.keys.put(key, new Value(value));
     }
 
     @NonNull
-    public String toString() {
+    public String buildForm(File path) {
         StringBuilder b = new StringBuilder();
 
         for(Entry<String, Value> e : this.keys.entrySet()) {
-            if (e.getValue().path == null) {
+            if (e.getValue().image == null) {
                 b.append("--").append(this.boundary).append(LINE_FEED);
                 b.append("Content-Disposition: form-data; name=\"").append(e.getKey()).append("\"") .append(LINE_FEED);
                 b.append("Content-Type: text/plain;").append( LINE_FEED);
@@ -54,16 +65,38 @@ public class MultipartFormBody {
                 b.append(e.getValue().str).append(LINE_FEED);
             } else {
                 b.append("--").append(this.boundary).append(LINE_FEED);
-                b.append("Content-Disposition: form-data; name=\"file\"; filename=\"").append(e.getValue().path.getFileName()).append("\"").append(LINE_FEED);
+                b.append("Content-Disposition: form-data; name=\"").append(e.getKey()).append("\"; filename=\"").append("test").append("\"").append(LINE_FEED);
                 b.append("Content-Type: application/octet-stream").append(LINE_FEED);// + URLConnection.guessContentTypeFromName(binaryFile.getName())).append(CRLF);
                 b.append(LINE_FEED);
+                try (ByteArrayOutputStream s = new ByteArrayOutputStream()) {
+                    e.getValue().image.compress(Bitmap.CompressFormat.PNG, 50, s);
+                    byte[] raw = s.toByteArray();
+                    File f = new File(path + "test.png");
+                    FileOutputStream sf = new FileOutputStream(f);
 
-                try {
-                    byte[] image = Files.readAllBytes(e.getValue().path);
-                    b.append(Arrays.toString(image)).append(LINE_FEED);
+                    sf.write(raw);
+                    b.append(new String(raw)).append(LINE_FEED);
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
+
+//                InputStream inputStream = null;
+//                try {
+
+//                    inputStream = activity.getContentResolver().openInputStream(e.getValue());
+//                    assert inputStream != null;
+//
+//                    // read file content
+//                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+//                    String mLine;
+//                    StringBuilder stringBuilder = new StringBuilder();
+//                    while ((mLine = bufferedReader.readLine()) != null) {
+//                        stringBuilder.append(mLine);
+//                    }
+//                } catch (IOException ex) {
+//                    ex.printStackTrace();
+//                    b.append("lol").append(LINE_FEED);
+//                }
             }
         }
         b.append("--").append(boundary).append("--").append(LINE_FEED);

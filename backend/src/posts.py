@@ -35,3 +35,5 @@ def get_single_post():
     output = dict(post_id=result[0], content=result[1], created_by=result[2], created_at=result[3])
     conn.close()
     return output
+
+
