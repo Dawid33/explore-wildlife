@@ -48,8 +48,7 @@ public class RegisterFragment extends Fragment {
         binding.signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String firstName = String.valueOf(binding.firstNameInput.getText());
-                String lastName = String.valueOf(binding.lastNameInput.getText());
+                String username = String.valueOf(binding.usernameInput.getText());
                 String email = String.valueOf(binding.emailInput.getText());
                 String password = String.valueOf(binding.passwordInput.getText());
                 String passwordConfirm = String.valueOf(binding.passwordConfirmInput.getText());
@@ -62,8 +61,7 @@ public class RegisterFragment extends Fragment {
                     return;
                 }
 
-//                ---------------------------- MIGHT REPLACE WITH USERNAME? -----------------------------------
-                FutureTask<RegisterRequest.RegisterRequestResult> register = new FutureTask<>(new RegisterRequest("", firstName, lastName, email, password, phoneNumber));
+                FutureTask<RegisterRequest.RegisterRequestResult> register = new FutureTask<>(new RegisterRequest( username, email, password, phoneNumber));
                 ExecutorService exec = Executors.newSingleThreadExecutor();
                 exec.submit(register);
                 try {

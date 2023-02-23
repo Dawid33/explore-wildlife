@@ -50,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:hint="@string/first_name"
+            android:hint="@string/username"
             android:textColorHint="@color/myrtle_green"
             app:boxStrokeColor="#000"
             app:boxStrokeWidth="0dp"
@@ -62,7 +62,7 @@
             app:startIconTint="@color/myrtle_green">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/firstNameInput"
+                android:id="@+id/usernameInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_round"
@@ -75,38 +75,6 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="15dp" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:hint="@string/last_name"
-            android:textColorHint="@color/myrtle_green"
-            app:boxStrokeColor="#000"
-            app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp"
-            app:hintAnimationEnabled="true"
-            app:hintEnabled="true"
-            app:hintTextColor="@color/myrtle_green"
-            app:startIconDrawable="@drawable/id_card_draw"
-            app:startIconTint="@color/myrtle_green">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/lastNameInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/edit_round"
-                android:backgroundTint="#040909"
-                android:inputType="textPersonName"
-                android:textColor="@color/columbia_blue"
-                android:textColorHint="@color/myrtle_green"
-                android:textCursorDrawable="@drawable/color_cursor"
-                android:textSize="11sp" />
-
-        </com.google.android.material.textfield.TextInputLayout>
         <Space
             android:layout_width="match_parent"
             android:layout_height="15dp" />

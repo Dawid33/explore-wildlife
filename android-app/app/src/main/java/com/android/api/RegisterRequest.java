@@ -15,7 +15,7 @@ import java.util.concurrent.Callable;
 
 public class RegisterRequest implements Callable<RegisterRequest.RegisterRequestResult> {
     private static final String registerApiUrl = "https://explorewildlife.net/api/register";
-    String userName, firstName, lastName, email, password, phoneNumber;
+    String username, email, password, phoneNumber;
 
     public class RegisterRequestResult {
         public String error;
@@ -27,10 +27,8 @@ public class RegisterRequest implements Callable<RegisterRequest.RegisterRequest
         }
     }
 
-    public RegisterRequest(String userName, String firstName, String lastName, String email, String password, String phoneNumber) {
-        this.userName = userName;
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public RegisterRequest(String username, String email, String password, String phoneNumber) {
+        this.username = username;
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
@@ -45,15 +43,10 @@ public class RegisterRequest implements Callable<RegisterRequest.RegisterRequest
         MultipartFormBody form = new MultipartFormBody(boundary);
         form.addField("email", this.email);
         form.addField("password", this.password);
+        form.addField("display_name", this.username);
 
-//        --------- TEMPORARY SOLUTION - DISPLAY NAME = FIRST + LAST NAME
-
-        String displayName = this.firstName + '_' + this.lastName;
-
-        form.addField("display_name", displayName);
-//        form.addField("first_name", this.firstName);
-//        form.addField("last_name", this.lastName);
-//        form.addField("phone_number", this.phoneNumber);
+        // Adding the phone number filed.
+        // form.addField("phone_number", this.phoneNumber);
 
         try {
             URL url = new URL(registerApiUrl);
