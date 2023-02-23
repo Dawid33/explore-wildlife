@@ -62,7 +62,7 @@ BEGIN
     INSERT INTO app.posts (content, created_by, has_images) VALUES ('Just text post', test_id, false);
     INSERT INTO app.posts (content, created_by, has_images) VALUES ('This is another post', test_id, false);
 
-    INSERT INTO app.images (image_id, owner, name, image_path) VALUES (image_id, test_id, 'Test Image', 'test.jpeg');
+    INSERT INTO app.images (image_id, owner, name, image_path) VALUES (image_id, test_id, 'Test Image', 'images/test.jpeg');
     INSERT INTO app.post_images (post_id, image_id) VALUES (post_id, image_id);
 END $$;
 

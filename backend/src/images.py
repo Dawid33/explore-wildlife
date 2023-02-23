@@ -25,9 +25,9 @@ def download_image():
         cur.execute("SELECT image_id, image_path FROM app.images WHERE image_id = %s;", [id])
         result = cur.fetchone()
         conn.close()
-
+        print(result[1])
         if result is not None:
-            return send_file(f"images/{result[1]}", mimetype='image/jpeg')
+            return send_file(result[1], mimetype='image/png')
         else:
             return make_response("", 404)
     except:
@@ -61,8 +61,8 @@ def upload_image():
         name = cur.fetchone()[0]
         conn.commit()
 
-        # image = request.files['image']
-        # image.save(image_path)
+        image = request.files['image']
+        image.save(image_path)
     except Exception as e:
         response['error'] = "Internal Error: DB "
         print(e)
