@@ -43,7 +43,7 @@
                 android:layout_weight="1" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/account_username"
                 android:layout_width="140sp"
                 android:layout_height="match_parent"
                 android:gravity="center|left"
@@ -58,6 +58,7 @@
             android:layout_height="25dp" />
 
         <TextView
+            android:id="@+id/account_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/email"
@@ -71,7 +72,7 @@
             android:layout_height="15sp" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/account_phone_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/phone_call_draw"
@@ -85,7 +86,7 @@
             android:layout_height="30sp" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button2"
+            android:id="@+id/account_info_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edit_round"
@@ -104,7 +105,7 @@
             android:layout_height="15sp" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button3"
+            android:id="@+id/account_password_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edit_round"
@@ -124,6 +125,7 @@
             android:layout_height="15sp" />
 
         <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/account_notifications_toggle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/edit_round"
@@ -131,11 +133,11 @@
             android:drawableLeft="@drawable/bell_draw"
             android:drawablePadding="15sp"
             android:drawableTint="#FFFFFF"
+
             android:paddingLeft="10sp"
-
             android:text="Notifications"
-            android:textColor="@color/myrtle_green"
 
+            android:textColor="@color/myrtle_green"
             app:thumbTint="@color/aquamarine"
             app:trackTint="@color/myrtle_green" />
 
