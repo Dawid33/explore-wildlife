@@ -21,34 +21,46 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     public static final String imageApiUrl = "https://explorewildlife.net/api/image?id=";
     JSONArray data;
 
-//    ======================== TEST VARIABLES =============================
+    //    ======================== TEST VARIABLES =============================
     String test1;
 
 //    ======================== TEST VARIABLES =============================
 
 
+    /**
+     * Define all the XML elements in this class for them to be referenced later. Using the view object, you can get the different sub elements
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView textView;
+        public TextView testText;
         public ImageView imageView;
-        public View view;
+//        public View view;
 
         public ViewHolder(View view) {
             super(view);
             // Define click listener for the ViewHolder's View
-            this.view = view;
-            textView = view.findViewById(R.id.textView);
+//            this.view = view;
+//            textView = view.findViewById(R.id.textView);
+            testText = view.findViewById(R.id.testText);
             imageView = view.findViewById(R.id.imageView);
         }
     }
 
     public PostsAdapter(JSONArray data) {
-       this.data = data;
+        this.data = data;
     }
 
-    public PostsAdapter(String test1){
+    public PostsAdapter(String test1) {
         this.test1 = test1;
     }
 
+    /**
+     * This is called whenever ViewHolder is created. This ViewHolder is the one extended from the RecyclerView ViewHolder
+     *
+     * @param viewGroup The ViewGroup into which the new View will be added after it is bound to
+     *                  an adapter position.
+     * @param viewType  The view type of the new View.
+     * @return
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
@@ -74,15 +86,22 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 //        }
 //    }
 
+    /**
+     * Called after onCreateViewHolder is called. Binds data to the View object
+     *
+     * @param viewHolder The ViewHolder which should be updated to represent the contents of the
+     *                   item at the given position in the data set.
+     * @param position   The position of the item within the adapter's data set.
+     */
     @Override
     public void onBindViewHolder(@NonNull PostsAdapter.ViewHolder viewHolder, int position) {
-        try {
-            viewHolder.textView.setText(test1);
-        } catch (Exception ignored) {}
+        viewHolder.testText.setText(test1);
     }
 
     @Override
     public int getItemCount() {
-        return data.length();
+//        return data.length();
+        return 0;
     }
+
 }
