@@ -17,6 +17,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <Button
+        android:id="@+id/locationButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#00000000"
+        android:drawableLeft="@drawable/location_pin_draw"
+        android:drawableTint="@color/aquamarine"
+        android:text="LOCATION"
+        android:textColor="@color/aquamarine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeColor="#00000000" />
+
     <Button
         android:id="@+id/goToLogin"
         android:layout_width="wrap_content"
