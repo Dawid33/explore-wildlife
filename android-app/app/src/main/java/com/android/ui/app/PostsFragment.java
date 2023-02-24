@@ -108,13 +108,15 @@ public class PostsFragment extends Fragment {
         binding.getLatestPosts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FutureTask<GetPostsRequestResult> getPosts= new FutureTask<>(new GetPostsRequest());
+                FutureTask<GetPostsRequestResult> getPosts = new FutureTask<>(new GetPostsRequest());
                 ExecutorService exec = Executors.newSingleThreadExecutor();
                 exec.submit(getPosts);
                 try {
                     GetPostsRequestResult result = getPosts.get();
                     if (result.requestSucceeded) {
                         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+//                        Adding adapter
                         binding.recyclerView.setAdapter(new PostsAdapter(result.posts));
                     } else {
                         getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Error getting latest posts", Toast.LENGTH_SHORT).show());
@@ -129,6 +131,14 @@ public class PostsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 mGetContent.launch("image/*");
+        binding.createPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+//                        Adding adapter
+                binding.recyclerView.setAdapter(new PostsAdapter("hi"));
             }
         });
     }

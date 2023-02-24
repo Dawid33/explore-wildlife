@@ -21,6 +21,12 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     public static final String imageApiUrl = "https://explorewildlife.net/api/image?id=";
     JSONArray data;
 
+//    ======================== TEST VARIABLES =============================
+    String test1;
+
+//    ======================== TEST VARIABLES =============================
+
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
         public ImageView imageView;
@@ -39,6 +45,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
        this.data = data;
     }
 
+    public PostsAdapter(String test1){
+        this.test1 = test1;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
@@ -48,20 +58,27 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         return new ViewHolder(view);
     }
 
+//    @Override
+//    public void onBindViewHolder(@NonNull PostsAdapter.ViewHolder viewHolder, int position) {
+//        try {
+//            viewHolder.textView.setText(data.get(position).toString());
+//            try {
+//                JSONArray images = ((JSONObject) data.get(position)).getJSONArray("images");
+//                // Only get the first image for simplicity, there might be more in the array
+//                Glide.with(viewHolder.view)
+//                        .load(imageApiUrl + images.get(0))
+//                        .into(viewHolder.imageView);
+//            } catch (Exception ignored) {}
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
     @Override
     public void onBindViewHolder(@NonNull PostsAdapter.ViewHolder viewHolder, int position) {
         try {
-            viewHolder.textView.setText(data.get(position).toString());
-            try {
-                JSONArray images = ((JSONObject) data.get(position)).getJSONArray("images");
-                // Only get the first image for simplicity, there might be more in the array
-                Glide.with(viewHolder.view)
-                        .load(imageApiUrl + images.get(0))
-                        .into(viewHolder.imageView);
-            } catch (Exception ignored) {}
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            viewHolder.textView.setText(test1);
+        } catch (Exception ignored) {}
     }
 
     @Override
