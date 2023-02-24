@@ -17,12 +17,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
     public static final String imageApiUrl = "https://explorewildlife.net/api/image?id=";
     JSONArray data;
 
     //    ======================== TEST VARIABLES =============================
     String test1;
+    List<String> texts;
 
 //    ======================== TEST VARIABLES =============================
 
@@ -52,6 +55,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     public PostsAdapter(String test1) {
         this.test1 = test1;
     }
+
+    public PostsAdapter(List<String> texts) {
+        this.texts = texts;
+    }
+
 
     /**
      * This is called whenever ViewHolder is created. This ViewHolder is the one extended from the RecyclerView ViewHolder

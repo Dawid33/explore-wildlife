@@ -11,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,11 +36,25 @@ import java.io.FileOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.concurrent.ExecutionException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
 public class PostsFragment extends Fragment {
+
+//    ================= TEST CODE ================
+
+//    Creating the recycler view adapter
+    private RecyclerView.Adapter adapter;
+
+//    This list will be everything stored in the recycler view
+    private List<String> list;
+
+//    ================= TEST CODE ================
+
+
     private FragmentPostsBinding binding;
 
     public static final int PICK_IMAGE = 1;
@@ -97,13 +112,21 @@ public class PostsFragment extends Fragment {
             Bundle savedInstanceState
     ) {
 
+        list = new ArrayList<>();
+
+        list.add("Hi");
+
         binding = FragmentPostsBinding.inflate(inflater, container, false);
         return binding.getRoot();
-
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
+        binding.recyclerView.setHasFixedSize(true);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recyclerView.setAdapter(new PostsAdapter(list));
 
         binding.getLatestPosts.setOnClickListener(new View.OnClickListener() {
             @Override
