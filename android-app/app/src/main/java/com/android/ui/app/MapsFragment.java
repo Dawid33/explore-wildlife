@@ -5,16 +5,43 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 
 import com.android.AppActivity;
 import com.android.LoginAndRegisterActivity;
 import com.android.databinding.FragmentHomeBinding;
+import com.android.R;
 import com.android.databinding.FragmentMapsBinding;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class MapsFragment extends Fragment {
+
+    //arbitrary values
+    static final int MAX_POSTS = 30;
+    static final int MAX_RANGE = 10;
+    static final float SEARCH_FAILED_ALPHA = 0.1f;
+    static final float SEARCH_SUCCESS_ALPHA = 1f;
+
+    private GoogleMap map;
+    private SearchView searchView;
+    private BitmapDescriptor defaultIcon;
+    private List<Marker> markers;
 
     private FragmentMapsBinding binding;
 
@@ -32,11 +59,83 @@ public class MapsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.goToLogin.setOnClickListener(view1 -> {
-            AppActivity app = (AppActivity) getActivity();
-            Intent loginIntent = new Intent(app, LoginAndRegisterActivity.class);
-            startActivity(loginIntent);
+        searchView = (SearchView) getView().findViewById(R.id.idSearchView);
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
+                .findFragmentById(R.id.map);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) { return false; }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                applySearchFilter(searchView.getQuery().toString());
+                return false;
+            }
         });
+        defaultIcon = BitmapDescriptorFactory.fromResource(R.drawable.marker_icon);
+        mapFragment.getMapAsync(googleMap -> {
+            map = googleMap;
+            map.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.map_style));
+            populateMap();
+        });
+
+    }
+
+    public void populateMap() {
+        if (markers == null) {
+            markers = new ArrayList<Marker>();
+        }
+        LatLng centre = map.getCameraPosition().target;
+        //TODO:
+        //request to server, returns with JSON data about each marker and its info
+        //data is to be processed, stored in an array of objects with relevant data
+        //json file and processing based on existing post processing
+        /*
+        markerData[] markers;
+        foreach (markerData marker in markers) {
+            placeMarker(marker.name, marker.info, marker.latitude, marker.longitude, );
+        }
+        */
+    }
+
+    public void placeMarker(String name, String info, double latitude, double longitude) {
+        placeMarker(name, info, latitude, longitude, null);
+    }
+
+    public void placeMarker(String name, String info, double latitude, double longitude, BitmapDescriptor icon) {
+        markers.add(map.addMarker(new MarkerOptions()
+                .position(new LatLng(latitude, longitude))
+                .title(name)
+                .snippet(info)
+                .icon(icon == null ? defaultIcon : icon)
+        ));
+    }
+
+    public void applySearchFilter(String filter) {
+        //lowercase + removes leading and trailing whitespace
+        filter = filter.toLowerCase(Locale.ROOT).trim();
+        if (markers.size() > 0) {
+            for (int i = 0; i < markers.size(); i++) {
+                //if not contained in a marker's title or body
+                if (!markers.get(i).getTitle().toLowerCase().contains(filter)
+                        && !markers.get(i).getSnippet().toLowerCase().contains(filter)) {
+                    markers.get(i).setAlpha(SEARCH_FAILED_ALPHA);
+                }
+                else {
+                    markers.get(i).setAlpha(SEARCH_SUCCESS_ALPHA);
+                }
+            }
+        }
+    }
+
+    public void refreshMap(View view) {
+        if (markers.size() > 0) {
+            for (int i = markers.size() - 1; i >= 0; i--) {
+                markers.get(i).remove();
+                markers.remove(i);
+            }
+        }
+        populateMap();
     }
 
     @Override

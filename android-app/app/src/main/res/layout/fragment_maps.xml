@@ -4,26 +4,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.app.HomeFragment">
+    android:background="@color/rich_black"
+    tools:context=".ui.app.MapsFragment">
 
-    <TextView
-        android:id="@+id/textview_first"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Maps Fragment"
-        android:textColor="@color/myrtle_green"
-        app:layout_constraintBottom_toTopOf="@id/goToLogin"
-        app:layout_constraintEnd_toEndOf="parent"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <ImageButton
+        android:id="@+id/idRefresh"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:adjustViewBounds="true"
+        android:onClick="refreshMap"
+        android:scaleType="centerCrop"
+        android:src="@drawable/refresh_icon"
+        android:background="#BFBFBF"
+        android:contentDescription="Refresh"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/goToLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Go To Login"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/idSearchView"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:layout_alignLeft="@+id/idRefresh"
+        android:layout_margin="10dp"
+        android:layout_marginTop="96dp"
+        android:layout_marginEnd="116dp"
+        android:background="#BFBFBF"
+        android:elevation="5dp"
+        app:iconifiedByDefault="false"
+        app:layout_constraintStart_toStartOf="@id/idRefresh"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textview_first" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:queryHint="Search for wildlife" />
 </androidx.constraintlayout.widget.ConstraintLayout>
