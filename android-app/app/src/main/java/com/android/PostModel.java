@@ -9,8 +9,16 @@ public class PostModel {
 
 //    WILL PROBABLY NEED TO REPLACE THE TYPE FOR IMAGE AT ONE POINT, PERHAPS A REFERENCE TO WHERE IT IS STORED?
     private int image;
+    private int avatar;
 
-    public PostModel(String username, String time, int likes, int comments, int image) {
+    public PostModel(String username, String time, int likes, int comments) {
+        this.username = username;
+        this.time = time;
+        this.likes = likes;
+        this.comments = comments;
+        this.image = image;
+    }
+    public PostModel(String username, String time, int likes, int comments, int avatar, int image) {
         this.username = username;
         this.time = time;
         this.likes = likes;
@@ -22,19 +30,23 @@ public class PostModel {
         return username;
     }
 
-    public String getTime() {
+    public String getPostTime() {
         return time;
     }
 
-    public int getLikes() {
+    public int getPostLikes() {
         return likes;
     }
 
-    public int getComments() {
+    public int getPostComments() {
         return comments;
     }
 
-    public int getImage() {
+    public int getPostAvatar() {
+        return image;
+    }
+
+    public int getPostImage() {
         return image;
     }
 }

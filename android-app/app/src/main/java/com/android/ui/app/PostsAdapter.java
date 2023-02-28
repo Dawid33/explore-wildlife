@@ -79,12 +79,40 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    if(checkInterfaceAndPosition(itemView, postsRecyclerViewInterface)){
+                        postsRecyclerViewInterface.onItemClick(getAdapterPosition());
+                    }
 //                    SUPER AWESOME ONCLICK CODE GOES HERE
                 }
             });
 
         }
 
+        /**
+         * Before we attempt a click, check if the interface exists, as well as if the adapter position is fine.
+         * @param itemView
+         * @param postsRecyclerViewInterface
+         * @return
+         */
+        private boolean checkInterfaceAndPosition(@NonNull View itemView, PostsRecyclerViewInterface postsRecyclerViewInterface){
+            if(postsRecyclerViewInterface != null){
+                int pos = getAdapterPosition();
+
+                return pos != RecyclerView.NO_POSITION;
+            }
+            return false;
+        }
+
+//        private boolean checkInterfaceAndPosition(@NonNull View itemView, PostsRecyclerViewInterface postsRecyclerViewInterface){
+//            if(postsRecyclerViewInterface != null){
+//                int pos = getAdapterPosition();
+//
+//                if(pos != RecyclerView.NO_POSITION){
+//                    postsRecyclerViewInterface.onItemClick(pos);
+//                }
+//            }
+//        }
     }
 
     public PostsAdapter(JSONArray data) {
@@ -144,16 +172,12 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
      */
     @Override
     public void onBindViewHolder(@NonNull PostsAdapter.ViewHolder viewHolder, int position) {
-        viewHolder.testText.setText(test1);
-
-        String testUsername = "nURdy", testTime = "1d ago", testLikes = "4,200", testComments = "42";
-
-        int testPostAvatar, testImage;
-
-        viewHolder.postUsername.setText(testUsername);
-        viewHolder.postTime.setText(testTime);
-        viewHolder.postLikes.setText(testLikes);
-        viewHolder.postComments.setText(testComments);
+//        viewHolder.testText.setText(test1);
+//
+        viewHolder.postUsername.setText(postModelArrayList.get(position).getUsername());
+        viewHolder.postTime.setText(postModelArrayList.get(position).getPostTime());
+        viewHolder.postLikes.setText(Integer.toString(postModelArrayList.get(position).getPostLikes()));
+        viewHolder.postComments.setText(Integer.toString(postModelArrayList.get(position).getPostComments()));
     }
 
     @Override
