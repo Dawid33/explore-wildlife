@@ -18,6 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.android.PostModel;
+import com.android.PostsRecyclerViewInterface;
 import com.android.api.GetImageRequest;
 import com.android.api.GetPostsRequest;
 import com.android.api.GetPostsRequest.GetPostsRequestResult;
@@ -42,7 +44,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
-public class PostsFragment extends Fragment {
+public class PostsFragment extends Fragment implements PostsRecyclerViewInterface {
 
 //    ================= TEST CODE ================
 
@@ -52,7 +54,7 @@ public class PostsFragment extends Fragment {
     //    This list will be everything stored in the recycler view
     private List<String> list;
 
-    ArrayList<Po>
+    ArrayList<PostModel> postModelArrayList;
 
 //    ================= TEST CODE ================
 
@@ -128,7 +130,6 @@ public class PostsFragment extends Fragment {
 
         binding.recyclerView.setHasFixedSize(true);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.recyclerView.setAdapter(new PostsAdapter(list));
 
         binding.getLatestPosts.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,5 +174,10 @@ public class PostsFragment extends Fragment {
 //        super.onDestroyView();
 //        binding = null;
 //    }
+    }
+
+    @Override
+    public void onItemClick(int position) {
+
     }
 }

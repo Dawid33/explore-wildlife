@@ -1,6 +1,6 @@
 package com.android.ui.app;
 
-import android.media.Image;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,13 +10,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.PostModel;
+import com.android.PostsRecyclerViewInterface;
 import com.android.R;
-import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
@@ -27,6 +27,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     String test1;
     List<String> texts;
 
+    Context context;
+    private PostsRecyclerViewInterface postsRecyclerViewInterface;
+    ArrayList<PostModel> postModelArrayList;
+
 //    ======================== TEST VARIABLES =============================
 
 
@@ -36,6 +40,17 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView testText;
         public ImageView imageView;
+
+//      ============ TEST VARIABLES ===============
+
+        TextView postUsername, postTime, postLikes, postComments;
+        ImageView postAvatarImage;
+        ImageView postImage;
+
+
+//      ============ TEST VARIABLES ===============
+
+
 //        public View view;
 
         public ViewHolder(View view) {
@@ -43,9 +58,33 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             // Define click listener for the ViewHolder's View
 //            this.view = view;
 //            textView = view.findViewById(R.id.textView);
-            testText = view.findViewById(R.id.testText);
-            imageView = view.findViewById(R.id.imageView);
+            testText = view.findViewById(R.id.postUsername);
+            imageView = view.findViewById(R.id.postAvatarImage);
         }
+
+//        Attaching stuff from the layout file to this ViewHolder class
+        public ViewHolder(@NonNull View itemView, PostsRecyclerViewInterface postsRecyclerViewInterface) {
+            super(itemView);
+
+            postUsername = itemView.findViewById(R.id.postUsername);
+            postTime = itemView.findViewById(R.id.postTime);
+            postLikes = itemView.findViewById(R.id.postLikes);
+            postComments = itemView.findViewById(R.id.postComments);
+
+            postAvatarImage = itemView.findViewById(R.id.postAvatarImage);
+            postImage = itemView.findViewById(R.id.postImage);
+
+
+//            Setting onclick for each view
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+//                    SUPER AWESOME ONCLICK CODE GOES HERE
+                }
+            });
+
+        }
+
     }
 
     public PostsAdapter(JSONArray data) {
@@ -56,8 +95,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         this.test1 = test1;
     }
 
-    public PostsAdapter(List<String> texts) {
-        this.texts = texts;
+    public PostsAdapter(Context context, ArrayList<PostModel> postModelArrayList, PostsRecyclerViewInterface postsRecyclerViewInterface) {
+        this.context = context;
+        this.postModelArrayList = postModelArrayList;
+        this.postsRecyclerViewInterface = postsRecyclerViewInterface;
     }
 
 
@@ -75,7 +116,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         // Create a new view, which defines the UI of the list item
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.post_row_item, viewGroup, false);
-        return new ViewHolder(view);
+        return new PostsAdapter.ViewHolder(view, postsRecyclerViewInterface);
     }
 
 //    @Override
@@ -104,12 +145,23 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull PostsAdapter.ViewHolder viewHolder, int position) {
         viewHolder.testText.setText(test1);
+
+        String testUsername = "nURdy", testTime = "1d ago", testLikes = "4,200", testComments = "42";
+
+        int testPostAvatar, testImage;
+
+        viewHolder.postUsername.setText(testUsername);
+        viewHolder.postTime.setText(testTime);
+        viewHolder.postLikes.setText(testLikes);
+        viewHolder.postComments.setText(testComments);
     }
 
     @Override
     public int getItemCount() {
 //        return data.length();
-        return 0;
+//        return 0;
+        return postModelArrayList.size();
     }
+
 
 }
