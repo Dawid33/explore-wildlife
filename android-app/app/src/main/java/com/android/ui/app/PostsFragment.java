@@ -46,11 +46,13 @@ public class PostsFragment extends Fragment {
 
 //    ================= TEST CODE ================
 
-//    Creating the recycler view adapter
+    //    Creating the recycler view adapter
     private RecyclerView.Adapter adapter;
 
-//    This list will be everything stored in the recycler view
+    //    This list will be everything stored in the recycler view
     private List<String> list;
+
+    ArrayList<Po>
 
 //    ================= TEST CODE ================
 
@@ -60,10 +62,10 @@ public class PostsFragment extends Fragment {
     public static final int PICK_IMAGE = 1;
 
     ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
-        new ActivityResultCallback<Uri>() {
-            @Override
-            public void onActivityResult(Uri uri) {
-                System.out.println(uri.toString());
+            new ActivityResultCallback<Uri>() {
+                @Override
+                public void onActivityResult(Uri uri) {
+                    System.out.println(uri.toString());
 
 //                Glide.with(context
 //                        .load(url)
@@ -79,32 +81,32 @@ public class PostsFragment extends Fragment {
 //                                // no references to it remain.
 //                            }
 //                        });
-                FutureTarget<Bitmap> futureTarget =
-                        Glide.with(getContext())
-                                .asBitmap()
-                                .load(uri)
-                                .submit();
+                    FutureTarget<Bitmap> futureTarget =
+                            Glide.with(getContext())
+                                    .asBitmap()
+                                    .load(uri)
+                                    .submit();
 
-                try {
-                    ExecutorService exec = Executors.newSingleThreadExecutor();
-                    FutureTask<Bitmap> getImage = new FutureTask<>(futureTarget::get);
-                    exec.submit(getImage);
-                    Bitmap image = getImage.get();
+                    try {
+                        ExecutorService exec = Executors.newSingleThreadExecutor();
+                        FutureTask<Bitmap> getImage = new FutureTask<>(futureTarget::get);
+                        exec.submit(getImage);
+                        Bitmap image = getImage.get();
 
-                    FutureTask<UploadImageRequest.UploadImageRequestResult> getPosts= new FutureTask<>(new UploadImageRequest(image, getActivity().getExternalFilesDir(null)));
-                    exec.submit(getPosts);
-                    UploadImageRequest.UploadImageRequestResult result = getPosts.get();
+                        FutureTask<UploadImageRequest.UploadImageRequestResult> getPosts = new FutureTask<>(new UploadImageRequest(image, getActivity().getExternalFilesDir(null)));
+                        exec.submit(getPosts);
+                        UploadImageRequest.UploadImageRequestResult result = getPosts.get();
 
-                    if (result.requestSucceeded) {
-                        getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Success!", Toast.LENGTH_SHORT).show());
-                    } else {
-                        getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Error uploading image", Toast.LENGTH_SHORT).show());
+                        if (result.requestSucceeded) {
+                            getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Success!", Toast.LENGTH_SHORT).show());
+                        } else {
+                            getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Error uploading image", Toast.LENGTH_SHORT).show());
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
-            }
-    });
+            });
 
     @Override
     public View onCreateView(
@@ -150,25 +152,26 @@ public class PostsFragment extends Fragment {
             }
         });
 
-        binding.uploadImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mGetContent.launch("image/*");
-        binding.createPost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+//        binding.uploadImage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mGetContent.launch("image/*");
+//                binding.createPost.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//
+//                        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//
+////                        Adding adapter
+//                        binding.recyclerView.setAdapter(new PostsAdapter("hi"));
+//                    }
+//                });
+//            }
 
-                binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-//                        Adding adapter
-                binding.recyclerView.setAdapter(new PostsAdapter("hi"));
-            }
-        });
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+//    @Override
+//    public void onDestroyView() {
+//        super.onDestroyView();
+//        binding = null;
+//    }
     }
 }
