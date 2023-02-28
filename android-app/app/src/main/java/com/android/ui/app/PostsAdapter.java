@@ -178,6 +178,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         viewHolder.postTime.setText(postModelArrayList.get(position).getPostTime());
         viewHolder.postLikes.setText(Integer.toString(postModelArrayList.get(position).getPostLikes()));
         viewHolder.postComments.setText(Integer.toString(postModelArrayList.get(position).getPostComments()));
+        viewHolder.postAvatarImage.setImageResource(R.drawable.heart_draw);
+        viewHolder.postImage.setImageResource(R.drawable.heart_draw);
     }
 
     @Override

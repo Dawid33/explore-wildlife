@@ -3,11 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingBottom="30dp">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="#00FFFFFF">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -18,13 +20,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
                 android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/postAvatarImage"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    app:srcCompat="@drawable/button_bg"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     tools:srcCompat="@tools:sample/avatars" />
 
                 <LinearLayout
@@ -51,50 +53,73 @@
 
             </LinearLayout>
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="5dp" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:background="@drawable/edit_round">
+                android:background="@drawable/edit_round"
+                android:backgroundTint="#0C375A"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/postImage"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    tools:srcCompat="@tools:sample/avatars" />
+                    android:layout_height="500dp"
+                    android:background="@drawable/edit_round"
+                    android:backgroundTint="#0C375A">
 
-                <LinearLayout
+                    <ImageView
+                        android:id="@+id/postImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        tools:srcCompat="@tools:sample/avatars" />
+                </FrameLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:layout_marginBottom="10dp">
 
                     <TextView
                         android:id="@+id/postLikes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_marginStart="20dp"
                         android:drawableLeft="@drawable/heart_draw"
-                        android:text="123" />
+                        android:drawablePadding="5dp"
+                        android:text="123"
+                        android:textColor="@color/myrtle_green"
+                        app:drawableTint="@color/myrtle_green"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/postComments"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_marginStart="10dp"
                         android:drawableLeft="@drawable/comment_draw"
-                        android:text="123" />
+                        android:drawablePadding="5dp"
+                        android:text="123"
+                        android:textColor="@color/myrtle_green"
+                        app:drawableTint="@color/myrtle_green"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/postLikes"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/textView11"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="..." />
-                </LinearLayout>
+                        android:layout_marginEnd="30dp"
+                        android:gravity="center"
+                        android:text="..."
+                        android:textColor="@color/myrtle_green"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/postComments"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
             </LinearLayout>
 
         </LinearLayout>
