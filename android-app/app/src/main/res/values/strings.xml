@@ -24,4 +24,5 @@
     <string name="phone_number">PHONE NUMBER</string>
     <string name="back_to_login">Back to login</string>
     <string name="username">USERNAME</string>
+    <string name="location">LOCATION</string>
 </resources>

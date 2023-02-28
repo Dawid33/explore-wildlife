@@ -42,19 +42,25 @@
             app:menu="@menu/bottom_nav_items" />
     </FrameLayout>
 
-    <Button
+    <ImageButton
         android:id="@+id/goToAccountButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Account"
+        android:background="@drawable/useraccount"
+        android:layout_marginEnd="25dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/aquamarine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <ImageButton
         android:id="@+id/toggleNotificationsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Notifications"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/notifications_button_background"
+        android:backgroundTint="@color/aquamarine"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

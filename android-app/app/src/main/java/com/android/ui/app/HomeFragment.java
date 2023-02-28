@@ -58,7 +58,6 @@ public class HomeFragment extends Fragment {
                         try {
                             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                             cityName = addresses.get(0).getLocality();
-                            Toast.makeText(getActivity(), cityName, Toast.LENGTH_SHORT).show();
                             locationButton.setText(cityName);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -96,7 +95,6 @@ public class HomeFragment extends Fragment {
                             try {
                                 List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                                 cityName = addresses.get(0).getLocality();
-                                Toast.makeText(getActivity(), cityName, Toast.LENGTH_SHORT).show();
                                 locationButton.setText(cityName);
                             } catch (Exception e) {
                                 e.printStackTrace();
