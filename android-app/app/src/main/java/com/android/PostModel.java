@@ -5,24 +5,22 @@ package com.android;
  */
 public class PostModel {
     private String username, time;
-    private int likes, comments;
+    private int likes;
 
 //    WILL PROBABLY NEED TO REPLACE THE TYPE FOR IMAGE AT ONE POINT, PERHAPS A REFERENCE TO WHERE IT IS STORED?
     private int image;
     private int avatar;
 
-    public PostModel(String username, String time, int likes, int comments) {
+    public PostModel(String username, String time, int likes) {
         this.username = username;
         this.time = time;
         this.likes = likes;
-        this.comments = comments;
         this.image = image;
     }
-    public PostModel(String username, String time, int likes, int comments, int avatar, int image) {
+    public PostModel(String username, String time, int likes, int avatar, int image) {
         this.username = username;
         this.time = time;
         this.likes = likes;
-        this.comments = comments;
         this.image = image;
     }
 
@@ -36,10 +34,6 @@ public class PostModel {
 
     public int getPostLikes() {
         return likes;
-    }
-
-    public int getPostComments() {
-        return comments;
     }
 
     public int getPostAvatar() {

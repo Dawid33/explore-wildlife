@@ -188,13 +188,13 @@ public class PostsFragment extends Fragment implements PostsRecyclerViewInterfac
     }
 
     private void prepareTestPosts(){
-        String testUsername = "nURdy", testTime = "1d ago";
-        int testLikes = 4200, testComments = 42;
+        String testUsername = "testUser", testTime = "1d ago";
+        int testLikes = 4200;
 
         int testPostAvatar, testImage;
 
         for (int i = 0; i < 10; i++) {
-            postModelArrayList.add(new PostModel(testUsername, testTime, testLikes, testComments));
+            postModelArrayList.add(new PostModel(testUsername, testTime, testLikes));
         }
 
     }

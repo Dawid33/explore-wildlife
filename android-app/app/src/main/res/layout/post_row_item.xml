@@ -9,7 +9,8 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="#00FFFFFF">
+        app:cardBackgroundColor="#00FFFFFF"
+        app:cardElevation="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,14 +41,15 @@
                         android:id="@+id/postUsername"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="nuRdy"
+                        android:text="Username"
                         android:textColor="@color/aquamarine" />
 
                     <TextView
                         android:id="@+id/postTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="TextView" />
+                        android:text="3d ago"
+                        android:textColor="@color/aquamarine"/>
 
                 </LinearLayout>
 
@@ -57,14 +59,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/edit_round"
-                android:backgroundTint="#0C375A"
+                android:backgroundTint="@color/card_background"
                 android:orientation="vertical">
 
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="500dp"
                     android:background="@drawable/edit_round"
-                    android:backgroundTint="#0C375A">
+                    android:backgroundTint="@color/card_background">
 
                     <ImageView
                         android:id="@+id/postImage"
@@ -85,39 +87,26 @@
                         android:layout_marginStart="20dp"
                         android:drawableLeft="@drawable/heart_draw"
                         android:drawablePadding="5dp"
-                        android:text="123"
-                        android:textColor="@color/myrtle_green"
-                        app:drawableTint="@color/myrtle_green"
+                        android:text="69,420"
+                        android:textColor="@color/aquamarine"
+                        app:drawableTint="@color/aquamarine"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:id="@+id/postComments"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:drawableLeft="@drawable/comment_draw"
-                        android:drawablePadding="5dp"
-                        android:text="123"
-                        android:textColor="@color/myrtle_green"
-                        app:drawableTint="@color/myrtle_green"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/postLikes"
-                        app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:id="@+id/textView11"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="30dp"
-                        android:gravity="center"
-                        android:text="..."
-                        android:textColor="@color/myrtle_green"
-                        android:textSize="24sp"
+                    <Button
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:id="@+id/moreInfoPostButton"
+                        android:layout_width="60dp"
+                        android:layout_height="45dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="···"
+                        android:textColor="@color/aquamarine"
+                        android:textSize="23sp"
                         android:textStyle="bold"
-                        app:layout_constraintBaseline_toBaselineOf="@+id/postComments"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>

@@ -43,7 +43,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
 //      ============ TEST VARIABLES ===============
 
-        TextView postUsername, postTime, postLikes, postComments;
+        TextView postUsername, postTime, postLikes;
         ImageView postAvatarImage;
         ImageView postImage;
 
@@ -69,7 +69,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             postUsername = itemView.findViewById(R.id.postUsername);
             postTime = itemView.findViewById(R.id.postTime);
             postLikes = itemView.findViewById(R.id.postLikes);
-            postComments = itemView.findViewById(R.id.postComments);
 
             postAvatarImage = itemView.findViewById(R.id.postAvatarImage);
             postImage = itemView.findViewById(R.id.postImage);
@@ -177,7 +176,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         viewHolder.postUsername.setText(postModelArrayList.get(position).getUsername());
         viewHolder.postTime.setText(postModelArrayList.get(position).getPostTime());
         viewHolder.postLikes.setText(Integer.toString(postModelArrayList.get(position).getPostLikes()));
-        viewHolder.postComments.setText(Integer.toString(postModelArrayList.get(position).getPostComments()));
         viewHolder.postAvatarImage.setImageResource(R.drawable.heart_draw);
         viewHolder.postImage.setImageResource(R.drawable.heart_draw);
     }
