@@ -32,8 +32,6 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
-    private FusedLocationProviderClient fusedLocationClient;
-    private Button locationButton;
     private String cityName = null;
 
     @Override
@@ -42,28 +40,6 @@ public class HomeFragment extends Fragment {
             Bundle savedInstanceState
     ) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
-        locationButton = binding.locationButton;
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            locationPermissionRequest.launch(new String[]{
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-            });
-        }
-        fusedLocationClient.getCurrentLocation(PRIORITY_HIGH_ACCURACY, null)
-                .addOnSuccessListener(getActivity(), location -> {
-                    if (location != null) {
-                        Geocoder geocoder = new Geocoder(getActivity());
-                        try {
-                            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                            cityName = addresses.get(0).getLocality();
-                            locationButton.setText(cityName);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
         return binding.getRoot();
 
     }
@@ -80,28 +56,6 @@ public class HomeFragment extends Fragment {
 //                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
             }
         });
-        binding.locationButton.setOnClickListener(view1 -> {
-            // Get the user's location and set the location button to the nearest city.
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                locationPermissionRequest.launch(new String[]{
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION
-                });
-            }
-            fusedLocationClient.getCurrentLocation(PRIORITY_HIGH_ACCURACY, null)
-                    .addOnSuccessListener(getActivity(), location -> {
-                        if (location != null) {
-                            Geocoder geocoder = new Geocoder(getActivity());
-                            try {
-                                List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                                cityName = addresses.get(0).getLocality();
-                                locationButton.setText(cityName);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-            });
     }
 
     @Override
@@ -109,21 +63,4 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
-    private final ActivityResultLauncher<String[]> locationPermissionRequest =
-            registerForActivityResult(new ActivityResultContracts
-                            .RequestMultiplePermissions(), result -> {
-                        Boolean fineLocationGranted = result.getOrDefault(
-                                Manifest.permission.ACCESS_FINE_LOCATION, false);
-                        Boolean coarseLocationGranted = result.getOrDefault(
-                                Manifest.permission.ACCESS_COARSE_LOCATION,false);
-                        if (fineLocationGranted != null && fineLocationGranted) {
-                            // Location permission granted fully.
-                        } else if (coarseLocationGranted != null && coarseLocationGranted) {
-                            Toast.makeText(getActivity(), "Please grant precise permissions before using the main app.", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getActivity(), "Please grant all location permissions before using the main app.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-            );
 }

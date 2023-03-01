@@ -53,6 +53,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/locationButton"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:drawableLeft="@drawable/location_pin_draw"
+        android:drawableTint="@color/aquamarine"
+        android:text="@string/location"
+        android:textAllCaps="true"
+        android:textColor="@color/aquamarine"
+        android:textSize="17sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageButton
         android:id="@+id/toggleNotificationsButton"
         android:layout_width="wrap_content"
