@@ -5,8 +5,8 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00FFFFFF"
-    tools:context=".AccountFragment">
+    android:background="@color/app_background"
+    tools:context="com.android.ui.app.AccountFragment">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -15,7 +15,7 @@
         android:background="@color/app_background"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="20dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHeight_percent=".75"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -40,7 +40,7 @@
             <Space
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="0.5" />
 
             <TextView
                 android:id="@+id/account_username"
@@ -55,7 +55,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="25dp" />
+            android:layout_height="60dp" />
 
         <TextView
             android:id="@+id/account_email"
@@ -83,7 +83,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="30sp" />
+            android:layout_height="40sp" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/account_info_button"
@@ -93,7 +93,7 @@
             android:backgroundTint="#040909"
             android:drawableLeft="@drawable/id_card_draw"
             android:drawablePadding="15sp"
-            android:drawableTint="#FFFFFF"
+            android:drawableTint="@color/columbia_blue"
             android:paddingLeft="15sp"
             android:text="Account Information"
             android:textAlignment="textStart"
@@ -102,7 +102,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="15sp" />
+            android:layout_height="20sp" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/account_password_button"
@@ -112,7 +112,7 @@
             android:backgroundTint="#040909"
             android:drawableLeft="@drawable/padlock_draw"
             android:drawablePadding="15sp"
-            android:drawableTint="#FFFFFF"
+            android:drawableTint="@color/columbia_blue"
             android:paddingLeft="15sp"
             android:text="Password"
             android:textAlignment="textStart"
@@ -122,7 +122,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="15sp" />
+            android:layout_height="20sp" />
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/account_notifications_toggle"
@@ -131,10 +131,11 @@
             android:background="@drawable/edit_round"
             android:backgroundTint="#040909"
             android:drawableLeft="@drawable/bell_draw"
-            android:drawablePadding="15sp"
-            android:drawableTint="#FFFFFF"
+            android:drawablePadding="13sp"
+            android:drawableTint="@color/columbia_blue"
 
-            android:paddingLeft="10sp"
+            android:paddingLeft="13sp"
+            android:paddingRight="10sp"
             android:text="Notifications"
 
             android:textColor="@color/myrtle_green"
@@ -143,7 +144,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="15sp" />
+            android:layout_height="20sp" />
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/switchCompat"
@@ -153,9 +154,10 @@
             android:backgroundTint="#040909"
             android:drawableLeft="@drawable/email"
             android:drawablePadding="15sp"
-            android:drawableTint="#FFFFFF"
+            android:drawableTint="@color/columbia_blue"
 
             android:paddingLeft="15sp"
+            android:paddingRight="10sp"
             android:text="Marketing Emails"
 
             android:textColor="@color/myrtle_green"
@@ -166,30 +168,19 @@
             android:layout_width="match_parent"
             android:layout_height="40dp" />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <Button
             android:id="@+id/signOutbutton"
-            android:layout_width="124dp"
-            android:layout_height="38dp"
-            android:background="@drawable/edit_round"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="120dp"
+            android:layout_height="45dp"
             android:backgroundTint="#E91E63"
             android:drawableLeft="@drawable/logout_draw"
-            android:paddingHorizontal="15sp"
+            android:drawableTint="@color/app_background"
+            android:paddingHorizontal="16sp"
             android:text="SIGN OUT"
-            android:textColor="@color/app_background" />
+            android:textColor="@color/app_background"
+            android:textSize="13sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
-
-    <ImageButton
-        android:id="@+id/goToLoginButton3"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="48dp"
-        android:background="@null"
-        android:contentDescription="@string/back_to_login"
-        android:scaleType="fitCenter"
-        android:src="@drawable/go_back_arrow_draw"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/teal_200" />
 </androidx.constraintlayout.widget.ConstraintLayout>
