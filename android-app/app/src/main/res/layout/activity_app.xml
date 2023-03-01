@@ -39,7 +39,8 @@
             app:itemIconSize="28dp"
             app:itemIconTint="@drawable/bottom_nav_icon_colour_selector"
             app:labelVisibilityMode="unlabeled"
-            app:menu="@menu/bottom_nav_items" />
+            app:menu="@menu/bottom_nav_items"
+            android:elevation="10dp" />
     </FrameLayout>
 
     <ImageButton
