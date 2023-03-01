@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/bottom_nav_account"
-        android:name="com.android.ui.AccountFragment"
+        android:name="com.android.ui.app.AccountFragment"
         android:label="Account"
         tools:layout="@layout/fragment_account" />
 
@@ -32,4 +32,10 @@
         android:id="@+id/bottom_nav_maps"
         android:name="com.android.ui.app.MapsFragment"
         android:label="MapsFragment" />
+    <fragment android:id="@+id/placeholder" />
+    <fragment
+        android:id="@+id/bottom_nav_bestiary"
+        android:name="com.android.ui.app.BestiaryFragment"
+        android:label="fragment_bestiary"
+        tools:layout="@layout/fragment_bestiary" />
 </navigation>

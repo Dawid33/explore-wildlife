@@ -5,15 +5,12 @@ import android.view.MenuItem;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.android.databinding.ActivityAppBinding;
-import com.android.ui.AccountFragment;
+import com.android.ui.app.AccountFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class AppActivity extends AppCompatActivity {
@@ -31,6 +28,14 @@ public class AppActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
         bottomNav.setOnItemSelectedListener((MenuItem item) -> {
+            if (item.getItemId() == R.id.bottom_nav_camera ||
+                item.getItemId() == R.id.bottom_nav_maps) {
+                binding.goToAccountButton.setVisibility(View.GONE);
+                binding.toggleNotificationsButton.setVisibility(View.GONE);
+            } else {
+                binding.goToAccountButton.setVisibility(View.VISIBLE);
+                binding.toggleNotificationsButton.setVisibility(View.VISIBLE);
+            }
             navController.navigate(item.getItemId());
             return true;
         });
