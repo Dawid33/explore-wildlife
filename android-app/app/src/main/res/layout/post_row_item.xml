@@ -28,6 +28,9 @@
                     android:id="@+id/postAvatarImage"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:background="@drawable/bg_oval"
+                    android:outlineProvider="background"
+                    android:clipToOutline="true"
                     tools:srcCompat="@tools:sample/avatars" />
 
                 <LinearLayout
@@ -58,14 +61,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/edit_round"
+                android:background="@drawable/bg_rounded_corners"
                 android:backgroundTint="@color/card_background"
                 android:orientation="vertical">
 
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/edit_round"
+                    android:background="@drawable/bg_rounded_corners"
                     android:backgroundTint="@color/card_background">
 
                     <ImageView
@@ -73,13 +76,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:adjustViewBounds="true"
+                        android:background="@drawable/bg_rounded_corners"
+                        android:outlineProvider="background"
+                        android:clipToOutline="true"
                         tools:srcCompat="@tools:sample/avatars" />
                 </FrameLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="10dp">
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp">
 
                     <TextView
                         android:id="@+id/postLikes"
