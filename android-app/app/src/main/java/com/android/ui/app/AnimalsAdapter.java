@@ -117,8 +117,13 @@ public class AnimalsAdapter extends RecyclerView.Adapter<AnimalsAdapter.ViewHold
     public void onBindViewHolder(@NonNull AnimalsAdapter.ViewHolder viewHolder, int position) {
 
         viewHolder.animalName.setText(animalModelArrayList.get(position).getName());
-        viewHolder.timesEncountered.setText(animalModelArrayList.get(position).getWitnessedInstances());
+        viewHolder.timesEncountered.setText(Integer.toString(animalModelArrayList.get(position).getWitnessedInstances()));
         viewHolder.animalImage.setImageDrawable(animalModelArrayList.get(position).getDrawableImage());
+
+        viewHolder.timesEncountered.setVisibility(View.GONE);
+//        viewHolder.animalName.setText("Test");
+//        viewHolder.timesEncountered.setText("0");
+
 //        viewHolder.animalImage.setImageResource(animalModelArrayList.get(position).getImage());
 //        viewHolder.animalImage.setImageResource(R.drawable.heart_draw);
 

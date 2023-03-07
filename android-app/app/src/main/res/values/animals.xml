@@ -3,6 +3,23 @@
     <array name="animals">
         <item>@array/sheep</item>
         <item>@array/cow</item>
+        <item>@array/pig</item>
+        <item>@array/dog</item>
+        <item>@array/horse</item>
+        <item>@array/deer</item>
+        <item>@array/frog</item>
+        <item>@array/badger</item>
+        <item>@array/puffin</item>
+        <item>@array/duck</item>
+        <item>@array/owl</item>
+        <item>@array/cat</item>
+        <item>@array/squirrel</item>
+        <item>@array/rabbit</item>
+        <item>@array/lizard</item>
+        <item>@array/fox</item>
+        <item>@array/swan</item>
+        <item>@array/hedgehog</item>
+
     </array>
 
     <array name="sheep">
@@ -14,4 +31,85 @@
         <item>Cow</item>
         <item>@drawable/cow</item>
     </array>
+
+    <array name="pig">
+        <item>Pig</item>
+        <item>@drawable/pig</item>
+    </array>
+
+    <array name="dog">
+        <item>Dog</item>
+        <item>@drawable/pet</item>
+    </array>
+
+    <array name="horse">
+        <item>Horse</item>
+        <item>@drawable/horse</item>
+    </array>
+
+    <array name="deer">
+    <item>Deer</item>
+    <item>@drawable/deer</item>
+    </array>
+
+    <array name="frog">
+        <item>Frog</item>
+        <item>@drawable/frog</item>
+    </array>
+
+    <array name="badger">
+        <item>Badger</item>
+        <item>@drawable/badger</item>
+    </array>
+
+    <array name="puffin">
+    <item>Puffin</item>
+    <item>@drawable/puffin</item>
+    </array>
+
+    <array name="duck">
+        <item>Duck</item>
+        <item>@drawable/duck</item>
+    </array>
+
+    <array name="owl">
+        <item>Owl</item>
+        <item>@drawable/owl</item>
+    </array>
+
+    <array name="cat">
+    <item>Cat</item>
+    <item>@drawable/cat</item>
+    </array>
+
+    <array name="squirrel">
+        <item>Squirrel</item>
+        <item>@drawable/squirrel</item>
+    </array>
+
+    <array name="rabbit">
+        <item>Rabbit</item>
+        <item>@drawable/rabbit</item>
+    </array>
+
+    <array name="lizard">
+    <item>Lizard</item>
+    <item>@drawable/chameleon</item>
+    </array>
+
+    <array name="fox">
+        <item>Fox</item>
+        <item>@drawable/fox</item>
+    </array>
+
+    <array name="swan">
+        <item>Swan</item>
+        <item>@drawable/swan</item>
+    </array>
+
+    <array name="hedgehog">
+    <item>Hedgehog</item>
+    <item>@drawable/hedgehog</item>
+    </array>
+
 </resources>
