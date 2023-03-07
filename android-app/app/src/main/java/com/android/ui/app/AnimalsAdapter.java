@@ -118,8 +118,9 @@ public class AnimalsAdapter extends RecyclerView.Adapter<AnimalsAdapter.ViewHold
 
         viewHolder.animalName.setText(animalModelArrayList.get(position).getName());
         viewHolder.timesEncountered.setText(animalModelArrayList.get(position).getWitnessedInstances());
-        viewHolder.animalImage.setImageResource(animalModelArrayList.get(position).getImage());
-        viewHolder.animalImage.setImageResource(R.drawable.heart_draw);
+        viewHolder.animalImage.setImageDrawable(animalModelArrayList.get(position).getDrawableImage());
+//        viewHolder.animalImage.setImageResource(animalModelArrayList.get(position).getImage());
+//        viewHolder.animalImage.setImageResource(R.drawable.heart_draw);
 
     }
 

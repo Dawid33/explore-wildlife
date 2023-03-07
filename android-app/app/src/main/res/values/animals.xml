@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="animals">
+        <item>@array/sheep</item>
+        <item>@array/cow</item>
+    </array>
+
+    <array name="sheep">
+        <item>Sheep</item>
+        <item>@drawable/sheep</item>
+    </array>
+
+    <array name="cow">
+        <item>Cow</item>
+        <item>@drawable/cow</item>
+    </array>
+</resources>
