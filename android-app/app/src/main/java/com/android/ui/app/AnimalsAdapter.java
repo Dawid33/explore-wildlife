@@ -12,8 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.AnimalModel;
 import com.android.AnimalsRecyclerViewInterface;
-import com.android.PostModel;
-import com.android.PostsRecyclerViewInterface;
 import com.android.R;
 
 import org.json.JSONArray;
@@ -21,8 +19,7 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AnimalsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
-    public static final String imageApiUrl = "https://explorewildlife.net/api/image?id=";
+public class AnimalsAdapter extends RecyclerView.Adapter<AnimalsAdapter.ViewHolder> {
     JSONArray data;
 
     //    ======================== TEST VARIABLES =============================
@@ -30,8 +27,8 @@ public class AnimalsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder
     List<String> texts;
 
     Context context;
-    private PostsRecyclerViewInterface postsRecyclerViewInterface;
-    ArrayList<PostModel> postModelArrayList;
+    private AnimalsRecyclerViewInterface animalsRecyclerViewInterface;
+    ArrayList<AnimalModel> animalModelArrayList;
 
 //    ======================== TEST VARIABLES =============================
 
@@ -40,38 +37,22 @@ public class AnimalsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder
      * Define all the XML elements in this class for them to be referenced later. Using the view object, you can get the different sub elements
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView testText;
-        public ImageView imageView;
 
 //      ============ TEST VARIABLES ===============
 
-        TextView postUsername, postTime, postLikes;
-        ImageView postAvatarImage;
-        ImageView postImage;
+        TextView animalName, timesEncountered;
+        ImageView animalImage;
 
 
-//      ============ TEST VARIABLES ===============
-
-
-//        public View view;
-
-        public ViewHolder(View view) {
-            super(view);
-            // Define click listener for the ViewHolder's View
-            testText = view.findViewById(R.id.postUsername);
-            imageView = view.findViewById(R.id.postAvatarImage);
-        }
 
         //        Attaching stuff from the layout file to this ViewHolder class
-        public ViewHolder(@NonNull View itemView, PostsRecyclerViewInterface postsRecyclerViewInterface) {
+        public ViewHolder(@NonNull View itemView, AnimalsRecyclerViewInterface animalsRecyclerViewInterface) {
             super(itemView);
 
-            postUsername = itemView.findViewById(R.id.postUsername);
-            postTime = itemView.findViewById(R.id.postTime);
-            postLikes = itemView.findViewById(R.id.postLikes);
+            animalName = itemView.findViewById(R.id.animalName);
+            timesEncountered = itemView.findViewById(R.id.timesEncountered);
 
-            postAvatarImage = itemView.findViewById(R.id.postAvatarImage);
-            postImage = itemView.findViewById(R.id.postImage);
+            animalImage = itemView.findViewById(R.id.animalImage);
 
 
 //            Setting onclick for each view
@@ -79,8 +60,8 @@ public class AnimalsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder
                 @Override
                 public void onClick(View view) {
 
-                    if(checkInterfaceAndPosition(itemView, postsRecyclerViewInterface)){
-                        postsRecyclerViewInterface.onItemClick(getAdapterPosition());
+                    if(checkInterfaceAndPosition(itemView, animalsRecyclerViewInterface)){
+                        animalsRecyclerViewInterface.onItemClick(getAdapterPosition());
                     }
 //                    SUPER AWESOME ONCLICK CODE GOES HERE
                 }
@@ -88,8 +69,8 @@ public class AnimalsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder
 
         }
 
-        private boolean checkInterfaceAndPosition(@NonNull View itemView, PostsRecyclerViewInterface postsRecyclerViewInterface){
-            if(postsRecyclerViewInterface != null){
+        private boolean checkInterfaceAndPosition(@NonNull View itemView, AnimalsRecyclerViewInterface animalsRecyclerViewInterface){
+            if(animalsRecyclerViewInterface != null){
                 int pos = getAdapterPosition();
 
                 return pos != RecyclerView.NO_POSITION;
@@ -109,8 +90,8 @@ public class AnimalsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder
 
     public AnimalsAdapter(Context context, ArrayList<AnimalModel> animalModelArrayList, AnimalsRecyclerViewInterface animalsRecyclerViewInterface) {
         this.context = context;
-        this.postModelArrayList = postModelArrayList;
-        this.postsRecyclerViewInterface = postsRecyclerViewInterface;
+        this.animalModelArrayList = animalModelArrayList;
+        this.animalsRecyclerViewInterface = animalsRecyclerViewInterface;
     }
 
 
@@ -127,49 +108,26 @@ public class AnimalsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.post_row_item, viewGroup, false);
-        return new PostsAdapter.ViewHolder(view, postsRecyclerViewInterface);
+                .inflate(R.layout.bestiary_row_item, viewGroup, false);
+        return new AnimalsAdapter.ViewHolder(view, animalsRecyclerViewInterface);
     }
 
-//    @Override
-//    public void onBindViewHolder(@NonNull PostsAdapter.ViewHolder viewHolder, int position) {
-//        try {
-//            viewHolder.textView.setText(data.get(position).toString());
-//            try {
-//                JSONArray images = ((JSONObject) data.get(position)).getJSONArray("images");
-//                // Only get the first image for simplicity, there might be more in the array
-//                Glide.with(viewHolder.view)
-//                        .load(imageApiUrl + images.get(0))
-//                        .into(viewHolder.imageView);
-//            } catch (Exception ignored) {}
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
-    /**
-     * Called after onCreateViewHolder is called. Binds data to the View object
-     *
-     * @param viewHolder The ViewHolder which should be updated to represent the contents of the
-     *                   item at the given position in the data set.
-     * @param position   The position of the item within the adapter's data set.
-     */
     @Override
-    public void onBindViewHolder(@NonNull PostsAdapter.ViewHolder viewHolder, int position) {
-//        viewHolder.testText.setText(test1);
-//
-        viewHolder.postUsername.setText(postModelArrayList.get(position).getUsername());
-        viewHolder.postTime.setText(postModelArrayList.get(position).getPostTime());
-        viewHolder.postLikes.setText(Integer.toString(postModelArrayList.get(position).getPostLikes()));
-        viewHolder.postAvatarImage.setImageResource(R.drawable.heart_draw);
-        viewHolder.postImage.setImageResource(R.drawable.wallpaper);
+    public void onBindViewHolder(@NonNull AnimalsAdapter.ViewHolder viewHolder, int position) {
+
+        viewHolder.animalName.setText(animalModelArrayList.get(position).getName());
+        viewHolder.timesEncountered.setText(animalModelArrayList.get(position).getWitnessedInstances());
+        viewHolder.animalImage.setImageResource(animalModelArrayList.get(position).getImage());
+        viewHolder.animalImage.setImageResource(R.drawable.heart_draw);
+
     }
 
     @Override
     public int getItemCount() {
 //        return data.length();
 //        return 0;
-        return postModelArrayList.size();
+        return animalModelArrayList.size();
     }
 
 
