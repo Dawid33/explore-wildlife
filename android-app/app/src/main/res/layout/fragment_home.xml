@@ -4,17 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginHorizontal="40dp"
+    android:layout_marginTop="80dp"
     tools:context=".ui.app.HomeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            android:text="Discover"
+            android:textColor="#FFFFFF"
             app:layout_constraintBaseline_toBaselineOf="@+id/button2"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -22,7 +30,7 @@
             android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button"
+            android:text="..."
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,9 +38,12 @@
             android:id="@+id/linearLayout5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="fill|fill_horizontal"
             android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@+id/button2"
-            tools:layout_editor_absoluteX="94dp">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button2">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -40,20 +51,27 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:id="@+id/sceneryIcon"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
                     android:src="@drawable/badger"
-                    app:srcCompat="@drawable/baseline_photo_camera_24" />
+                    app:srcCompat="@drawable/mountain_draw"
+                    app:tint="@color/myrtle_green" />
 
                 <TextView
-                    android:id="@+id/textView7"
+                    android:id="@+id/sceneryText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Scenery"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:textColor="@color/myrtle_green" />
 
             </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -61,19 +79,27 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/badger" />
+                    android:id="@+id/animalsIcon"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:src="@drawable/badger"
+                    app:srcCompat="@drawable/wildlife_draw"
+                    app:tint="@color/myrtle_green" />
 
                 <TextView
-                    android:id="@+id/textView7"
+                    android:id="@+id/animalsText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Scenery"
-                    android:textAlignment="center" />
+                    android:text="Animals"
+                    android:textAlignment="center"
+                    android:textColor="@color/myrtle_green" />
 
             </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -81,41 +107,118 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/badger" />
+                    android:id="@+id/mushroomsIcon"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:src="@drawable/badger"
+                    app:srcCompat="@drawable/mushrooms_draw"
+                    app:tint="@color/myrtle_green" />
 
                 <TextView
-                    android:id="@+id/textView7"
+                    android:id="@+id/mushroomsText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Scenery"
-                    android:textAlignment="center" />
+                    android:text="Mushrooms"
+                    android:textAlignment="center"
+                    android:textColor="@color/myrtle_green" />
 
             </LinearLayout>
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/textview_first"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Home Fragment"
-        android:textColor="@color/myrtle_green"
-        app:layout_constraintBottom_toTopOf="@id/goToLogin"
+        android:layout_marginTop="30dp"
+        android:padding="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        tools:layout_editor_absoluteX="0dp">
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Achievements"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBaseline_toBaselineOf="@+id/button3"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="..."
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/bell_draw"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button3" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0 animals out of 20 collected"
+            android:textColor="@color/myrtle_green"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Popular Images"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBaseline_toBaselineOf="@+id/button4"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="..."
+            app:layout_constraintBottom_toTopOf="@+id/recyclerView2"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView2"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
         android:id="@+id/goToLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Go To Login"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textview_first" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
