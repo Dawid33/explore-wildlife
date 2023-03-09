@@ -20,19 +20,29 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.android.AppActivity;
 import com.android.LoginAndRegisterActivity;
+import com.android.PopularPostsRecyclerViewInterface;
+import com.android.PostModel;
 import com.android.databinding.FragmentHomeBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements PopularPostsRecyclerViewInterface {
 
     private FragmentHomeBinding binding;
     private String cityName = null;
+
+    PopularPostsAdapter popularPostsAdapter;
+    //    This list will be everything stored in the recycler view
+    private List<String> list;
+
+    ArrayList<PostModel> postModelArrayList = new ArrayList<>();
 
     @Override
     public View onCreateView(
@@ -56,11 +66,36 @@ public class HomeFragment extends Fragment {
 //                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
             }
         });
+
+        prepareTestPosts();
+
+        popularPostsAdapter = new PopularPostsAdapter(this.getContext(), postModelArrayList, this);
+
+        binding.recyclerViewPopularPosts.setAdapter(popularPostsAdapter);
+        binding.recyclerViewPopularPosts.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
+
+    }
+
+    private void prepareTestPosts(){
+        String testUsername = "testUser", testTime = "1d ago";
+        int testLikes = 4200;
+
+        int testPostAvatar, testImage;
+
+        for (int i = 0; i < 10; i++) {
+            postModelArrayList.add(new PostModel(testUsername, testTime, testLikes));
+        }
+
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onItemClick(int position) {
+
     }
 }
