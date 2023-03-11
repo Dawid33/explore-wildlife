@@ -208,11 +208,12 @@ public class CreatePost extends Fragment {
         try {
 
             Size thumbSize = new Size(300, 300);
+            String UriString = CreatePostArgs.fromBundle(getArguments()).getPhotoPath();
 
 //            int thumbColumn = mediaStoreCursor.getColumnIndexOrThrow(MediaStore.Images.ImageColumns._ID);
 //            int _thumpId = mediaStoreCursor.getInt(thumbColumn);
 //            Uri imageUri_t = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,_thumpId);
-            Uri imageUri_t = Uri.parse("");
+//            Uri imageUri_t = Uri.parse(UriString);
 
 
             Bitmap thumbBitmap = null;
@@ -225,7 +226,7 @@ public class CreatePost extends Fragment {
 
 //            binding.createPostImage.setImageBitmap(thumbBitmap);
 //            Toast.makeText(getContext(), imageUri_t.toString(), Toast.LENGTH_SHORT).show();
-//            Toast.makeText(getContext(), , Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(), UriString, Toast.LENGTH_SHORT).show();
 
 
         } catch (Exception e) {

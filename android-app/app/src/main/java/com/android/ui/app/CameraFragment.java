@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.android.AppActivity;
+import com.android.CreatePostDirections;
 import com.android.databinding.FragmentCameraBinding;
 import com.google.common.util.concurrent.ListenableFuture;
 
@@ -29,6 +30,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
@@ -166,7 +168,11 @@ public class CameraFragment extends Fragment {
                             "From App");
 
                     //                        Go to new fragment here
-                    Navigation.findNavController(getView()).navigate(R.id.action_bottom_nav_camera_to_createPost);
+
+//                    NavDirections nav = CameraFragmentDirections.actionBottomNavCameraToCreatePost(file.getAbsolutePath());
+//                    Navigation.findNavController(getView()).navigate(R.id.action_bottom_nav_camera_to_createPost);
+//                    CameraFragmentDirections.actionBottomNavCameraToCreatePost("hi");
+                    Navigation.findNavController(getView()).navigate(R.id.navigate_to_create_post);
 
                 } catch (Exception e) {
                     e.printStackTrace();
