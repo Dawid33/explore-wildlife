@@ -3,51 +3,30 @@ package com.android;
 import static com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY;
 
 import android.Manifest;
-import android.content.ContentUris;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-
-import android.provider.MediaStore;
-import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.android.databinding.FragmentBestiaryBinding;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+
 import com.android.databinding.FragmentCreatePostBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
-import java.io.IOException;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CreatePost#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CreatePost extends Fragment {
-
-//    Points to media?
-
-    private Cursor mediaStoreCursor;
-
-
-    private FusedLocationProviderClient fusedLocationClient;
 
     private String cityName = null;
 
@@ -57,27 +36,11 @@ public class CreatePost extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CreatePost.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CreatePost newInstance(String param1, String param2) {
-        CreatePost fragment = new CreatePost();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             locationPermissionRequest.launch(new String[]{
                     Manifest.permission.ACCESS_FINE_LOCATION,
@@ -107,7 +70,7 @@ public class CreatePost extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentCreatePostBinding.inflate(inflater, container, false);
 
@@ -115,9 +78,6 @@ public class CreatePost extends Fragment {
 
         return binding.getRoot();
 
-
-        // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_create_post, container, false);
     }
 
 
@@ -149,98 +109,16 @@ public class CreatePost extends Fragment {
                     }
             );
 
-//    Swapping, cleaning up cursors
-    private Cursor swapCursor(Cursor cursor){
-        if(mediaStoreCursor == cursor){
-            return null;
-        }
 
-        Cursor oldCursor = mediaStoreCursor;
-
-        this.mediaStoreCursor = cursor;
-
-        if(cursor != null){
-        }
-        return oldCursor;
-    }
-
-    public void changeCursor(Cursor cursor){
-        Cursor oldCursor = swapCursor(cursor);
-
-        if(oldCursor != null){
-            oldCursor.close();
-        }
-    }
-
-    private Bitmap getBitmapFromMediaStore(int position){
-        int idIndex = mediaStoreCursor.getColumnIndex(MediaStore.Files.FileColumns._ID);
-        int mediaTypeIndex = mediaStoreCursor.getColumnIndex(MediaStore.Files.FileColumns.MEDIA_TYPE);
-
-        mediaStoreCursor.moveToPosition(position);
-
-        switch (mediaStoreCursor.getInt(mediaTypeIndex)){
-            case MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE:
-//                return MediaStore.Images.Thumbnails.getThumbnail(
-//                        getActivity().getContentResolver(),
-//                        mediaStoreCursor.getLong(idIndex),
-//                        MediaStore.Images.Thumbnails,
-//                        null
-//                );
-
-            default:
-                return null;
-        }
-
-    }
 
     private void setThumbnail() {
+        assert getArguments() != null;
         String UriString = CreatePostArgs.fromBundle(getArguments()).getPhotoPath();
 
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+
         Bitmap bitmap = BitmapFactory.decodeFile(UriString,bmOptions);
-        bitmap = Bitmap.createScaledBitmap(bitmap, 1000,1000,true);
 
         binding.createPostImage.setImageBitmap(bitmap);
-
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-//            binding.createPostImage.setImageBitmap(getContext().getContentResolver().loadThumbnail(Uri.parse(UriString), new Size(400, 400), null));
-//        }
-
-
-//            Toast.makeText(getContext(), UriString, Toast.LENGTH_SHORT).show();
-
-        try {
-
-            Size thumbSize = new Size(300, 300);
-
-//            int thumbColumn = mediaStoreCursor.getColumnIndexOrThrow(MediaStore.Images.ImageColumns._ID);
-//            int _thumpId = mediaStoreCursor.getInt(thumbColumn);
-//            Uri imageUri_t = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,_thumpId);
-            Uri imageUri_t = Uri.parse(UriString);
-
-
-            Bitmap thumbBitmap = null;
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-//                thumbBitmap = getContext().getContentResolver().loadThumbnail(imageUri_t, thumbSize, null);
-//            } else {
-//                thumbBitmap = MediaStore.Images.Thumbnails.getThumbnail(getContext().getContentResolver(),
-//                        R.drawable.id_card, MediaStore.Images.Thumbnails.MINI_KIND, null);
-//            }
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-
-                thumbBitmap = getContext().getContentResolver().loadThumbnail(imageUri_t, thumbSize, null);
-
-            }
-
-//            binding.createPostImage.setImageBitmap(thumbBitmap);
-//            Toast.makeText(getContext(), imageUri_t.toString(), Toast.LENGTH_SHORT).show();
-//            Toast.makeText(getContext(), UriString, Toast.LENGTH_SHORT).show();
-
-
-        } catch (Exception e) {
-            Toast.makeText(getContext(), "Nope. Didn't work", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
     }
 }
