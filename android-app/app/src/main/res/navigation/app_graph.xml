@@ -28,12 +28,12 @@
         android:name="com.android.ui.app.CameraFragment"
         android:label="Camera"
         tools:layout="@layout/fragment_camera" >
-        <action
-            android:id="@+id/navigate_to_create_post"
-            app:destination="@id/createPost" />
         <argument
             android:name="photoPath"
             app:argType="string" />
+        <action
+            android:id="@+id/action_bottom_nav_camera_to_createPost"
+            app:destination="@id/createPost" />
     </fragment>
     <fragment
         android:id="@+id/bottom_nav_maps"
@@ -50,11 +50,11 @@
         android:name="com.android.CreatePost"
         android:label="fragment_create_post"
         tools:layout="@layout/fragment_create_post" >
-        <action
-            android:id="@+id/navigate_to_camera"
-            app:destination="@id/bottom_nav_camera" />
         <argument
             android:name="photoPath"
             app:argType="string" />
+        <action
+            android:id="@+id/action_createPost_to_bottom_nav_camera"
+            app:destination="@id/bottom_nav_camera" />
     </fragment>
 </navigation>

@@ -7,6 +7,7 @@ import android.content.ContentUris;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
@@ -31,6 +32,7 @@ import com.android.databinding.FragmentCreatePostBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -42,22 +44,7 @@ public class CreatePost extends Fragment {
 
 //    Points to media?
 
-    String[] projection = new String[] {
-
-    };
-    String selection = "";
-    String[] selectionArgs = new String[] {
-
-    };
-    String sortOrder = "";
-    private Cursor mediaStoreCursor = getContext().getContentResolver().query(
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-            projection,
-            selection,
-            selectionArgs,
-            sortOrder
-
-);
+    private Cursor mediaStoreCursor;
 
 
     private FusedLocationProviderClient fusedLocationClient;
@@ -117,13 +104,15 @@ public class CreatePost extends Fragment {
             });
         }
 
-        setThumbnail();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentCreatePostBinding.inflate(inflater, container, false);
+
+        setThumbnail();
+
         return binding.getRoot();
 
 
@@ -204,24 +193,44 @@ public class CreatePost extends Fragment {
 
     }
 
-    private void setThumbnail(){
+    private void setThumbnail() {
+        String UriString = CreatePostArgs.fromBundle(getArguments()).getPhotoPath();
+
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        Bitmap bitmap = BitmapFactory.decodeFile(UriString,bmOptions);
+        bitmap = Bitmap.createScaledBitmap(bitmap, 1000,1000,true);
+
+        binding.createPostImage.setImageBitmap(bitmap);
+
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//            binding.createPostImage.setImageBitmap(getContext().getContentResolver().loadThumbnail(Uri.parse(UriString), new Size(400, 400), null));
+//        }
+
+
+//            Toast.makeText(getContext(), UriString, Toast.LENGTH_SHORT).show();
+
         try {
 
             Size thumbSize = new Size(300, 300);
-            String UriString = CreatePostArgs.fromBundle(getArguments()).getPhotoPath();
 
 //            int thumbColumn = mediaStoreCursor.getColumnIndexOrThrow(MediaStore.Images.ImageColumns._ID);
 //            int _thumpId = mediaStoreCursor.getInt(thumbColumn);
 //            Uri imageUri_t = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,_thumpId);
-//            Uri imageUri_t = Uri.parse(UriString);
+            Uri imageUri_t = Uri.parse(UriString);
 
 
             Bitmap thumbBitmap = null;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
 //                thumbBitmap = getContext().getContentResolver().loadThumbnail(imageUri_t, thumbSize, null);
-            } else {
+//            } else {
 //                thumbBitmap = MediaStore.Images.Thumbnails.getThumbnail(getContext().getContentResolver(),
 //                        R.drawable.id_card, MediaStore.Images.Thumbnails.MINI_KIND, null);
+//            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+
+                thumbBitmap = getContext().getContentResolver().loadThumbnail(imageUri_t, thumbSize, null);
+
             }
 
 //            binding.createPostImage.setImageBitmap(thumbBitmap);
@@ -231,7 +240,7 @@ public class CreatePost extends Fragment {
 
         } catch (Exception e) {
             Toast.makeText(getContext(), "Nope. Didn't work", Toast.LENGTH_SHORT).show();
-
+            e.printStackTrace();
         }
     }
 }
