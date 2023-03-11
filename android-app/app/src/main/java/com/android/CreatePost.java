@@ -4,6 +4,7 @@ import static com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -31,6 +33,9 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class CreatePost extends Fragment {
+
+//    Points to media?
+    private Cursor mediaStoreCursor;
 
     private FusedLocationProviderClient fusedLocationClient;
 
@@ -62,8 +67,6 @@ public class CreatePost extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             locationPermissionRequest.launch(new String[]{
@@ -84,6 +87,12 @@ public class CreatePost extends Fragment {
                         }
                     }
                 });
+
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            locationPermissionRequest.launch(new String[]{
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+            });
+        }
     }
 
     @Override
@@ -113,6 +122,18 @@ public class CreatePost extends Fragment {
                         } else {
                             Toast.makeText(getContext(), "Please grant all location permissions before using the main app.", Toast.LENGTH_SHORT).show();
                         }
+
+                        Boolean readStorageGranted = result.getOrDefault(Manifest.permission.READ_EXTERNAL_STORAGE, false);
+
+                        if(readStorageGranted){
+//                            Nice.
+                        }
+                        else {
+                            Toast.makeText(getContext(), "App needs to view thumbnails", Toast.LENGTH_SHORT).show();
+
+                        }
                     }
             );
+
+
 }
