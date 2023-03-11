@@ -1,12 +1,29 @@
 package com.android;
 
+import static com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY;
+
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.android.databinding.FragmentBestiaryBinding;
+import com.android.databinding.FragmentCreatePostBinding;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,14 +32,11 @@ import android.view.ViewGroup;
  */
 public class CreatePost extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private FusedLocationProviderClient fusedLocationClient;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String cityName = null;
+
+    private FragmentCreatePostBinding binding;
 
     public CreatePost() {
         // Required empty public constructor
@@ -40,8 +54,6 @@ public class CreatePost extends Fragment {
     public static CreatePost newInstance(String param1, String param2) {
         CreatePost fragment = new CreatePost();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,18 +61,58 @@ public class CreatePost extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
+
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            locationPermissionRequest.launch(new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+            });
         }
+        fusedLocationClient.getCurrentLocation(PRIORITY_HIGH_ACCURACY, null)
+                .addOnSuccessListener(getActivity(), location -> {
+                    if (location != null) {
+                        Geocoder geocoder = new Geocoder(getContext());
+                        try {
+                            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                            cityName = addresses.get(0).getLocality();
+                            binding.postLocationText.setText(cityName);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        binding = FragmentCreatePostBinding.inflate(inflater, container, false);
+        return binding.getRoot();
 
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_create_post, container, false);
+//        return inflater.inflate(R.layout.fragment_create_post, container, false);
     }
+
+
+    // Getting location permission making sure its fine and coarse. Printing a toast if not.
+    private final ActivityResultLauncher<String[]> locationPermissionRequest =
+            registerForActivityResult(new ActivityResultContracts
+                            .RequestMultiplePermissions(), result -> {
+                        Boolean fineLocationGranted = result.getOrDefault(
+                                Manifest.permission.ACCESS_FINE_LOCATION, false);
+                        Boolean coarseLocationGranted = result.getOrDefault(
+                                Manifest.permission.ACCESS_COARSE_LOCATION,false);
+                        if (fineLocationGranted != null && fineLocationGranted) {
+                            // Location permission granted fully.
+                        } else if (coarseLocationGranted != null && coarseLocationGranted) {
+                            Toast.makeText(getContext(), "Please grant precise permissions before using the main app.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "Please grant all location permissions before using the main app.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+            );
 }
