@@ -3,10 +3,14 @@ package com.android;
 import static com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY;
 
 import android.Manifest;
+import android.content.ContentUris;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -15,6 +19,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
+import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +41,24 @@ import java.util.List;
 public class CreatePost extends Fragment {
 
 //    Points to media?
-    private Cursor mediaStoreCursor;
+
+    String[] projection = new String[] {
+
+    };
+    String selection = "";
+    String[] selectionArgs = new String[] {
+
+    };
+    String sortOrder = "";
+    private Cursor mediaStoreCursor = getContext().getContentResolver().query(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            projection,
+            selection,
+            selectionArgs,
+            sortOrder
+
+);
+
 
     private FusedLocationProviderClient fusedLocationClient;
 
@@ -93,6 +116,8 @@ public class CreatePost extends Fragment {
                     Manifest.permission.READ_EXTERNAL_STORAGE
             });
         }
+
+        setThumbnail();
     }
 
     @Override
@@ -135,5 +160,77 @@ public class CreatePost extends Fragment {
                     }
             );
 
+//    Swapping, cleaning up cursors
+    private Cursor swapCursor(Cursor cursor){
+        if(mediaStoreCursor == cursor){
+            return null;
+        }
 
+        Cursor oldCursor = mediaStoreCursor;
+
+        this.mediaStoreCursor = cursor;
+
+        if(cursor != null){
+        }
+        return oldCursor;
+    }
+
+    public void changeCursor(Cursor cursor){
+        Cursor oldCursor = swapCursor(cursor);
+
+        if(oldCursor != null){
+            oldCursor.close();
+        }
+    }
+
+    private Bitmap getBitmapFromMediaStore(int position){
+        int idIndex = mediaStoreCursor.getColumnIndex(MediaStore.Files.FileColumns._ID);
+        int mediaTypeIndex = mediaStoreCursor.getColumnIndex(MediaStore.Files.FileColumns.MEDIA_TYPE);
+
+        mediaStoreCursor.moveToPosition(position);
+
+        switch (mediaStoreCursor.getInt(mediaTypeIndex)){
+            case MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE:
+//                return MediaStore.Images.Thumbnails.getThumbnail(
+//                        getActivity().getContentResolver(),
+//                        mediaStoreCursor.getLong(idIndex),
+//                        MediaStore.Images.Thumbnails,
+//                        null
+//                );
+
+            default:
+                return null;
+        }
+
+    }
+
+    private void setThumbnail(){
+        try {
+
+            Size thumbSize = new Size(300, 300);
+
+//            int thumbColumn = mediaStoreCursor.getColumnIndexOrThrow(MediaStore.Images.ImageColumns._ID);
+//            int _thumpId = mediaStoreCursor.getInt(thumbColumn);
+//            Uri imageUri_t = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,_thumpId);
+            Uri imageUri_t = Uri.parse("");
+
+
+            Bitmap thumbBitmap = null;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//                thumbBitmap = getContext().getContentResolver().loadThumbnail(imageUri_t, thumbSize, null);
+            } else {
+//                thumbBitmap = MediaStore.Images.Thumbnails.getThumbnail(getContext().getContentResolver(),
+//                        R.drawable.id_card, MediaStore.Images.Thumbnails.MINI_KIND, null);
+            }
+
+//            binding.createPostImage.setImageBitmap(thumbBitmap);
+//            Toast.makeText(getContext(), imageUri_t.toString(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(), , Toast.LENGTH_SHORT).show();
+
+
+        } catch (Exception e) {
+            Toast.makeText(getContext(), "Nope. Didn't work", Toast.LENGTH_SHORT).show();
+
+        }
+    }
 }
