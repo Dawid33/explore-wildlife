@@ -29,6 +29,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -129,6 +130,7 @@ public class CameraFragment extends Fragment {
                         activityResultLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
                     } else {
                         takePicture(imageCapture);
+
                     }
                 });
 
@@ -162,6 +164,10 @@ public class CameraFragment extends Fragment {
                             file.getAbsolutePath(),
                             String.valueOf(System.currentTimeMillis()),
                             "From App");
+
+                    //                        Go to new fragment here
+                    Navigation.findNavController(getView()).navigate(R.id.action_bottom_nav_camera_to_createPost);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
