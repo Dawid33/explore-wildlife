@@ -54,7 +54,7 @@ public class CreatePost extends Fragment {
                         try {
                             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                             cityName = addresses.get(0).getLocality();
-                            binding.postLocationText.setText(cityName);
+                            binding.postLocationInput.setText(cityName);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

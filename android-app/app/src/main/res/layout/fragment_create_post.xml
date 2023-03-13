@@ -21,7 +21,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.49"
+        app:layout_constraintVertical_bias="0.5"
         app:layout_constraintWidth_percent=".75">
 
         <TextView
@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Create Post"
-            android:textColor="#FFFFFF"
+            android:textColor="#ffffff"
             android:textSize="30sp"
             android:textStyle="bold" />
 
@@ -41,9 +41,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:hint="TITLE"
+            android:hint="@string/title"
             android:textColorHint="@color/myrtle_green"
-            app:boxStrokeColor="#00FFFFFF"
+            app:boxStrokeColor="#000"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true"
             app:hintTextColor="@color/myrtle_green"
@@ -51,12 +53,13 @@
             app:startIconTint="@color/myrtle_green">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/postTitleInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_round"
                 android:backgroundTint="#040909"
-                android:inputType="textPersonName"
-                android:textColor="#FFFFFF"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/columbia_blue"
                 android:textColorHint="@color/myrtle_green"
                 android:textCursorDrawable="@drawable/color_cursor"
                 android:textSize="11sp" />
@@ -68,14 +71,15 @@
             android:layout_height="15dp" />
 
 
-
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
 
-            android:hint="LOCATION"
+            android:hint="@string/location"
             android:textColorHint="@color/myrtle_green"
-            app:boxStrokeColor="#00FFFFFF"
+            app:boxStrokeColor="#000"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true"
             app:hintTextColor="@color/myrtle_green"
@@ -83,13 +87,13 @@
             app:startIconTint="@color/myrtle_green">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/postLocationText"
+                android:id="@+id/postLocationInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_round"
                 android:backgroundTint="#040909"
-                android:inputType="textPersonName"
-                android:textColor="#FFFFFF"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/columbia_blue"
                 android:textColorHint="@color/myrtle_green"
                 android:textCursorDrawable="@drawable/color_cursor"
                 android:textSize="11sp" />
@@ -104,13 +108,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:hint="CATEGORY"
+            android:hint="@string/category"
             android:textColorHint="@color/myrtle_green"
-            app:boxStrokeColor="#00FFFFFF"
+            app:boxStrokeColor="#000"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true"
             app:hintTextColor="@color/myrtle_green"
-            app:startIconDrawable="@drawable/location_pin_draw"
+            app:startIconDrawable="@drawable/categories_draw"
             app:startIconTint="@color/myrtle_green">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -119,7 +125,7 @@
                 android:background="@drawable/edit_round"
                 android:backgroundTint="#040909"
                 android:inputType="textPersonName"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/columbia_blue"
                 android:textColorHint="@color/myrtle_green"
                 android:textCursorDrawable="@drawable/color_cursor"
                 android:textSize="11sp" />
@@ -143,7 +149,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/description_draw"
-                android:drawablePadding="20dp"
+                android:drawablePadding="15dp"
                 android:text="DESCRIPTION"
                 android:textColor="@color/myrtle_green"
                 app:drawableTint="@color/myrtle_green" />
@@ -159,15 +165,32 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical" >
+                    android:orientation="vertical">
 
-                    <EditText
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="TYPE HERE"
-                        android:textColor="@color/white"
-                        android:textColorHint="@color/white"
-                        android:textSize="8sp" />
+
+                        android:hint="..."
+                        android:textColorHint="@color/myrtle_green"
+                        app:boxStrokeColor="#000"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        app:hintTextColor="@color/myrtle_green">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/postDescriptionInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/edit_round"
+                            android:backgroundTint="#040909"
+                            android:inputType="textEmailAddress"
+                            android:textColor="@color/columbia_blue"
+                            android:textColorHint="@color/myrtle_green"
+                            android:textCursorDrawable="@drawable/color_cursor"
+                            android:textSize="11sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
             </ScrollView>
 
@@ -190,15 +213,6 @@
                 android:layout_centerInParent="true"
                 tools:src="@drawable/insert_picture_icon_draw" />
 
-            <ImageButton
-                android:id="@+id/imageButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:backgroundTint="#000000"
-                android:src="@drawable/trash_can_draw"
-                android:tint="#FF0000" />
-
         </RelativeLayout>
 
         <Space
@@ -207,11 +221,14 @@
 
         <Button
             android:id="@+id/loginButton"
+            style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="119dp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/aquamarine"
-            android:text="CREATE POST"
-            android:textColor="@color/app_background" />
+            android:text="CREATE"
+            android:textColor="@color/app_background"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
