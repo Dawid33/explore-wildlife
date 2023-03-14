@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -66,13 +67,13 @@ public class HomeFragment extends Fragment implements PopularPostsRecyclerViewIn
 //                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
             }
         });
-
         prepareTestPosts();
 
         popularPostsAdapter = new PopularPostsAdapter(this.getContext(), postModelArrayList, this);
 
         binding.recyclerViewPopularPosts.setAdapter(popularPostsAdapter);
         binding.recyclerViewPopularPosts.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
+        binding.progressBarAchievements.setProgress(0);
 
     }
 

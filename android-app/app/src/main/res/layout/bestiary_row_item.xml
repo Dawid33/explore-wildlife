@@ -18,11 +18,10 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_margin="10dp"
-            app:cardBackgroundColor="#00FFFFFF"
-            app:cardCornerRadius="20dp">
+            app:cardBackgroundColor="#00FFFFFF">
 
             <ImageView
                 android:id="@+id/animalImage"

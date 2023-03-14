@@ -13,7 +13,8 @@
         android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:scrollbarSize="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,24 +27,34 @@
                 android:id="@+id/constraintLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="20dp">
+                android:padding="20dp"
+                android:background="@drawable/bg_rounded_corners">
 
                 <TextView
                     android:id="@+id/textView5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Discover"
-                    android:textColor="#FFFFFF"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/button2"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    android:textColor="@color/columbia_blue"
+                    android:textSize="23sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:layout_editor_absoluteY="-6dp" />
 
                 <Button
-                    android:id="@+id/button2"
+                    android:id="@+id/moreInfoHome"
+                    style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="..."
+                    android:text="···"
+                    android:textColor="@color/columbia_blue"
+                    android:textSize="23sp"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="-15dp"
+                    android:layout_marginEnd="-10dp"
+                    app:layout_constraintWidth_max="55dp" />
 
                 <LinearLayout
                     android:id="@+id/linearLayout5"
@@ -54,19 +65,19 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/button2">
+                    app:layout_constraintTop_toBottomOf="@+id/moreInfoHome">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/sceneryIcon"
-                            android:layout_width="75dp"
-                            android:layout_height="75dp"
-                            android:src="@drawable/badger"
-                            app:srcCompat="@drawable/mountain_draw"
+                        <ImageButton
+                            android:id="@+id/sceneryDiscoveryButton"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:background="@drawable/mountain_draw_lg"
+                            android:backgroundTint="@color/myrtle_green"
                             app:tint="@color/myrtle_green" />
 
                         <TextView
@@ -89,13 +100,13 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/animalsIcon"
-                            android:layout_width="75dp"
-                            android:layout_height="75dp"
-                            android:src="@drawable/badger"
-                            app:srcCompat="@drawable/wildlife_draw"
-                            app:tint="@color/myrtle_green" />
+                        <ImageButton
+                        android:id="@+id/animalsDiscoveryButton"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:background="@drawable/wildlife_draw_lg"
+                        android:backgroundTint="@color/myrtle_green"
+                        app:tint="@color/myrtle_green" />
 
                         <TextView
                             android:id="@+id/animalsText"
@@ -117,12 +128,12 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/mushroomsIcon"
-                            android:layout_width="75dp"
-                            android:layout_height="75dp"
-                            android:src="@drawable/badger"
-                            app:srcCompat="@drawable/mushrooms_draw"
+                        <ImageButton
+                            android:id="@+id/mushroomDiscoveryButton"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:background="@drawable/mushroom_draw_lg"
+                            android:backgroundTint="@color/myrtle_green"
                             app:tint="@color/myrtle_green" />
 
                         <TextView
@@ -142,35 +153,58 @@
                 android:id="@+id/constraintLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:padding="20dp">
+                android:layout_marginTop="20dp"
+                android:padding="20dp"
+                android:background="@drawable/bg_rounded_corners">
 
                 <TextView
-                    android:id="@+id/textView7"
+                    android:id="@+id/textView6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Achievements"
-                    android:textColor="#FFFFFF"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/button3"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    android:textColor="@color/columbia_blue"
+                    android:textSize="23sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:layout_editor_absoluteY="-6dp" />
 
                 <Button
-                    android:id="@+id/button3"
+                    android:id="@+id/moreInfoHome2"
+                    style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="..."
+                    android:text="···"
+                    android:textColor="@color/columbia_blue"
+                    android:textSize="23sp"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="-15dp"
+                    android:layout_marginEnd="-10dp"
+                    app:layout_constraintWidth_max="55dp" />
 
                 <ImageView
                     android:id="@+id/imageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:src="@drawable/bell_draw"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/trophy_draw"
+                    app:tint="@color/myrtle_green"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/button3" />
+                    app:layout_constraintTop_toBottomOf="@+id/moreInfoHome2" />
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/progressBarAchievements"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/imageView"
+                    app:trackThickness="20dp"
+                    app:trackColor="@color/myrtle_green"
+                    app:indicatorColor="@color/aquamarine"
+                    app:trackCornerRadius="10dp"/>
 
                 <TextView
                     android:id="@+id/textView8"
@@ -178,9 +212,11 @@
                     android:layout_height="wrap_content"
                     android:text="0 animals out of 20 collected"
                     android:textColor="@color/myrtle_green"
+                    android:textSize="13sp"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/imageView" />
+                    android:layout_marginBottom="13dp"
+                    android:layout_marginStart="3dp"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -188,30 +224,41 @@
                 android:id="@+id/constraintLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="20dp">
+                android:padding="20dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_rounded_corners">
 
                 <TextView
                     android:id="@+id/textView9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Popular Images"
-                    android:textColor="#FFFFFF"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/button4"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    android:textColor="@color/columbia_blue"
+                    android:textSize="23sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:layout_editor_absoluteY="-6dp" />
 
                 <Button
-                    android:id="@+id/button4"
+                    android:id="@+id/moreInfoHome3"
+                    style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:text="..."
-                    app:layout_constraintBottom_toTopOf="@+id/recyclerViewPopularPosts"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    android:text="···"
+                    android:textColor="@color/columbia_blue"
+                    android:textSize="23sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="-15dp"
+                    android:layout_marginEnd="-10dp"
+                    app:layout_constraintWidth_max="55dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewPopularPosts"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/moreInfoHome3"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />

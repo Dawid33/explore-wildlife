@@ -50,7 +50,7 @@
 
             <Button
                 style="@style/Widget.AppCompat.Button.Borderless"
-                android:id="@+id/moreInfoPostButton"
+                android:id="@+id/moreInfoBestiaryButton"
                 android:layout_width="60dp"
                 android:layout_height="45dp"
                 android:layout_marginEnd="10dp"
@@ -67,7 +67,7 @@
             android:id="@+id/animalsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="200dp"
+            android:paddingBottom="180dp"
             android:clipToPadding="false"
             android:paddingStart="15dp"
             android:paddingEnd="10dp"
