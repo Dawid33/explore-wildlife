@@ -173,12 +173,12 @@
         <Button
             android:id="@+id/forgot"
             android:layout_width="wrap_content"
-            android:layout_height="25dp"
+            android:layout_height="30dp"
             android:background="#00FFFFFF"
             android:paddingBottom="0dp"
             android:text="@string/forgot_password"
             android:textColor="@color/columbia_blue"
-            android:textSize="7sp" />
+            android:textSize="9sp" />
 
         <Space
             android:layout_width="match_parent"

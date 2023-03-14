@@ -6,6 +6,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import java.util.List;
 
 public class CreatePost extends Fragment {
 
+    private String coordinates = null;
     private String cityName = null;
 
     private FragmentCreatePostBinding binding;
@@ -52,6 +54,11 @@ public class CreatePost extends Fragment {
                     if (location != null) {
                         Geocoder geocoder = new Geocoder(getContext());
                         try {
+
+                            // Gets the coordinates of the location and concatenates them into a string.
+                            coordinates = location.getLatitude() + ", " + location.getLongitude();
+
+                            // Gets city closest to cooridantes.
                             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                             cityName = addresses.get(0).getLocality();
                             binding.postLocationInput.setText(cityName);
@@ -118,7 +125,11 @@ public class CreatePost extends Fragment {
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
 
         Bitmap bitmap = BitmapFactory.decodeFile(UriString,bmOptions);
+        // Rotate the thumbnail to the correct orientation.
+        Matrix matrix = new Matrix();
+        matrix.postRotate(90);
+        Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 
-        binding.createPostImage.setImageBitmap(bitmap);
+        binding.createPostImage.setImageBitmap(rotated);
     }
 }
