@@ -7,6 +7,8 @@ bp = Blueprint('login', __name__, url_prefix="/api")
 
 @bp.route("/users", methods=['GET'])
 def get_users():
+    # return "hi"
+
     conn = db.get_db()
     cur = conn.cursor()
     cur.execute("SELECT user_id, display_name, email, password FROM app.users;")

@@ -41,6 +41,7 @@ just delete that folder and restart the docker containers.
 
 ```commandline
 docker compose down
+docker-compose down --rmi all --volumes
 docker compse up -d
 ```
 

@@ -17,7 +17,16 @@ CREATE TABLE app.posts (
 	created_by uuid NOT NULL,
     created_at timestamp NOT NULL DEFAULT NOW(),
     is_public boolean NOT NULL DEFAULT true,
-    has_images boolean NOT NULL
+    has_images boolean NOT NULL,
+    latitude float DEFAULT 1,
+    longitude float DEFAULT 1
+);
+
+CREATE TABLE app.posts_likes (
+    posts_likes_id uuid NOT NULL,
+	post_id uuid NOT NULL,
+	user_id uuid NOT NULL,
+    created_at timestamp NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE app.comments (

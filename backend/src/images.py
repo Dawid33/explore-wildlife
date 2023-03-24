@@ -12,6 +12,7 @@ def download_image():
     cur = conn.cursor()
     try:
         cur.execute("SELECT image_id, image_path FROM app.images WHERE image_id = %s;", [id])
+
         result = cur.fetchone()
         conn.close()
 
@@ -23,7 +24,7 @@ def download_image():
         return make_response("", 500)
 
 
-
+# @bp.route("/query_image", methods=['GET'])
 def query_image():
     return "Hello"
 
@@ -31,3 +32,4 @@ def query_image():
 def upload_image():
     request.args.get("id")
     return "Hello"
+
