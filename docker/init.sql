@@ -23,7 +23,7 @@ CREATE TABLE app.posts (
 );
 
 CREATE TABLE app.posts_likes (
-    posts_likes_id uuid NOT NULL,
+    posts_likes_id SERIAL PRIMARY KEY,
 	post_id uuid NOT NULL,
 	user_id uuid NOT NULL,
     created_at timestamp NOT NULL DEFAULT NOW()

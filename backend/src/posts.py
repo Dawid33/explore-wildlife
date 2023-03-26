@@ -1,14 +1,20 @@
 from flask import Blueprint, render_template, request, url_for, redirect, flash, session
 
 from . import db
+import uuid
+import psycopg2.extras
 
 bp = Blueprint('posts', __name__, url_prefix="/api")
 
 
 # For liking posts
-@bp.route("/posts/<post>/like", methods=['Post'])
+@bp.route("/posts/<uuid:post>/toggle-like", methods=['Post'])
 def like_post(post):
-    # id = str(request.args.get('id'))
+    psycopg2.extras.register_uuid()
+    # post = uuid.uuid4();
+    # print('Type: ', type(post))
+
+    # post = (post);
 
     result = {
         "success": False,
@@ -17,7 +23,7 @@ def like_post(post):
     # Checking if values exist
     try:
         user_id = request.form['user_id']
-        post_id = request.form['post_id']
+        # post_id = request.form['post_id']
     except Exception as e:
         print(e)
         result['error'] = 'Internal Error: Failed while reading post request form data'
@@ -31,24 +37,44 @@ def like_post(post):
         result['error'] = 'Internal Error: Cannot connect to database'
         return result
 
-    # Check to see if post exists
+    # Check to see if post exists.
     try:
+        # 1+1
         cursor = conn.cursor()
-        cursor.execute('SELECT email FROM app.users WHERE email = %s', (user_id))
-        possible_user = cursor.fetchone()
+        cursor.execute('SELECT post_id FROM app.posts WHERE post_id = %s', (post,))
+        possible_post = cursor.fetchone()
     except Exception as e:
         print(e)
         result['error'] = 'Internal Error: Failed to execute SQL query'
         conn.close()
         return result
 
+    # If no errors, add like to database
+    if result.get('error') is None:
+        try:
+            cursor = conn.cursor()
+            cursor.execute('SELECT post_id FROM app.posts_likes WHERE post_id = %s AND user_id = %s', (post, user_id))
+
+            if cursor.fetchone() is None:
+                print('hi')
+                cursor.execute('INSERT INTO app.posts_likes (post_id, user_id) VALUES (%s, %s)',
+                               (post, user_id))
+            else:
+                cursor.execute('DELETE FROM app.posts_likes WHERE post_id = %s AND user_id = %s', (post, user_id))
+
+            conn.commit()
+        except Exception as e:
+            print(e)
+            result['error'] = 'Internal Error: Database request failed, unable to register user'
+        result['success'] = True
+
     # conn = db.get_db()
-    cur = conn.cursor()
-    cur.execute("SELECT post_id, content, created_by, created_at FROM app.posts WHERE post_id = %s;", [id])
-    result = cur.fetchone()
-    output = dict(post_id=result[0], content=result[1], created_by=result[2], created_at=result[3])
+    # cur = conn.cursor()
+    # cur.execute("SELECT post_id, content, created_by, created_at FROM app.posts WHERE post_id = %s;", [id])
+    # result = cur.fetchone()
     conn.close()
-    return output
+
+    return result
 
 
 @bp.route("/posts", methods=['GET'])
