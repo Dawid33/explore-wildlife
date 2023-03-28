@@ -7,6 +7,78 @@ import psycopg2.extras
 bp = Blueprint('posts', __name__, url_prefix="/api")
 
 
+@bp.route('/create-post', methods=['POST'])
+def register():
+    psycopg2.extras.register_uuid()
+    result = {
+        "success": False,
+    }
+    try:
+        post_title = request.form['post_title']
+        post_description = request.form['post_description']
+        post_latitude = float(request.form['post_latitude'])
+        post_longitude = float(request.form['post_longitude'])
+        # created_by = request.form['created_by']
+        created_by = uuid.UUID('f8737db2-5712-40bc-a6cc-0037ad417a00')
+        # created_by = 'c6ad8efb-a973-4481-9bdf-fb8be00ac1e6'
+        # image = request.form['image']
+    except Exception as e:
+        print(e)
+        result['error'] = 'Internal Error: Failed while reading post request form data'
+        return result
+
+    try:
+        db_conn = db.get_db()
+    except Exception as e:
+        print(e)
+        result['error'] = 'Internal Error: Cannot connect to database'
+        return result
+
+    if not post_title:
+        result['error'] = 'Post title is required.'
+    elif not post_latitude:
+        result['error'] = 'Post latitude is required.'
+    elif not post_longitude:
+        result['error'] = 'Post longitude is required.'
+
+    if result.get('error') is None:
+        try:
+            cursor = db_conn.cursor()
+            # cursor.execute('INSERT INTO app.posts (title, description, latitude, longitude, created_by) VALUES (%s, '
+            #                '%s, %s, %s)',
+            #                (post_title, post_description, post_latitude, post_longitude, created_by))
+            cursor.execute(f'INSERT INTO app.posts (title, description, latitude, longitude, created_by, coordinates) VALUES '
+                           f'(\'{post_title}\', \'{post_description}\', {post_latitude}, {post_longitude}, \'f8737db2-5712-40bc-a6cc-0037ad417a00\', ARRAY[{post_latitude}, {post_longitude}])')
+
+            # Also insert image into database
+            #  cursor.execute('INSERT INTO app.users (display_name, email, password) VALUES (%s, %s, %s)',
+            #                            (post_title, post_description, post_latitude, post_longitude))
+
+            try:
+
+                cursor.execute('SELECT post_id FROM app.posts WHERE created_by = %s', (created_by,))
+                latest_post = cursor.fetchone()
+
+                # Also insert image into database
+                #  cursor.execute('INSERT INTO app.images (owner, image_path) VALUES (%s, %s)',
+                #                            (owner, image_path))
+
+                db_conn.commit()
+            except Exception as e:
+                print(e)
+                result['error'] = 'Internal Error: Database request failed, unable to store image'
+            result['success'] = True
+
+            db_conn.commit()
+        except Exception as e:
+            print(e)
+            result['error'] = 'Internal Error: Database request failed, unable to create post'
+        result['success'] = True
+
+    db_conn.close()
+    return result
+
+
 # For liking posts
 @bp.route("/posts/<uuid:post>/toggle-like", methods=['Post'])
 def like_post(post):

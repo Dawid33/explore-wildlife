@@ -13,13 +13,16 @@ CREATE TABLE app.users (
 
 CREATE TABLE app.posts (
 	post_id uuid NOT NULL DEFAULT uuid_generate_v4(),
+	title varchar NOT NULL DEFAULT 'Post Title',
+	description varchar DEFAULT 'Post Description',
 	content varchar NULL DEFAULT 'Default content.',
 	created_by uuid NOT NULL,
     created_at timestamp NOT NULL DEFAULT NOW(),
     is_public boolean NOT NULL DEFAULT true,
-    has_images boolean NOT NULL,
+    has_images boolean NOT NULL DEFAULT false,
     latitude float DEFAULT 1,
-    longitude float DEFAULT 1
+    longitude float DEFAULT 1,
+    coordinates float[2]
 );
 
 CREATE TABLE app.posts_likes (
