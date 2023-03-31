@@ -107,11 +107,24 @@ def login():
     elif db_result[0] != password:
         result['error'] = 'Incorrect password'
 
-    db_conn.close()
+    # db_conn.close()
     if result.get('error'):
         result['success'] = False
-        return result
+        # return result
     else:
-        result['success'] = True
-        return result
+        try:
+            cursor = db_conn.cursor()
+            cursor.execute("SELECT user_id FROM app.users WHERE email = %s", (email,))
+            db_result = cursor.fetchone()
 
+            result['user_id'] = db_result[0]
+        except Exception as e:
+            print(e)
+            result['error'] = 'Internal Error: Failed to execute SQL query'
+            # db_conn.close()
+            # return result
+
+        result['success'] = True
+        # return result
+    db_conn.close()
+    return result
