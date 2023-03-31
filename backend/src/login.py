@@ -17,6 +17,43 @@ def get_users():
     conn.close()
     return output
 
+@bp.route("/users/<uuid:user_id>/password", methods=['PUT'])
+def update_password(user_id):
+    result = {
+        "success": False,
+    }
+    try:
+        password = request.form['password']
+    except Exception as e:
+        print(e)
+        result['error'] = 'Internal Error: Failed while reading post request form data'
+        return result
+
+    try:
+        db_conn = db.get_db()
+    except Exception as e:
+        print(e)
+        result['error'] = 'Internal Error: Cannot connect to database'
+        return result
+
+    if not password:
+        result['error'] = 'Password is required.'
+
+    if result.get('error') is None:
+        try:
+            cursor = db_conn.cursor()
+            cursor.execute(f"UPDATE app.users "
+                           f"SET password = \'{password}\'"
+                           f"WHERE user_id = \'{user_id}\'")
+            db_conn.commit()
+        except Exception as e:
+            print(e)
+            result['error'] = 'Internal Error: Database request failed, unable to register user'
+        result['success'] = True
+
+    db_conn.close()
+    return result
+
 @bp.route("/users/<uuid:user_id>", methods=['PUT'])
 def update_profile(user_id):
     result = {
@@ -56,12 +93,10 @@ def update_profile(user_id):
 
     if result.get('error') is None:
         try:
-            # cursor.execute('INSERT INTO app.users (display_name, email, password) VALUES (%s, %s, %s)',
-            #                (display_name, email, password))
-            cursor.execute('UPDATE app.users'
-                           'SET display_name = $s, email = $s'
-                           'WHERE user_id = $s',
-                           (display_name, email, user_id))
+
+            cursor.execute(f"UPDATE app.users "
+                           f"SET display_name = \'{display_name}\', email = \'{email}\' "
+                           f"WHERE user_id = \'{user_id}\'")
             db_conn.commit()
         except Exception as e:
             print(e)

@@ -1,4 +1,4 @@
-from PIL.Image import Image
+# from PIL.Image import Image
 from flask import Blueprint, render_template, request, url_for, redirect, flash, session
 
 from . import db
@@ -13,7 +13,7 @@ UPLOAD_FOLDER = 0
 def create_post():
     file = request.files['image']
     # Read the image via file.stream
-    img = Image.open(file.stream)
+    # img = Image.open(file.stream)
 
     psycopg2.extras.register_uuid()
     result = {
