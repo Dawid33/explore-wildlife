@@ -1,15 +1,13 @@
 # from PIL.Image import Image
-from flask import Blueprint, render_template, request, url_for, redirect, flash, session
-from werkzeug.utils import secure_filename
+import psycopg2.extras
+from flask import Blueprint, send_from_directory
 
 from . import db
-import uuid
-import psycopg2.extras
 
 bp = Blueprint('posts', __name__, url_prefix="/api")
 
 import os
-from flask import Flask, flash, request, redirect, url_for
+from flask import Flask, request
 from werkzeug.utils import secure_filename
 
 UPLOAD_FOLDER = 'images/posts'
@@ -18,24 +16,18 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['SESSION_TYPE'] = 'filesystem'
 
+
 # Check if file has valid extension
 def allowed_file(filename):
     return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 @bp.route('/create-post', methods=['POST'])
 def create_post():
-
     # check if the post request has the file part
-    # if 'image' not in request.files:
-    #     # flash('No file part')
-    #     print("No file!!")
 
-        # return redirect(request.url)
-
-
-
-    psycopg2.extras.register_uuid()
+    # psycopg2.extras.register_uuid()
     result = {
         "success": False,
     }
@@ -45,8 +37,6 @@ def create_post():
         post_latitude = float(request.form['post_latitude'])
         post_longitude = float(request.form['post_longitude'])
         created_by = request.form['created_by']
-        # created_by = uuid.UUID('f8737db2-5712-40bc-a6cc-0037ad417a00')
-        # created_by = 'c6ad8efb-a973-4481-9bdf-fb8be00ac1e6'
         image = ""
     except Exception as e:
         print(e)
@@ -83,24 +73,15 @@ def create_post():
     if result.get('error') is None:
         try:
             cursor = db_conn.cursor()
-            # cursor.execute('INSERT INTO app.posts (title, description, latitude, longitude, created_by) VALUES (%s, '
-            #                '%s, %s, %s)',
-            #                (post_title, post_description, post_latitude, post_longitude, created_by))
-            cursor.execute(f'INSERT INTO app.posts (title, description, latitude, longitude, created_by, coordinates, image_name) VALUES '
-                           f'(\'{post_title}\', \'{post_description}\', {post_latitude}, {post_longitude}, \'{created_by}\', ARRAY[{post_latitude}, {post_longitude}], \'{image}\')')
 
-            # Also insert image into database
-            #  cursor.execute('INSERT INTO app.users (display_name, email, password) VALUES (%s, %s, %s)',
-            #                            (post_title, post_description, post_latitude, post_longitude))
+            cursor.execute(
+                f'INSERT INTO app.posts (title, description, latitude, longitude, created_by, coordinates, image_name) VALUES '
+                f'(\'{post_title}\', \'{post_description}\', {post_latitude}, {post_longitude}, \'{created_by}\', ARRAY[{post_latitude}, {post_longitude}], \'{image}\')')
 
             try:
 
                 cursor.execute('SELECT post_id FROM app.posts WHERE created_by = %s', (created_by,))
                 latest_post = cursor.fetchone()
-
-                # Also insert image into database
-                #  cursor.execute('INSERT INTO app.images (owner, image_path) VALUES (%s, %s)',
-                #                            (owner, image_path))
 
                 db_conn.commit()
             except Exception as e:
@@ -214,11 +195,59 @@ def get_post():
     id = str(request.args.get('id'))
     conn = db.get_db()
     cur = conn.cursor()
-    cur.execute("SELECT post_id, content, created_by, created_at FROM app.posts WHERE post_id = %s;", [id])
+    cur.execute(
+        "SELECT post_id, content, created_by, created_at, description, image_name FROM app.posts WHERE post_id = %s;",
+        [id])
     result = cur.fetchone()
-    output = dict(post_id=result[0], content=result[1], created_by=result[2], created_at=result[3])
+    output = dict(post_id=result[0], content=result[1], created_by=result[2], created_at=result[3],
+                  description=result[4], image_name=result[5])
+
+    if result[5]:
+        return send_from_directory(app.config['UPLOAD_FOLDER'],
+                                   result[5])
+
     conn.close()
     return output
+
+
+@bp.route("/post/image", methods=['GET'])
+def get_post_image():
+    id = str(request.args.get('id'))
+    conn = db.get_db()
+    cur = conn.cursor()
+    cur.execute("SELECT image_name FROM app.posts WHERE post_id = %s;", [id])
+    result = cur.fetchone()
+
+    conn.close()
+
+    if result[0]:
+        return send_from_directory(app.config['UPLOAD_FOLDER'],
+                                   result[0])
+    else:
+        return {
+            "success": False,
+        }
+
+
+@bp.route("/post/closest", methods=['GET'])
+def get_closest_posts():
+    id = str(request.args.get('id'))
+    conn = db.get_db()
+    cur = conn.cursor()
+    # cur.execute("SELECT image_name FROM app.posts WHERE post_id = %s;", [id])
+    cur.execute("SELECT image_name FROM app.posts WHERE post_id = %s;", [id])
+
+    result = cur.fetchall()
+
+    conn.close()
+
+    if result[0]:
+        return send_from_directory(app.config['UPLOAD_FOLDER'],
+                                   result[0])
+    else:
+        return {
+            "success": False,
+        }
 
 # @bp.route("/post", methods=['GET'])
 # def get_post():
