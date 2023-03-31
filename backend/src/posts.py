@@ -7,7 +7,14 @@ import psycopg2.extras
 
 bp = Blueprint('posts', __name__, url_prefix="/api")
 
-UPLOAD_FOLDER = 0
+import os
+from flask import Flask, flash, request, redirect, url_for
+from werkzeug.utils import secure_filename
+
+UPLOAD_FOLDER = '/path/to/the/uploads'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @bp.route('/create-post', methods=['POST'])
 def create_post():
