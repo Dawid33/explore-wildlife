@@ -62,6 +62,12 @@ def register():
         try:
             cursor.execute('INSERT INTO app.users (display_name, email, password) VALUES (%s, %s, %s)',
                            (display_name, email, password))
+
+            cursor.execute("SELECT user_id FROM app.users WHERE email = %s", (email,))
+            db_result = cursor.fetchone()
+
+            result['user_id'] = db_result[0]
+
             db_conn.commit()
         except Exception as e:
             print(e)
