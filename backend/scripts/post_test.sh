@@ -5,6 +5,7 @@ path_register="api/register"
 path_create_post="api/create-post"
 path_get_post="api/post"
 path_get_post_image="api/post/image"
+path_get_nearest_posts="api/post/nearest"
 
 email="email=test@example.com"
 password="password=test"
@@ -41,4 +42,8 @@ password="password=test"
 post_id="151bbb26-56f9-4207-b2a0-5f8e850bf9ef"
 post_id="c8c2ed17-28cc-48ba-b2d8-a00544e194fb"
 
-curl -X GET "http://127.0.0.1:8080/$path_get_post_image?id=$post_id"
+#curl -X GET "http://127.0.0.1:8080/$path_get_post_image?id=$post_id"
+
+# Nearest posts
+
+curl -X GET "http://127.0.0.1:8080/$path_get_nearest_posts?id=$post_id"

@@ -229,17 +229,37 @@ def get_post_image():
         }
 
 
-@bp.route("/post/closest", methods=['GET'])
-def get_closest_posts():
+@bp.route("/post/nearest", methods=['GET'])
+def get_nearest_posts():
+    earth_radius = 6371
+    distance = 25
+    number_of_results = 20
+
     id = str(request.args.get('id'))
     conn = db.get_db()
     cur = conn.cursor()
     # cur.execute("SELECT image_name FROM app.posts WHERE post_id = %s;", [id])
-    cur.execute("SELECT image_name FROM app.posts WHERE post_id = %s;", [id])
+    cur.execute("SELECT coordinates FROM app.posts WHERE post_id = %s;", [id])
 
     result = cur.fetchall()
 
+    if result:
+        latitude = result[0][0][0]
+        longitude = result[0][0][1]
+
+        print("Latitude: ", latitude)
+        print("Longitude: ", longitude)
+
+        cur.execute(f"SELECT post_id, ({earth_radius} * acos(cos(radians({latitude})) * cos(radians(coordinates[0])) * cos(radians(coordinates[1]) - radians({longitude})) + sin(radians({latitude})) * sin(radians(radians(coordinates[0])))) AS distance FROM app.posts HAVING distance < {distance} ORDER BY distance LIMIT {number_of_results} OFFSET 0;")
+
+        cur.execute(
+            f"SELECT post_id, ({earth_radius} * acos(cos(radians({latitude})) * cos(radians(coordinates[0])) * cos(radians(coordinates[1]) - radians({longitude})) + sin(radians({latitude})) * sin(radians(radians(coordinates[0])))) AS distance FROM app.posts HAVING distance < {distance} ORDER BY distance LIMIT {number_of_results} OFFSET 0;")
+
+        result = cur.fetchall()
+
     conn.close()
+
+    return result
 
     if result[0]:
         return send_from_directory(app.config['UPLOAD_FOLDER'],
