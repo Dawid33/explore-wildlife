@@ -22,7 +22,8 @@ CREATE TABLE app.posts (
     has_images boolean NOT NULL DEFAULT false,
     latitude float DEFAULT 1,
     longitude float DEFAULT 1,
-    coordinates float[2]
+    coordinates float[2],
+    image_name varchar DEFAULT ''
 );
 
 CREATE TABLE app.posts_likes (

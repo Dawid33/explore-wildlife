@@ -1,5 +1,6 @@
 # from PIL.Image import Image
 from flask import Blueprint, render_template, request, url_for, redirect, flash, session
+from werkzeug.utils import secure_filename
 
 from . import db
 import uuid
@@ -11,16 +12,28 @@ import os
 from flask import Flask, flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
 
-UPLOAD_FOLDER = '/path/to/the/uploads'
+UPLOAD_FOLDER = 'images/posts'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['SESSION_TYPE'] = 'filesystem'
+
+# Check if file has valid extension
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @bp.route('/create-post', methods=['POST'])
 def create_post():
-    file = request.files['image']
-    # Read the image via file.stream
-    # img = Image.open(file.stream)
+
+    # check if the post request has the file part
+    # if 'image' not in request.files:
+    #     # flash('No file part')
+    #     print("No file!!")
+
+        # return redirect(request.url)
+
+
 
     psycopg2.extras.register_uuid()
     result = {
@@ -31,10 +44,10 @@ def create_post():
         post_description = request.form['post_description']
         post_latitude = float(request.form['post_latitude'])
         post_longitude = float(request.form['post_longitude'])
-        # created_by = request.form['created_by']
-        created_by = uuid.UUID('f8737db2-5712-40bc-a6cc-0037ad417a00')
+        created_by = request.form['created_by']
+        # created_by = uuid.UUID('f8737db2-5712-40bc-a6cc-0037ad417a00')
         # created_by = 'c6ad8efb-a973-4481-9bdf-fb8be00ac1e6'
-        # image = request.form['image']
+        image = ""
     except Exception as e:
         print(e)
         result['error'] = 'Internal Error: Failed while reading post request form data'
@@ -54,14 +67,27 @@ def create_post():
     elif not post_longitude:
         result['error'] = 'Post longitude is required.'
 
+    try:
+        file = request.files['image']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            print("No file!!")
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            image = filename
+    except Exception as e:
+        print("No image")
+
     if result.get('error') is None:
         try:
             cursor = db_conn.cursor()
             # cursor.execute('INSERT INTO app.posts (title, description, latitude, longitude, created_by) VALUES (%s, '
             #                '%s, %s, %s)',
             #                (post_title, post_description, post_latitude, post_longitude, created_by))
-            cursor.execute(f'INSERT INTO app.posts (title, description, latitude, longitude, created_by, coordinates) VALUES '
-                           f'(\'{post_title}\', \'{post_description}\', {post_latitude}, {post_longitude}, \'f8737db2-5712-40bc-a6cc-0037ad417a00\', ARRAY[{post_latitude}, {post_longitude}])')
+            cursor.execute(f'INSERT INTO app.posts (title, description, latitude, longitude, created_by, coordinates, image_name) VALUES '
+                           f'(\'{post_title}\', \'{post_description}\', {post_latitude}, {post_longitude}, \'{created_by}\', ARRAY[{post_latitude}, {post_longitude}], \'{image}\')')
 
             # Also insert image into database
             #  cursor.execute('INSERT INTO app.users (display_name, email, password) VALUES (%s, %s, %s)',
