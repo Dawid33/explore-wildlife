@@ -1,3 +1,5 @@
+CREATE EXTENSION postgis;
+
 CREATE SCHEMA app;
 
 -- Needed to enable sql function that generates UUID's https://www.postgresql.org/docs/current/uuid-ossp.html
@@ -22,7 +24,9 @@ CREATE TABLE app.posts (
     has_images boolean NOT NULL DEFAULT false,
     latitude float DEFAULT 1,
     longitude float DEFAULT 1,
-    coordinates float[2]
+    coordinates float[2],
+    image_name varchar DEFAULT '',
+    location geography
 );
 
 CREATE TABLE app.posts_likes (

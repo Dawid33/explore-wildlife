@@ -2,20 +2,31 @@
 from flask import Blueprint, render_template, request, url_for, redirect, flash, session
 
 from . import db
-import uuid
-import psycopg2.extras
 
 bp = Blueprint('posts', __name__, url_prefix="/api")
 
-UPLOAD_FOLDER = 0
+import os
+from flask import Flask, request
+from werkzeug.utils import secure_filename
+
+UPLOAD_FOLDER = 'images/posts'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['SESSION_TYPE'] = 'filesystem'
+
+
+# Check if file has valid extension
+def allowed_file(filename):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 @bp.route('/create-post', methods=['POST'])
 def create_post():
-    file = request.files['image']
-    # Read the image via file.stream
-    # img = Image.open(file.stream)
+    # check if the post request has the file part
 
-    psycopg2.extras.register_uuid()
+    # psycopg2.extras.register_uuid()
     result = {
         "success": False,
     }
@@ -24,10 +35,8 @@ def create_post():
         post_description = request.form['post_description']
         post_latitude = float(request.form['post_latitude'])
         post_longitude = float(request.form['post_longitude'])
-        # created_by = request.form['created_by']
-        created_by = uuid.UUID('f8737db2-5712-40bc-a6cc-0037ad417a00')
-        # created_by = 'c6ad8efb-a973-4481-9bdf-fb8be00ac1e6'
-        # image = request.form['image']
+        created_by = request.form['created_by']
+        image = ""
     except Exception as e:
         print(e)
         result['error'] = 'Internal Error: Failed while reading post request form data'
@@ -47,27 +56,32 @@ def create_post():
     elif not post_longitude:
         result['error'] = 'Post longitude is required.'
 
+    try:
+        file = request.files['image']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            print("No file!!")
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            image = filename
+    except Exception as e:
+        print("No image")
+
     if result.get('error') is None:
         try:
             cursor = db_conn.cursor()
-            # cursor.execute('INSERT INTO app.posts (title, description, latitude, longitude, created_by) VALUES (%s, '
-            #                '%s, %s, %s)',
-            #                (post_title, post_description, post_latitude, post_longitude, created_by))
-            cursor.execute(f'INSERT INTO app.posts (title, description, latitude, longitude, created_by, coordinates) VALUES '
-                           f'(\'{post_title}\', \'{post_description}\', {post_latitude}, {post_longitude}, \'f8737db2-5712-40bc-a6cc-0037ad417a00\', ARRAY[{post_latitude}, {post_longitude}])')
 
-            # Also insert image into database
-            #  cursor.execute('INSERT INTO app.users (display_name, email, password) VALUES (%s, %s, %s)',
-            #                            (post_title, post_description, post_latitude, post_longitude))
+            cursor.execute(
+                f'INSERT INTO app.posts (title, description, latitude, longitude, created_by, coordinates, image_name, location) VALUES '
+                f'(\'{post_title}\', \'{post_description}\', {post_latitude}, {post_longitude}, \'{created_by}\', ARRAY[{post_latitude}, {post_longitude}], \'{image}\','
+                f'\'SRID=4326;POINT({post_longitude} {post_latitude})\')')
 
             try:
 
                 cursor.execute('SELECT post_id FROM app.posts WHERE created_by = %s', (created_by,))
                 latest_post = cursor.fetchone()
-
-                # Also insert image into database
-                #  cursor.execute('INSERT INTO app.images (owner, image_path) VALUES (%s, %s)',
-                #                            (owner, image_path))
 
                 db_conn.commit()
             except Exception as e:
@@ -181,11 +195,83 @@ def get_post():
     id = str(request.args.get('id'))
     conn = db.get_db()
     cur = conn.cursor()
-    cur.execute("SELECT post_id, content, created_by, created_at FROM app.posts WHERE post_id = %s;", [id])
+    cur.execute(
+        "SELECT post_id, content, created_by, created_at, description, image_name FROM app.posts WHERE post_id = %s;",
+        [id])
     result = cur.fetchone()
-    output = dict(post_id=result[0], content=result[1], created_by=result[2], created_at=result[3])
+    output = dict(post_id=result[0], content=result[1], created_by=result[2], created_at=result[3],
+                  description=result[4], image_name=result[5])
+
+    if result[5]:
+        return send_from_directory(app.config['UPLOAD_FOLDER'],
+                                   result[5])
+
     conn.close()
     return output
+
+
+@bp.route("/post/image", methods=['GET'])
+def get_post_image():
+    id = str(request.args.get('id'))
+    conn = db.get_db()
+    cur = conn.cursor()
+    cur.execute("SELECT image_name FROM app.posts WHERE post_id = %s;", [id])
+    result = cur.fetchone()
+
+    conn.close()
+
+    if result[0]:
+        return send_from_directory(app.config['UPLOAD_FOLDER'],
+                                   result[0])
+    else:
+        return {
+            "success": False,
+        }
+
+
+@bp.route("/post/nearest", methods=['GET'])
+def get_nearest_posts():
+    earth_radius = 6371
+    distance = 25
+    number_of_results = 2
+
+    id = str(request.args.get('id'))
+    conn = db.get_db()
+    cur = conn.cursor()
+    # cur.execute("SELECT image_name FROM app.posts WHERE post_id = %s;", [id])
+    cur.execute("SELECT ST_X(location::geometry), ST_Y(location::geometry) FROM app.posts WHERE post_id = %s;", [id])
+
+    result = cur.fetchall()
+
+    if result:
+        latitude = result[0][1]
+        longitude = result[0][0]
+
+        # print(result[0][0])
+
+        print("Latitude: ", latitude)
+        print("Longitude: ", longitude)
+
+        # cur.execute(f"SELECT post_id, ({earth_radius} * acos(cos(radians({latitude})) * cos(radians(coordinates[0])) * cos(radians(coordinates[1]) - radians({longitude})) + sin(radians({latitude})) * sin(radians(radians(coordinates[0])))) AS distance FROM app.posts HAVING distance < {distance} ORDER BY distance LIMIT {number_of_results} OFFSET 0;")
+
+        # cur.execute(
+        #     f"SELECT post_id, ({earth_radius} * acos(cos(radians({latitude})) * cos(radians(coordinates[0])) * cos(radians(coordinates[1]) - radians({longitude})) + sin(radians({latitude})) * sin(radians(radians(coordinates[0])))) AS distance FROM app.posts HAVING distance < {distance} ORDER BY distance LIMIT {number_of_results} OFFSET 0;")
+
+        cur.execute(
+            f"SELECT * FROM app.posts order by location <-> \'SRID=4326;POINT({longitude} {latitude})\' limit {number_of_results};")
+        result = cur.fetchall()
+
+    conn.close()
+
+    return result
+
+    # if result[0]:
+    #     return send_from_directory(app.config['UPLOAD_FOLDER'],
+    #                                result[0])
+    # else:
+    #     return {
+    #         "success": False,
+    #     }
 
 # @bp.route("/post", methods=['GET'])
 # def get_post():

@@ -9,6 +9,9 @@ app.register_blueprint(posts.bp)
 app.register_blueprint(login.bp)
 app.register_blueprint(images.bp)
 
+
+
+
 app.wsgi_app = ProxyFix(
     app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
 )
