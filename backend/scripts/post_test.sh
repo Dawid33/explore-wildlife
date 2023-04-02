@@ -1,5 +1,7 @@
 #!/bin/sh
 
+#sh backend/scripts/post_test.sh
+
 path_login="api/login"
 path_register="api/register"
 path_create_post="api/create-post"
@@ -25,7 +27,7 @@ password="password=test"
 #post_title="From Shell"
 #post_description="Hi. This is post from shell"
 #post_latitude="12.3"
-#post_longitude="542.1"
+#post_longitude="42.1"
 #created_by="f8737db2-5712-40bc-a6cc-0037ad417a00"
 #image="backend/images/test.jpeg"
 ##image=""
@@ -39,8 +41,7 @@ password="password=test"
 #curl -X POST -F "post_title=From Shell" -F "post_description=Hi. This is post from shell" -F "post_latitude=12.3" -F "post_longitude=521.1" -F "created_by=f8737db2-5712-40bc-a6cc-0037ad417a00" -F "file=@backend/images/test.jpeg" http://127.0.0.1:8080/$path_create_post
 
 # Get post
-post_id="151bbb26-56f9-4207-b2a0-5f8e850bf9ef"
-post_id="c8c2ed17-28cc-48ba-b2d8-a00544e194fb"
+post_id="83ef783d-6970-420b-bd8e-383dc43b30bf"
 
 #curl -X GET "http://127.0.0.1:8080/$path_get_post_image?id=$post_id"
 

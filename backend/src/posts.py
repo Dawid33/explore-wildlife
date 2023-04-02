@@ -75,8 +75,9 @@ def create_post():
             cursor = db_conn.cursor()
 
             cursor.execute(
-                f'INSERT INTO app.posts (title, description, latitude, longitude, created_by, coordinates, image_name) VALUES '
-                f'(\'{post_title}\', \'{post_description}\', {post_latitude}, {post_longitude}, \'{created_by}\', ARRAY[{post_latitude}, {post_longitude}], \'{image}\')')
+                f'INSERT INTO app.posts (title, description, latitude, longitude, created_by, coordinates, image_name, location) VALUES '
+                f'(\'{post_title}\', \'{post_description}\', {post_latitude}, {post_longitude}, \'{created_by}\', ARRAY[{post_latitude}, {post_longitude}], \'{image}\','
+                f'\'SRID=4326;POINT({post_longitude} {post_latitude})\')')
 
             try:
 
@@ -233,41 +234,45 @@ def get_post_image():
 def get_nearest_posts():
     earth_radius = 6371
     distance = 25
-    number_of_results = 20
+    number_of_results = 2
 
     id = str(request.args.get('id'))
     conn = db.get_db()
     cur = conn.cursor()
     # cur.execute("SELECT image_name FROM app.posts WHERE post_id = %s;", [id])
-    cur.execute("SELECT coordinates FROM app.posts WHERE post_id = %s;", [id])
+    cur.execute("SELECT ST_X(location::geometry), ST_Y(location::geometry) FROM app.posts WHERE post_id = %s;", [id])
 
     result = cur.fetchall()
 
     if result:
-        latitude = result[0][0][0]
-        longitude = result[0][0][1]
+        latitude = result[0][1]
+        longitude = result[0][0]
+
+        # print(result[0][0])
 
         print("Latitude: ", latitude)
         print("Longitude: ", longitude)
 
-        cur.execute(f"SELECT post_id, ({earth_radius} * acos(cos(radians({latitude})) * cos(radians(coordinates[0])) * cos(radians(coordinates[1]) - radians({longitude})) + sin(radians({latitude})) * sin(radians(radians(coordinates[0])))) AS distance FROM app.posts HAVING distance < {distance} ORDER BY distance LIMIT {number_of_results} OFFSET 0;")
+        # cur.execute(f"SELECT post_id, ({earth_radius} * acos(cos(radians({latitude})) * cos(radians(coordinates[0])) * cos(radians(coordinates[1]) - radians({longitude})) + sin(radians({latitude})) * sin(radians(radians(coordinates[0])))) AS distance FROM app.posts HAVING distance < {distance} ORDER BY distance LIMIT {number_of_results} OFFSET 0;")
+
+        # cur.execute(
+        #     f"SELECT post_id, ({earth_radius} * acos(cos(radians({latitude})) * cos(radians(coordinates[0])) * cos(radians(coordinates[1]) - radians({longitude})) + sin(radians({latitude})) * sin(radians(radians(coordinates[0])))) AS distance FROM app.posts HAVING distance < {distance} ORDER BY distance LIMIT {number_of_results} OFFSET 0;")
 
         cur.execute(
-            f"SELECT post_id, ({earth_radius} * acos(cos(radians({latitude})) * cos(radians(coordinates[0])) * cos(radians(coordinates[1]) - radians({longitude})) + sin(radians({latitude})) * sin(radians(radians(coordinates[0])))) AS distance FROM app.posts HAVING distance < {distance} ORDER BY distance LIMIT {number_of_results} OFFSET 0;")
-
+            f"SELECT * FROM app.posts order by location <-> \'SRID=4326;POINT({longitude} {latitude})\' limit {number_of_results};")
         result = cur.fetchall()
 
     conn.close()
 
     return result
 
-    if result[0]:
-        return send_from_directory(app.config['UPLOAD_FOLDER'],
-                                   result[0])
-    else:
-        return {
-            "success": False,
-        }
+    # if result[0]:
+    #     return send_from_directory(app.config['UPLOAD_FOLDER'],
+    #                                result[0])
+    # else:
+    #     return {
+    #         "success": False,
+    #     }
 
 # @bp.route("/post", methods=['GET'])
 # def get_post():
