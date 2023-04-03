@@ -10,6 +10,7 @@ CREATE TABLE app.users (
 	display_name varchar NULL DEFAULT 'Display name not set',
 	email varchar NOT NULL,
 	password varchar NOT NULL,
+	profile_pic_name varchar DEFAULT '',
 	CONSTRAINT users_pk PRIMARY KEY (user_id)
 );
 
