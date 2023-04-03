@@ -1,9 +1,22 @@
-from flask import Blueprint, render_template, request, url_for, redirect, flash, session
+from flask import Blueprint, render_template, request, url_for, redirect, flash, session, send_from_directory
 
 from . import db
 
 bp = Blueprint('login', __name__, url_prefix="/api")
 
+import os
+from flask import Flask, request
+from werkzeug.utils import secure_filename
+
+UPLOAD_FOLDER = 'images/users'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['SESSION_TYPE'] = 'filesystem'
+
+def allowed_file(filename):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @bp.route("/users", methods=['GET'])
 def get_users():
@@ -106,6 +119,58 @@ def update_profile(user_id):
     db_conn.close()
     return result
 
+@bp.route("/users/<uuid:user_id>/update-profile-pic", methods=['POST'])
+def update_profile_pic(user_id):
+    result = {
+        "success": False,
+    }
+
+    try:
+        file = request.files['file']
+        # file = request.data
+
+        print('File: ', file)
+
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            print("No file!!")
+
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            print('File name: ', filename)
+
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            image = filename
+
+
+    except Exception as e:
+        print("No image")
+        print(e)
+        result['error'] = 'Internal Error: Failed while reading post request form data'
+        return result
+
+    try:
+        db_conn = db.get_db()
+    except Exception as e:
+        print(e)
+        result['error'] = 'Internal Error: Cannot connect to database'
+        return result
+
+    if result.get('error') is None:
+        try:
+            cursor = db_conn.cursor()
+            cursor.execute(f"UPDATE app.users "
+                           f"SET profile_pic_name = \'{image}\'"
+                           f"WHERE user_id = \'{user_id}\'")
+            db_conn.commit()
+        except Exception as e:
+            print(e)
+            result['error'] = 'Internal Error: Database request failed, unable to register user'
+        result['success'] = True
+
+    db_conn.close()
+    return result
 
 @bp.route('/register', methods=['POST'])
 def register():
@@ -223,3 +288,22 @@ def login():
         # return result
     db_conn.close()
     return result
+
+
+@bp.route("/user/profile-pic", methods=['GET'])
+def get_profile_pic_image():
+    id = str(request.args.get('id'))
+    conn = db.get_db()
+    cur = conn.cursor()
+    cur.execute("SELECT profile_pic_name FROM app.users WHERE user_id = %s;", [id])
+    result = cur.fetchone()
+
+    conn.close()
+
+    if result[0]:
+        return send_from_directory(app.config['UPLOAD_FOLDER'],
+                                   result[0])
+    else:
+        return {
+            "success": False,
+        }

@@ -1,6 +1,6 @@
 # from PIL.Image import Image
 import psycopg2.extras
-from flask import Blueprint, send_from_directory
+from flask import Blueprint, send_from_directory, render_template, request, url_for, redirect, flash, session
 
 from . import db
 
@@ -79,6 +79,7 @@ def create_post():
                 f'(\'{post_title}\', \'{post_description}\', {post_latitude}, {post_longitude}, \'{created_by}\', ARRAY[{post_latitude}, {post_longitude}], \'{image}\','
                 f'\'SRID=4326;POINT({post_longitude} {post_latitude})\')')
 
+            # Possibly returning the newly created post
             try:
 
                 cursor.execute('SELECT post_id FROM app.posts WHERE created_by = %s', (created_by,))
@@ -234,7 +235,13 @@ def get_post_image():
 def get_nearest_posts():
     earth_radius = 6371
     distance = 25
-    number_of_results = 2
+    number_of_results = 10
+
+    # Checking if values exist
+    try:
+        number_of_results = request.form['num_results']
+    except Exception as e:
+        print('No amount specified, using default value')
 
     id = str(request.args.get('id'))
     conn = db.get_db()

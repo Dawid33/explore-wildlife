@@ -82,3 +82,12 @@ def upload_image():
 # def upload_image():
 #     request.args.get("id")
 #     return "Hello"
+# @bp.route("/query_image", methods=['GET'])
+def query_image():
+    return "Hello"
+
+
+def upload_image():
+    request.args.get("id")
+    return "Hello"
+
