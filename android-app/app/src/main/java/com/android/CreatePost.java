@@ -3,6 +3,7 @@ package com.android;
 import static com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,25 +14,37 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
+import com.android.api.CreatePostRequest;
+import com.android.api.RegisterRequest;
 import com.android.databinding.FragmentCreatePostBinding;
+import com.android.ui.LoginFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 
 public class CreatePost extends Fragment {
 
     private String coordinates = null;
     private String cityName = null;
 
+    private Bitmap postImage = null;
+
+    private double latitude = 0, longitude = 0;
     private FragmentCreatePostBinding binding;
 
     public CreatePost() {
@@ -56,12 +69,19 @@ public class CreatePost extends Fragment {
                         try {
 
                             // Gets the coordinates of the location and concatenates them into a string.
-                            coordinates = location.getLatitude() + ", " + location.getLongitude();
+
+                            latitude = location.getLatitude();
+                            longitude = location.getLongitude();
+
+//                            coordinates = location.getLatitude() + ", " + location.getLongitude();
+                            coordinates = latitude + ", " + longitude;
+
 
                             // Gets city closest to cooridantes.
                             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                             cityName = addresses.get(0).getLocality();
                             binding.postLocationInput.setText(cityName);
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -73,6 +93,7 @@ public class CreatePost extends Fragment {
                     Manifest.permission.READ_EXTERNAL_STORAGE
             });
         }
+
 
     }
 
@@ -88,6 +109,18 @@ public class CreatePost extends Fragment {
     }
 
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        binding.createPostButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendCreatePostRequest();
+            }
+        });
+    }
+
     // Getting location permission making sure its fine and coarse. Printing a toast if not.
     private final ActivityResultLauncher<String[]> locationPermissionRequest =
             registerForActivityResult(new ActivityResultContracts
@@ -95,7 +128,7 @@ public class CreatePost extends Fragment {
                         Boolean fineLocationGranted = result.getOrDefault(
                                 Manifest.permission.ACCESS_FINE_LOCATION, false);
                         Boolean coarseLocationGranted = result.getOrDefault(
-                                Manifest.permission.ACCESS_COARSE_LOCATION,false);
+                                Manifest.permission.ACCESS_COARSE_LOCATION, false);
                         if (fineLocationGranted != null && fineLocationGranted) {
                             // Location permission granted fully.
                         } else if (coarseLocationGranted != null && coarseLocationGranted) {
@@ -106,16 +139,14 @@ public class CreatePost extends Fragment {
 
                         Boolean readStorageGranted = result.getOrDefault(Manifest.permission.READ_EXTERNAL_STORAGE, false);
 
-                        if(readStorageGranted){
+                        if (readStorageGranted) {
 //                            Nice.
-                        }
-                        else {
+                        } else {
                             Toast.makeText(getContext(), "App needs to view thumbnails", Toast.LENGTH_SHORT).show();
 
                         }
                     }
             );
-
 
 
     private void setThumbnail() {
@@ -124,12 +155,39 @@ public class CreatePost extends Fragment {
 
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
 
-        Bitmap bitmap = BitmapFactory.decodeFile(UriString,bmOptions);
+//        Bitmap bitmap = BitmapFactory.decodeFile(UriString,bmOptions);
+
+        postImage = BitmapFactory.decodeFile(UriString, bmOptions);
+
+//        bitmap = BitmapFactory.decodeFile(UriString,bmOptions);
         // Rotate the thumbnail to the correct orientation.
         Matrix matrix = new Matrix();
         matrix.postRotate(90);
-        Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+
+        Bitmap rotated = Bitmap.createBitmap(postImage, 0, 0, postImage.getWidth(), postImage.getHeight(), matrix, true);
 
         binding.createPostImage.setImageBitmap(rotated);
+    }
+
+    private void sendCreatePostRequest() {
+        String postTitle = String.valueOf(binding.postTitleInput.getText());
+        String postDescription = String.valueOf(binding.postDescriptionInput.getText());
+
+        FutureTask<CreatePostRequest.CreatePostRequestResult> createPost = new FutureTask<>(new CreatePostRequest(Globals.getUserID(), postTitle, postDescription, latitude, longitude, postImage));
+        ExecutorService exec = Executors.newSingleThreadExecutor();
+        exec.submit(createPost);
+        try {
+            CreatePostRequest.CreatePostRequestResult result = createPost.get();
+            if (!result.hasError) {
+                getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Create Post Error: " + result.error, Toast.LENGTH_SHORT).show());
+            }
+
+            // Switch activity no matter what in case login system doesn't work.
+//            LoginAndRegisterActivity currentActivity = (LoginAndRegisterActivity)getActivity();
+//            Intent app = new Intent(currentActivity, AppActivity.class);
+//            startActivity(app);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
