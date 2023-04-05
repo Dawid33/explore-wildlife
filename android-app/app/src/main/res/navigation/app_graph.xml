@@ -56,5 +56,8 @@
         <action
             android:id="@+id/action_createPost_to_bottom_nav_camera"
             app:destination="@id/bottom_nav_camera" />
+        <action
+            android:id="@+id/action_createPost_to_bottom_nav_home"
+            app:destination="@id/bottom_nav_home" />
     </fragment>
 </navigation>

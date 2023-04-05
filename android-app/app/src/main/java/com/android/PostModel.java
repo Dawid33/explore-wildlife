@@ -1,5 +1,7 @@
 package com.android;
 
+import android.graphics.Bitmap;
+
 /**
  * Represents and holds everything a post contains
  */
@@ -10,6 +12,9 @@ public class PostModel {
 //    WILL PROBABLY NEED TO REPLACE THE TYPE FOR IMAGE AT ONE POINT, PERHAPS A REFERENCE TO WHERE IT IS STORED?
     private int image;
     private int avatar;
+
+    private Bitmap post_image;
+    private Bitmap avatar_image;
 
     public PostModel(String username, String time, int likes) {
         this.username = username;

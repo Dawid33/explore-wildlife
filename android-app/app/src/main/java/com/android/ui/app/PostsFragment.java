@@ -24,6 +24,9 @@ public class PostsFragment extends Fragment implements PostsRecyclerViewInterfac
 //    private RecyclerView.Adapter adapter;
 
     PostsAdapter postsAdapter;
+
+    private static final String createPostApiUrl = "http://10.0.2.2:8080/api/posts";
+
     //    This list will be everything stored in the recycler view
     private List<String> list;
 

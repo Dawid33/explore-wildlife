@@ -29,6 +29,7 @@ import com.android.api.CreatePostRequest;
 import com.android.api.RegisterRequest;
 import com.android.databinding.FragmentCreatePostBinding;
 import com.android.ui.LoginFragment;
+import com.android.ui.RegisterFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
@@ -117,6 +118,7 @@ public class CreatePost extends Fragment {
             @Override
             public void onClick(View view) {
                 sendCreatePostRequest();
+
             }
         });
     }
@@ -164,9 +166,9 @@ public class CreatePost extends Fragment {
         Matrix matrix = new Matrix();
         matrix.postRotate(90);
 
-        Bitmap rotated = Bitmap.createBitmap(postImage, 0, 0, postImage.getWidth(), postImage.getHeight(), matrix, true);
+        postImage = Bitmap.createBitmap(postImage, 0, 0, postImage.getWidth(), postImage.getHeight(), matrix, true);
 
-        binding.createPostImage.setImageBitmap(rotated);
+        binding.createPostImage.setImageBitmap(postImage);
     }
 
     private void sendCreatePostRequest() {
