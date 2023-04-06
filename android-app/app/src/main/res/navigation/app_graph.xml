@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/bottom_nav_account"
-        android:name="com.android.ui.AccountFragment"
+        android:name="com.android.ui.app.AccountFragment"
         android:label="Account"
         tools:layout="@layout/fragment_account" />
 
@@ -27,9 +27,34 @@
         android:id="@+id/bottom_nav_camera"
         android:name="com.android.ui.app.CameraFragment"
         android:label="Camera"
-        tools:layout="@layout/fragment_camera" />
+        tools:layout="@layout/fragment_camera" >
+        <argument
+            android:name="photoPath"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_bottom_nav_camera_to_createPost"
+            app:destination="@id/createPost" />
+    </fragment>
     <fragment
         android:id="@+id/bottom_nav_maps"
         android:name="com.android.ui.app.MapsFragment"
         android:label="MapsFragment" />
+    <fragment android:id="@+id/placeholder" />
+    <fragment
+        android:id="@+id/bottom_nav_bestiary"
+        android:name="com.android.ui.app.BestiaryFragment"
+        android:label="fragment_bestiary"
+        tools:layout="@layout/fragment_bestiary" />
+    <fragment
+        android:id="@+id/createPost"
+        android:name="com.android.ui.app.CreatePostFragment"
+        android:label="fragment_create_post"
+        tools:layout="@layout/fragment_create_post" >
+        <argument
+            android:name="photoPath"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_createPost_to_bottom_nav_camera"
+            app:destination="@id/bottom_nav_camera" />
+    </fragment>
 </navigation>

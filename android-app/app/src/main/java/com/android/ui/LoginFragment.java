@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.android.AppActivity;
+import com.android.Global;
 import com.android.LoginAndRegisterActivity;
 import com.android.R;
 import com.android.api.LoginRequest;
@@ -67,12 +68,12 @@ public class LoginFragment extends Fragment {
                     LoginRequestResult result = login.get();
                     if (!result.isLoggedIn) {
                         getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Login Error: " + result.error, Toast.LENGTH_SHORT).show());
+                    } else {
+                        Global.loggedInUserID = result.userUuid;
+                        LoginAndRegisterActivity currentActivity = (LoginAndRegisterActivity)getActivity();
+                        Intent app = new Intent(currentActivity, AppActivity.class);
+                        startActivity(app);
                     }
-
-                    // Switch activity no matter what in case login system doesn't work.
-                    LoginAndRegisterActivity currentActivity = (LoginAndRegisterActivity)getActivity();
-                    Intent app = new Intent(currentActivity, AppActivity.class);
-                    startActivity(app);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

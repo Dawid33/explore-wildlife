@@ -79,3 +79,10 @@ Both `app.py` and `dev.py` shouldn't require substantial changes throughout the
 project. The business code is stored in `src` which contains all the API request
 handlers.
 
+## Testing HTTP requests
+
+```commandline
+wget --post-data 'param=value&param=value' {destination}
+
+
+```

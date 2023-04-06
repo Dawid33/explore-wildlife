@@ -23,6 +23,7 @@ def download_image():
     cur = conn.cursor()
     try:
         cur.execute("SELECT image_id, image_path FROM app.images WHERE image_id = %s;", [id])
+
         result = cur.fetchone()
         conn.close()
         print(result[1])
@@ -57,8 +58,7 @@ def upload_image():
             'INSERT INTO app.images (image_id, name, owner, image_path) VALUES (%s, %s, %s, %s);',
             (image_id, str(image.filename), default_user_uuid, str(image_path)))
 
-        cur.execute("SELECT name FROM app.images WHERE image_id = %s;", [image_id])
-        name = cur.fetchone()[0]
+        response["image_id"] = image_id
         conn.commit()
 
         image = request.files['image']
@@ -72,3 +72,12 @@ def upload_image():
 
     response["success"] = True
     return response
+
+def query_image():
+    return "Hello"
+
+
+def upload_image():
+    request.args.get("id")
+    return "Hello"
+

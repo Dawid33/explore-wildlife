@@ -26,22 +26,21 @@ public class UploadImageRequest implements Callable<UploadImageRequest.UploadIma
 
     public static final String uploadRequestApi = Global.baseUrl + "/api/upload_image";
     public Bitmap image;
-    Activity activity;
-    public File path;
 
     public class UploadImageRequestResult {
         public String error;
         public boolean requestSucceeded;
+        public JSONObject data;
 
-        public UploadImageRequestResult(boolean requestSucceeded, String error) {
+        public UploadImageRequestResult(boolean requestSucceeded, String error, JSONObject data) {
             this.error = error;
             this.requestSucceeded = requestSucceeded;
+            this.data = data;
         }
     }
 
-    public UploadImageRequest(Bitmap image, File path) {
+    public UploadImageRequest(Bitmap image) {
         this.image = image;
-        this.path = path;
     }
 
     @Override
@@ -63,28 +62,28 @@ public class UploadImageRequest implements Callable<UploadImageRequest.UploadIma
                     .build();
         } catch(Exception e) {
             e.printStackTrace();
-            return new UploadImageRequestResult(false, "Unknown error occurred.");
+            return new UploadImageRequestResult(false, "Unknown error occurred.", null);
         }
 
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                return new UploadImageRequestResult(false, "Unexpected code " + response);
+                return new UploadImageRequestResult(false, "Unexpected code " + response, null);
             }
 
             JSONObject json = new JSONObject(response.body().string());
             if (json.has("success")) {
                 boolean success = (boolean) json.get("success");
                 if (success) {
-                    return new UploadImageRequestResult(true, "");
+                    return new UploadImageRequestResult(true, "", json);
                 } else if (json.has("error")) {
-                    return new UploadImageRequestResult(false, (String) json.get("error"));
+                    return new UploadImageRequestResult(false, (String) json.get("error"), null);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
-            // Bypass login on error because of strange ssl issues on campus.
+//             Bypass login on error because of strange ssl issues on campus.
 //            return true;
         }
-        return new UploadImageRequestResult(false, "Unknown error occurred.");
+        return new UploadImageRequestResult(false, "Unknown error occurred.", null);
     }
 }

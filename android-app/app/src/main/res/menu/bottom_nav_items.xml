@@ -8,7 +8,8 @@
 
     <item android:id="@+id/bottom_nav_bestiary"
         android:title="Bestiary"
-        android:icon="@drawable/paw_print"
+        android:actionLayout="@layout/fragment_bestiary"
+        android:icon="@drawable/paw"
         android:enabled="true" />
 
     <item android:id="@+id/bottom_nav_home"

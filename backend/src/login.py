@@ -1,19 +1,19 @@
-from flask import Blueprint, render_template, request, url_for, redirect, flash, session
+from flask import Blueprint, render_template, request, url_for, redirect, flash, session, send_from_directory
 
 from . import db
 
 bp = Blueprint('login', __name__, url_prefix="/api")
 
+import os
+from flask import Flask, request
+from werkzeug.utils import secure_filename
 
-@bp.route("/users", methods=['GET'])
-def get_users():
-    conn = db.get_db()
-    cur = conn.cursor()
-    cur.execute("SELECT user_id, display_name, email, password FROM app.users;")
-    result = cur.fetchall()
-    output = [{"user_id": x[0], "display_name": x[1], "email": x[2], "password": x[3]} for x in result]
-    conn.close()
-    return output
+UPLOAD_FOLDER = 'images/users'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['SESSION_TYPE'] = 'filesystem'
+
 
 
 @bp.route('/register', methods=['POST'])
@@ -60,6 +60,12 @@ def register():
         try:
             cursor.execute('INSERT INTO app.users (display_name, email, password) VALUES (%s, %s, %s)',
                            (display_name, email, password))
+
+            cursor.execute("SELECT user_id FROM app.users WHERE email = %s", (email,))
+            db_result = cursor.fetchone()
+
+            result['user_id'] = db_result[0]
+
             db_conn.commit()
         except Exception as e:
             print(e)
@@ -105,11 +111,26 @@ def login():
     elif db_result[0] != password:
         result['error'] = 'Incorrect password'
 
-    db_conn.close()
+    # db_conn.close()
     if result.get('error'):
         result['success'] = False
-        return result
+        # return result
     else:
+        try:
+            cursor = db_conn.cursor()
+            cursor.execute("SELECT user_id FROM app.users WHERE email = %s", (email,))
+            db_result = cursor.fetchone()
+
+            result['user_id'] = db_result[0]
+        except Exception as e:
+            print(e)
+            result['error'] = 'Internal Error: Failed to execute SQL query'
+            # db_conn.close()
+            # return result
+
         result['success'] = True
-        return result
+        # return result
+    db_conn.close()
+    return result
+
 

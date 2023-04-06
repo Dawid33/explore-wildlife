@@ -40,7 +40,12 @@ exist. If you accidentally break your database beyond reason (`¯\_(ツ)_/¯`) t
 just delete that folder and restart the docker containers.
 
 ```commandline
+sudo rm -rf docker/postgres_database/
+```
+
+```commandline
 docker compose down
+docker-compose down --rmi all --volumes
 docker compse up -d
 ```
 

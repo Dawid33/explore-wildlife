@@ -16,10 +16,12 @@ public class LoginRequest implements Callable<LoginRequest.LoginRequestResult> {
     public class LoginRequestResult {
         public String error;
         public boolean isLoggedIn;
+        public String userUuid = null;
 
-        public LoginRequestResult(boolean isLoggedIn, String error) {
+        public LoginRequestResult(boolean isLoggedIn, String error, String userUuid) {
             this.error = error;
             this.isLoggedIn = isLoggedIn;
+            this.userUuid = userUuid;
         }
     }
 
@@ -48,7 +50,7 @@ public class LoginRequest implements Callable<LoginRequest.LoginRequestResult> {
             // Open a stream to write data to the request body
             OutputStreamWriter writer = new OutputStreamWriter(urlConnection.getOutputStream());
             // Write the multipart form to the body of the request
-//            writer.write(form.buildForm());
+            writer.write(form.buildForm());
             writer.close();
             urlConnection.connect();
 
@@ -60,9 +62,9 @@ public class LoginRequest implements Callable<LoginRequest.LoginRequestResult> {
             if (json.has("success")) {
                 boolean success = (boolean) json.get("success");
                 if (success) {
-                    return new LoginRequestResult(true, "");
+                    return new LoginRequestResult(true, "", json.getString("user_id"));
                 } else if (json.has("error")) {
-                    return new LoginRequestResult(false, (String) json.get("error"));
+                    return new LoginRequestResult(false, (String) json.get("error"), null);
                 }
             }
         } catch (Exception e) {
@@ -72,6 +74,6 @@ public class LoginRequest implements Callable<LoginRequest.LoginRequestResult> {
         } finally {
             if (urlConnection != null) { urlConnection.disconnect(); }
         }
-        return new LoginRequestResult(false, "Unknown error occurred.");
+        return new LoginRequestResult(false, "Unknown error occurred.", null);
     }
 }

@@ -6,9 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_background"
-    tools:context=".CreatePost">
+    tools:context=".ui.app.CreatePostFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
@@ -16,34 +15,35 @@
         android:background="@color/app_background"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHeight_percent=".75"
+        android:layout_marginTop="60dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.49"
+        app:layout_constraintVertical_bias="0.5"
         app:layout_constraintWidth_percent=".75">
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/account_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Create Post"
-            android:textColor="#FFFFFF"
-            android:textSize="30sp"
+            android:textColor="#ffffff"
+            android:textSize="25sp"
             android:textStyle="bold" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="5dp" />
+            android:layout_height="10dp" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:hint="TITLE"
+            android:hint="@string/title"
             android:textColorHint="@color/myrtle_green"
-            app:boxStrokeColor="#00FFFFFF"
+            app:boxStrokeColor="#000"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true"
             app:hintTextColor="@color/myrtle_green"
@@ -51,12 +51,13 @@
             app:startIconTint="@color/myrtle_green">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/postTitleInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_round"
                 android:backgroundTint="#040909"
-                android:inputType="textPersonName"
-                android:textColor="#FFFFFF"
+                android:inputType="text"
+                android:textColor="@color/columbia_blue"
                 android:textColorHint="@color/myrtle_green"
                 android:textCursorDrawable="@drawable/color_cursor"
                 android:textSize="11sp" />
@@ -68,14 +69,15 @@
             android:layout_height="15dp" />
 
 
-
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
 
-            android:hint="LOCATION"
+            android:hint="@string/location"
             android:textColorHint="@color/myrtle_green"
-            app:boxStrokeColor="#00FFFFFF"
+            app:boxStrokeColor="#000"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true"
             app:hintTextColor="@color/myrtle_green"
@@ -83,15 +85,19 @@
             app:startIconTint="@color/myrtle_green">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/postLocationInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_round"
                 android:backgroundTint="#040909"
-                android:inputType="textPersonName"
-                android:textColor="#FFFFFF"
+                android:inputType="text"
+                android:textColor="@color/columbia_blue"
                 android:textColorHint="@color/myrtle_green"
                 android:textCursorDrawable="@drawable/color_cursor"
-                android:textSize="11sp" />
+                android:textSize="11sp"
+                android:clickable="false"
+                android:focusable="false"
+                android:cursorVisible="false"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -103,13 +109,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:hint="CATEGORY"
+            android:hint="@string/category"
             android:textColorHint="@color/myrtle_green"
-            app:boxStrokeColor="#00FFFFFF"
+            app:boxStrokeColor="#000"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true"
             app:hintTextColor="@color/myrtle_green"
-            app:startIconDrawable="@drawable/location_pin_draw"
+            app:startIconDrawable="@drawable/categories_draw"
             app:startIconTint="@color/myrtle_green">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -118,7 +126,7 @@
                 android:background="@drawable/edit_round"
                 android:backgroundTint="#040909"
                 android:inputType="textPersonName"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/columbia_blue"
                 android:textColorHint="@color/myrtle_green"
                 android:textCursorDrawable="@drawable/color_cursor"
                 android:textSize="11sp" />
@@ -142,7 +150,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/description_draw"
-                android:drawablePadding="20dp"
+                android:drawablePadding="15dp"
                 android:text="DESCRIPTION"
                 android:textColor="@color/myrtle_green"
                 app:drawableTint="@color/myrtle_green" />
@@ -158,15 +166,24 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical" >
+                    android:orientation="vertical">
 
-                    <EditText
+                    <!--This is the text input field for the description box that gets bigger horizontally as the user types more text -->
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/postDescriptionInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="TYPE HERE"
-                        android:textColor="@color/white"
-                        android:textColorHint="@color/white"
-                        android:textSize="8sp" />
+                        android:background="@drawable/edit_round"
+                        android:backgroundTint="#040909"
+                        android:inputType="textMultiLine"
+                        android:textColor="@color/columbia_blue"
+                        android:textColorHint="@color/myrtle_green"
+                        android:hint="..."
+                        android:textCursorDrawable="@drawable/color_cursor"
+                        android:textSize="11sp"
+                        android:minHeight="40dp"
+                        />
                 </LinearLayout>
             </ScrollView>
 
@@ -174,59 +191,37 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="30dp" />
+            android:layout_height="15dp" />
 
 
         <RelativeLayout
-            android:layout_width="125dp"
-            android:layout_height="125dp"
-            android:layout_margin="10dp">
+            android:layout_width="144dp"
+            android:layout_height="192dp">
 
             <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="115dp"
-                android:layout_height="115dp"
+                android:id="@+id/createPostImage"
+                android:layout_width="144dp"
+                android:layout_height="192dp"
                 android:layout_centerInParent="true"
-                android:tint="@color/myrtle_green"
                 tools:src="@drawable/insert_picture_icon_draw" />
-
-            <ImageButton
-                android:id="@+id/imageButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:backgroundTint="#000000"
-                android:src="@drawable/trash_can_draw"
-                android:tint="#FF0000" />
 
         </RelativeLayout>
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="30dp" />
+            android:layout_height="15dp" />
 
         <Button
-            android:id="@+id/loginButton"
+            android:id="@+id/createPostButton"
+            style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="119dp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/aquamarine"
-            android:text="CREATE POST"
-            android:textColor="@color/app_background" />
+            android:text="CREATE"
+            android:textColor="@color/app_background"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
-
-    <ImageButton
-        android:id="@+id/goToLoginButton2"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:background="@null"
-        android:contentDescription="@string/back_to_login"
-        android:scaleType="fitCenter"
-        android:src="@drawable/go_back_arrow_draw"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/aquamarine" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

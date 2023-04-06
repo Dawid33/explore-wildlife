@@ -29,6 +29,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,12 +77,16 @@ public class CameraFragment extends Fragment {
         toggleFlash = binding.flashToggle;
         capture = binding.capture;
 
+
+
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             activityResultLauncher.launch(Manifest.permission.CAMERA);
         } else {
             startCamera();
         }
         return binding.getRoot();
+
+
     }
 
     public void startCamera() {
@@ -124,11 +130,13 @@ public class CameraFragment extends Fragment {
 
                 // This is the function that takes the picture.
                 capture.setOnClickListener(v -> {
+
                     // Checking for the write permission.
                     if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                         activityResultLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
                     } else {
                         takePicture(imageCapture);
+
                     }
                 });
 
@@ -145,6 +153,7 @@ public class CameraFragment extends Fragment {
 
     // This method will take the picture and save it to external storage.
     public void takePicture(ImageCapture imageCapture) {
+
         // This is the file where the image will be saved and it's name.
         final File file = new File(getActivity().getExternalFilesDir(null), System.currentTimeMillis() + ".jpeg");
 
@@ -162,6 +171,14 @@ public class CameraFragment extends Fragment {
                             file.getAbsolutePath(),
                             String.valueOf(System.currentTimeMillis()),
                             "From App");
+
+                    //                        Go to new fragment here
+
+//                    NavDirections nav = CameraFragmentDirections.actionBottomNavCameraToCreatePost(file.getAbsolutePath());
+//                    Navigation.findNavController(getView()).navigate(R.id.action_bottom_nav_camera_to_createPost);
+//                    CameraFragmentDirections.actionBottomNavCameraToCreatePost("hi");
+                    Navigation.findNavController(getView()).navigate(CameraFragmentDirections.actionBottomNavCameraToCreatePost(file.getAbsolutePath()));
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

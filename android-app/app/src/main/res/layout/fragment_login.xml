@@ -58,7 +58,7 @@
         app:layout_constraintWidth_percent=".75">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/postAvatarImage"
             android:layout_width="match_parent"
             android:layout_height="160dp"
             android:src="@drawable/main_icon"
@@ -69,7 +69,7 @@
             android:layout_height="41dp" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/login"
@@ -173,12 +173,12 @@
         <Button
             android:id="@+id/forgot"
             android:layout_width="wrap_content"
-            android:layout_height="25dp"
+            android:layout_height="30dp"
             android:background="#00FFFFFF"
             android:paddingBottom="0dp"
             android:text="@string/forgot_password"
             android:textColor="@color/columbia_blue"
-            android:textSize="7sp" />
+            android:textSize="9sp" />
 
         <Space
             android:layout_width="match_parent"

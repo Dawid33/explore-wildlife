@@ -1,29 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:paddingBottom="30dp">
 
-    <FrameLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="1dp">
+        app:cardBackgroundColor="#00FFFFFF"
+        app:cardElevation="0dp">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/button_bg" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Default text"
-            android:textColor="@color/aquamarine" />
-    </FrameLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/postAvatarImage"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bg_oval"
+                    android:outlineProvider="background"
+                    android:clipToOutline="true"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center|left"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/postUsername"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Username"
+                        android:textColor="@color/aquamarine" />
+
+                    <TextView
+                        android:id="@+id/postTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3d ago"
+                        android:textColor="@color/aquamarine"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_rounded_corners"
+                android:backgroundTint="@color/card_background"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_rounded_corners"
+                    android:backgroundTint="@color/card_background">
+
+                    <ImageView
+                        android:id="@+id/postImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:background="@drawable/bg_rounded_corners"
+                        android:outlineProvider="background"
+                        android:clipToOutline="true"
+                        tools:srcCompat="@tools:sample/avatars" />
+                </FrameLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:id="@+id/postLikes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="30dp"
+                        android:drawableLeft="@drawable/heart_draw"
+                        android:drawablePadding="5dp"
+                        android:text="69,420"
+                        android:textColor="@color/aquamarine"
+                        app:drawableTint="@color/aquamarine"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <Button
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:id="@+id/moreInfoPostButton"
+                        android:layout_width="60dp"
+                        android:layout_height="45dp"
+                        android:layout_marginEnd="15dp"
+                        android:text="···"
+                        android:textColor="@color/aquamarine"
+                        android:textSize="23sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <!--    <FrameLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:gravity="center_vertical"-->
+    <!--        tools:ignore="MissingConstraints"-->
+    <!--        tools:layout_editor_absoluteX="1dp">-->
+
+    <!--        <ImageView-->
+    <!--            android:id="@+id/imageView"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            app:srcCompat="@drawable/button_bg" />-->
+
+    <!--        <TextView-->
+    <!--            android:id="@+id/textView"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="Default text"-->
+    <!--            android:textColor="@color/aquamarine" />-->
+    <!--    </FrameLayout>-->
+
+</LinearLayout>
