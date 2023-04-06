@@ -60,7 +60,7 @@ public class RegisterRequest implements Callable<RegisterRequest.RegisterRequest
             // Open a stream to write data to the request body
             OutputStreamWriter writer = new OutputStreamWriter(urlConnection.getOutputStream());
             // Write the multipart form to the body of the request
-            writer.write(form.toString());
+            writer.write(form.buildForm());
             writer.close();
             urlConnection.connect();
 
