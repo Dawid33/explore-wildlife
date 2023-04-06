@@ -33,37 +33,6 @@ public class PostsFragment extends Fragment {
 
     private FragmentPostsBinding binding;
 
-    ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
-            new ActivityResultCallback<Uri>() {
-                @Override
-                public void onActivityResult(Uri uri) {
-                    System.out.println(uri.toString());
-
-                    FutureTarget<Bitmap> futureTarget =
-                            Glide.with(getContext())
-                                    .asBitmap()
-                                    .load(uri)
-                                    .submit();
-                    try {
-                        ExecutorService exec = Executors.newSingleThreadExecutor();
-                        FutureTask<Bitmap> getImage = new FutureTask<>(futureTarget::get);
-                        exec.submit(getImage);
-                        Bitmap image = getImage.get();
-
-                        FutureTask<UploadImageRequest.UploadImageRequestResult> getPosts = new FutureTask<>(new UploadImageRequest(image, getActivity().getExternalFilesDir(null)));
-                        exec.submit(getPosts);
-                        UploadImageRequest.UploadImageRequestResult result = getPosts.get();
-
-                        if (result.requestSucceeded) {
-                            getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Success!", Toast.LENGTH_SHORT).show());
-                        } else { getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Error uploading image", Toast.LENGTH_SHORT).show());
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,

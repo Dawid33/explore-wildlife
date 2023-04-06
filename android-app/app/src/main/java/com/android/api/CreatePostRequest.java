@@ -1,61 +1,71 @@
 package com.android.api;
+import android.graphics.Bitmap;
+
 import com.android.Global;
 
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.Callable;
 
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class CreatePostRequest implements Callable<CreatePostRequest.CreatePostRequestResult> {
-    public static final String createPostApiUrl = Global.baseUrl + "/api/login";
-    String email, password;
+    public static final String createPostApiUrl = Global.baseUrl + "/api/create-post";
+    String title, imageId;
 
     public class CreatePostRequestResult {
         public String error;
-        public boolean isLoggedIn;
+        public boolean success;
 
-        public CreatePostRequestResult(boolean isLoggedIn, String error) {
+        public CreatePostRequestResult(boolean success, String error) {
             this.error = error;
-            this.isLoggedIn = isLoggedIn;
+            this.success = success;
         }
     }
 
-    public CreatePostRequest(String email, String password) {
-        this.email = email;
-        this.password = password;
+    public CreatePostRequest(String title, String imageId) {
+        this.title = title;
+        this.imageId = imageId;
     }
 
     @Override
     public CreatePostRequestResult call() {
-        HttpURLConnection urlConnection = null;
+        OkHttpClient client = new OkHttpClient();
+        Request request = null;
+        try (ByteArrayOutputStream s = new ByteArrayOutputStream()) {
+            RequestBody body = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("post_title", this.title)
+                    .addFormDataPart("post_description", "default desc")
+                    .addFormDataPart("post_latitude", "1")
+                    .addFormDataPart("post_longitude", "1")
+                    .addFormDataPart("created_by", Global.loggedInUserID)
+                    .addFormDataPart("post_image_id", this.imageId)
+                    .build();
 
-        // Create Multipart form to send with the posts request.
-        String boundary = "===" + System.currentTimeMillis() + "===";
-        MultipartFormBody form = new MultipartFormBody(boundary);
-        form.addField("email", this.email);
-        form.addField("password", this.password);
+            request = new Request.Builder()
+                    .url(createPostApiUrl)
+                    .post(body)
+                    .build();
+        } catch(Exception e) {
+            e.printStackTrace();
+            return new CreatePostRequestResult(false, "Unknown error occurred.");
+        }
 
-        try {
-            URL url = new URL(createPostApiUrl);
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setDoOutput(true);
-            urlConnection.setChunkedStreamingMode(0);
-            urlConnection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                return new CreatePostRequestResult(false, "Unexpected code " + response);
+            }
 
-            // Open a stream to write data to the request body
-            OutputStreamWriter writer = new OutputStreamWriter(urlConnection.getOutputStream());
-            // Write the multipart form to the body of the request
-//            writer.write(form.buildForm());
-            writer.close();
-            urlConnection.connect();
-
-            // Read the response
-            String response = Utils.readStream(urlConnection.getInputStream());
-
-            JSONObject json = new JSONObject(response);
-            System.out.println(json);
+            JSONObject json = new JSONObject(response.body().string());
             if (json.has("success")) {
                 boolean success = (boolean) json.get("success");
                 if (success) {
@@ -66,10 +76,6 @@ public class CreatePostRequest implements Callable<CreatePostRequest.CreatePostR
             }
         } catch (Exception e) {
             e.printStackTrace();
-            // Bypass login on error because of strange ssl issues on campus.
-//            return true;
-        } finally {
-            if (urlConnection != null) { urlConnection.disconnect(); }
         }
         return new CreatePostRequestResult(false, "Unknown error occurred.");
     }

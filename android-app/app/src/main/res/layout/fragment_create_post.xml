@@ -212,7 +212,7 @@
             android:layout_height="15dp" />
 
         <Button
-            android:id="@+id/loginButton"
+            android:id="@+id/createPostButton"
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="119dp"
             android:layout_height="wrap_content"

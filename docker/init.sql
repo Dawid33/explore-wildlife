@@ -23,11 +23,9 @@ CREATE TABLE app.posts (
 	created_by uuid NOT NULL,
     created_at timestamp NOT NULL DEFAULT NOW(),
     is_public boolean NOT NULL DEFAULT true,
-    has_images boolean NOT NULL DEFAULT false,
     latitude float DEFAULT 1,
     longitude float DEFAULT 1,
     coordinates float[2],
-    image_name varchar DEFAULT '',
     location geography
 );
 
@@ -78,7 +76,7 @@ BEGIN
     INSERT INTO app.users (display_name, email, password) VALUES ('John Doe test', 'jdoe@example.com', 'jdoe');
     INSERT INTO app.users (profile_pic_id, user_id, display_name, email, password) VALUES (image_id, test_id, 'test', 'test@example.com', 'test');
 
-    INSERT INTO app.posts (post_id, content, created_by, has_images) VALUES (post_id, 'This is my post', test_id, true);
+    INSERT INTO app.posts (post_id, content, created_by) VALUES (post_id, 'This is my post', test_id);
     INSERT INTO app.post_images (post_id, image_id) VALUES (post_id, image_id);
 END $$;
 

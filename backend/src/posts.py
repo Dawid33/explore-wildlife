@@ -36,6 +36,7 @@ def create_post():
         post_description = request.form['post_description']
         post_latitude = float(request.form['post_latitude'])
         post_longitude = float(request.form['post_longitude'])
+        post_image_id = request.form['post_image_id']
         created_by = request.form['created_by']
         image = ""
     except Exception as e:
@@ -45,6 +46,7 @@ def create_post():
 
     try:
         db_conn = db.get_db()
+        cursor = db_conn.cursor()
     except Exception as e:
         print(e)
         result['error'] = 'Internal Error: Cannot connect to database'
@@ -57,46 +59,27 @@ def create_post():
     elif not post_longitude:
         result['error'] = 'Post longitude is required.'
 
-    try:
-        file = request.files['image']
-        # if user does not select file, browser also
-        # submit an empty part without filename
-        if file.filename == '':
-            print("No file!!")
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            image = filename
-    except Exception as e:
-        print("No image")
-
     if result.get('error') is None:
         try:
-            cursor = db_conn.cursor()
+            # Generate a new UUID
+            cursor.execute("SELECT \"uuid_generate_v4\"()")
+            post_id = cursor.fetchone()[0]
 
+            # Create a post with that UUID
             cursor.execute(
-                f'INSERT INTO app.posts (title, description, latitude, longitude, created_by, coordinates, image_name, location) VALUES '
-                f'(\'{post_title}\', \'{post_description}\', {post_latitude}, {post_longitude}, \'{created_by}\', ARRAY[{post_latitude}, {post_longitude}], \'{image}\','
-                f'\'SRID=4326;POINT({post_longitude} {post_latitude})\')')
+                f'INSERT INTO app.posts (post_id, title, description, latitude, longitude, created_by, coordinates, location) VALUES '
+                f'(%s, \'{post_title}\', \'{post_description}\', {post_latitude}, {post_longitude}, \'{created_by}\', ARRAY[{post_latitude}, {post_longitude}],'
+                f'\'SRID=4326;POINT({post_longitude} {post_latitude})\')', (post_id,))
 
-            # Possibly returning the newly created post
-            try:
-
-                cursor.execute('SELECT post_id FROM app.posts WHERE created_by = %s', (created_by,))
-                latest_post = cursor.fetchone()
-
-                db_conn.commit()
-            except Exception as e:
-                print(e)
-                result['error'] = 'Internal Error: Database request failed, unable to store image'
-            result['success'] = True
+            # Create a link between the new post and image id
+            cursor.execute('INSERT INTO app.post_images (post_id, image_id) VALUES (%s, %s)', (post_id, post_image_id))
 
             db_conn.commit()
         except Exception as e:
             print(e)
             result['error'] = 'Internal Error: Database request failed, unable to create post'
-        result['success'] = True
 
+    result['success'] = True
     db_conn.close()
     return result
 
@@ -176,15 +159,15 @@ def get_posts():
     conn = db.get_db()
     cur = conn.cursor()
     cur.execute(
-        "SELECT post_id, content, created_by, created_at, has_images FROM app.posts  where created_at in (SELECT max(created_at) FROM app.posts GROUP BY created_at) order by created_at desc limit 10")
+        "SELECT post_id, content, created_by, created_at FROM app.posts  where created_at in (SELECT max(created_at) FROM app.posts GROUP BY created_at) order by created_at desc limit 10")
     result = cur.fetchall()
     posts = []
     for raw_post in result:
         post = {"post_id": raw_post[0], "content": raw_post[1], "created_by": raw_post[2], "created_at": raw_post[3]}
-        if bool(raw_post[4]):
-            cur.execute("SELECT post_id, image_id FROM app.post_images WHERE post_id = %s", [post["post_id"]])
-            result = cur.fetchall()
-            post["images"] = [x[1] for x in result]
+
+        cur.execute("SELECT post_id, image_id FROM app.post_images WHERE post_id = %s", [post["post_id"]])
+        result = cur.fetchall()
+        post["images"] = [x[1] for x in result]
 
         cur.execute("select COUNT(post_id) from posts_likes pl where pl.post_id = %s;", [post["post_id"]])
         result = cur.fetchone()

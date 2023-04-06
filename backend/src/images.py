@@ -58,8 +58,7 @@ def upload_image():
             'INSERT INTO app.images (image_id, name, owner, image_path) VALUES (%s, %s, %s, %s);',
             (image_id, str(image.filename), default_user_uuid, str(image_path)))
 
-        cur.execute("SELECT name FROM app.images WHERE image_id = %s;", [image_id])
-        name = cur.fetchone()[0]
+        response["image_id"] = image_id
         conn.commit()
 
         image = request.files['image']

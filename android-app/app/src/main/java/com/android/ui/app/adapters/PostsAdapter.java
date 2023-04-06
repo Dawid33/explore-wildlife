@@ -84,12 +84,12 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 // Load avatar from server
                 Glide.with(viewHolder.view)
                         .load(imageApiUrl + userResult.account.get("profile_pic_id"))
-                        .into(viewHolder.postImage);
+                        .into(viewHolder.postAvatarImage);
 
                 // Only get the first image for simplicity, there might be more in the array
                 Glide.with(viewHolder.view)
                         .load(imageApiUrl + images.get(0))
-                        .into(viewHolder.postAvatarImage);
+                        .into(viewHolder.postImage);
 
             } catch (Exception e) {
                 e.printStackTrace();

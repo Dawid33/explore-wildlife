@@ -21,11 +21,19 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import com.android.api.CreatePostRequest;
+import com.android.api.UploadImageRequest;
 import com.android.databinding.FragmentCreatePostBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
+import org.json.JSONException;
+
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 
 public class CreatePostFragment extends Fragment {
 
@@ -83,10 +91,39 @@ public class CreatePostFragment extends Fragment {
 
         setThumbnail();
 
+        binding.createPostButton.setOnClickListener(view -> {
+            String UriString = CreatePostFragmentArgs.fromBundle(getArguments()).getPhotoPath();
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            Bitmap bitmap = BitmapFactory.decodeFile(UriString,bmOptions);
+
+            FutureTask<UploadImageRequest.UploadImageRequestResult> uploadImage = new FutureTask<>(new UploadImageRequest(bitmap));
+            ExecutorService exec = Executors.newSingleThreadExecutor();
+            exec.submit(uploadImage);
+
+            try {
+                UploadImageRequest.UploadImageRequestResult result = uploadImage.get();
+                String image_id = (String) result.data.get("image_id");
+
+                FutureTask<CreatePostRequest.CreatePostRequestResult> createPost = new FutureTask<>(new CreatePostRequest("My Post", image_id));
+                exec.submit(createPost);
+                CreatePostRequest.CreatePostRequestResult createPostResult = createPost.get();
+                if (createPostResult.success) {
+                    System.out.println("SUCCESS IN CREATING POST");
+                } else {
+                    System.out.println("FAILED IN CREATING POST");
+                }
+
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        });
+
         return binding.getRoot();
-
     }
-
 
     // Getting location permission making sure its fine and coarse. Printing a toast if not.
     private final ActivityResultLauncher<String[]> locationPermissionRequest =
