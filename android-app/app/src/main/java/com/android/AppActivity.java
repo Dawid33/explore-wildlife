@@ -24,6 +24,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import com.android.api.LoginRequest;
 import com.android.databinding.ActivityAppBinding;
 import com.android.ui.app.AccountFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -31,6 +32,10 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 
 public class AppActivity extends AppCompatActivity {
     private ActivityAppBinding binding;
@@ -111,6 +116,21 @@ public class AppActivity extends AppCompatActivity {
                         }
                     });
         });
+
+        // In case we are debugging and starting the app from this activity
+        // log in with the test account so that we have his uuid for
+        if (Global.loggedInUserID == null) {
+            FutureTask<LoginRequest.LoginRequestResult> login = new FutureTask<>(new LoginRequest("test@example.com", "test"));
+            ExecutorService exec = Executors.newSingleThreadExecutor();
+            exec.submit(login);
+            try {
+                Global.loggedInUserID = login.get().userUuid;
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     // Getting location permission making sure its fine and coarse. Printing a toast if not.

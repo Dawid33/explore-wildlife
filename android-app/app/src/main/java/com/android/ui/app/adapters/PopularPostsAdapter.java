@@ -1,4 +1,4 @@
-package com.android.ui.app;
+package com.android.ui.app.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -17,7 +17,6 @@ import com.android.R;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class PopularPostsAdapter extends RecyclerView.Adapter<PopularPostsAdapter.ViewHolder> {
     public static final String imageApiUrl = "https://explorewildlife.net/api/image?id=";

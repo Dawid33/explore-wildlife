@@ -9,6 +9,7 @@ CREATE TABLE app.users (
 	user_id uuid NOT NULL DEFAULT uuid_generate_v4(),
 	display_name varchar NULL DEFAULT 'Display name not set',
 	email varchar NOT NULL,
+	phone_number varchar DEFAULT NULL,
 	password varchar NOT NULL,
 	profile_pic_id uuid DEFAULT NULL,
 	CONSTRAINT users_pk PRIMARY KEY (user_id)

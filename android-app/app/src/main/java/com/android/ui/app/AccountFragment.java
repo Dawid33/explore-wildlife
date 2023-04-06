@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.android.AppActivity;
+import com.android.Global;
 import com.android.LoginAndRegisterActivity;
 import com.android.api.AccountRetrievalRequest;
 import com.android.api.LoginRequest;
@@ -39,25 +40,25 @@ public class AccountFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 //        PUT CODE HERE FOR PULLING USER INFORMATION FROM THE DATABASE
-        String username = "TestUser";
-        String email = "TestEmail";
-        String phoneNumber = "TestNumber";
+        String username = "DefaultDisplayName";
+        String email = "DefaultEmail";
+        String phoneNumber = "DefaultPhoneNumber";
 
-//        FutureTask<AccountRetrievalRequest.AccountRetrievalRequestResult> account = new FutureTask<>(new AccountRetrievalRequest());
-//        ExecutorService exec = Executors.newSingleThreadExecutor();
-//        exec.submit(account);
-//
-//        try {
-//            AccountRetrievalRequest.AccountRetrievalRequestResult result = account.get();
-//
-//// Set the values to the appropriate elements in the JSON
-//            username = result.account.get(0).toString();
-//            email = result.account.get(0).toString();
-//            phoneNumber = result.account.get(0).toString();
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        FutureTask<AccountRetrievalRequest.AccountRetrievalRequestResult> account = new FutureTask<>(new AccountRetrievalRequest(Global.loggedInUserID));
+        ExecutorService exec = Executors.newSingleThreadExecutor();
+        exec.submit(account);
+
+        try {
+            AccountRetrievalRequest.AccountRetrievalRequestResult result = account.get();
+
+            // Set the values to the appropriate elements in the JSON
+            username = result.account.get("display_name").toString();
+            email = result.account.get("email").toString();
+            phoneNumber = result.account.get("phone_number").toString();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         binding.signOutbutton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -36,9 +36,9 @@ def get_users():
 def get_user(user_id):
     conn = db.get_db()
     cur = conn.cursor()
-    cur.execute(f"SELECT user_id, display_name, email, profile_pic_id FROM app.users WHERE user_id = \'{user_id}\';")
+    cur.execute(f"SELECT user_id, display_name, email, profile_pic_id, phone_number FROM app.users WHERE user_id = \'{user_id}\';")
     result = cur.fetchone()
-    output = {"user_id": result[0], "display_name": result[1], "email": result[2], "profile_pic_id": result[3]}
+    output = {"user_id": result[0], "display_name": result[1], "email": result[2], "profile_pic_id": result[3], "phone_number": result[4]}
     conn.close()
     return output
 
