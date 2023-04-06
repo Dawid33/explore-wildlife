@@ -10,7 +10,7 @@ CREATE TABLE app.users (
 	display_name varchar NULL DEFAULT 'Display name not set',
 	email varchar NOT NULL,
 	password varchar NOT NULL,
-	profile_pic_name varchar DEFAULT '',
+	profile_pic_id uuid DEFAULT NULL,
 	CONSTRAINT users_pk PRIMARY KEY (user_id)
 );
 
@@ -71,15 +71,13 @@ test_id uuid := uuid_generate_v4();
 image_id uuid := uuid_generate_v4();
 post_id uuid := uuid_generate_v4();
 BEGIN
+    INSERT INTO app.images (image_id, owner, name, image_path) VALUES (image_id, test_id, 'Test Image', 'images/test.jpeg');
+
     INSERT INTO app.users (display_name, email, password) VALUES ('default', 'default@example.com', 'default');
     INSERT INTO app.users (display_name, email, password) VALUES ('John Doe test', 'jdoe@example.com', 'jdoe');
-    INSERT INTO app.users (user_id, display_name, email, password) VALUES (test_id, 'test', 'test@example.com', 'test');
+    INSERT INTO app.users (profile_pic_id, user_id, display_name, email, password) VALUES (image_id, test_id, 'test', 'test@example.com', 'test');
 
     INSERT INTO app.posts (post_id, content, created_by, has_images) VALUES (post_id, 'This is my post', test_id, true);
-    INSERT INTO app.posts (content, created_by, has_images) VALUES ('Just text post', test_id, false);
-    INSERT INTO app.posts (content, created_by, has_images) VALUES ('This is another post', test_id, false);
-
-    INSERT INTO app.images (image_id, owner, name, image_path) VALUES (image_id, test_id, 'Test Image', 'images/test.jpeg');
     INSERT INTO app.post_images (post_id, image_id) VALUES (post_id, image_id);
 END $$;
 

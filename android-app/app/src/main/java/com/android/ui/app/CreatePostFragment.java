@@ -1,4 +1,4 @@
-package com.android;
+package com.android.ui.app;
 
 import static com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY;
 
@@ -27,14 +27,14 @@ import com.google.android.gms.location.LocationServices;
 
 import java.util.List;
 
-public class CreatePost extends Fragment {
+public class CreatePostFragment extends Fragment {
 
     private String coordinates = null;
     private String cityName = null;
 
     private FragmentCreatePostBinding binding;
 
-    public CreatePost() {
+    public CreatePostFragment() {
         // Required empty public constructor
     }
 
@@ -120,7 +120,7 @@ public class CreatePost extends Fragment {
 
     private void setThumbnail() {
         assert getArguments() != null;
-        String UriString = CreatePostArgs.fromBundle(getArguments()).getPhotoPath();
+        String UriString = CreatePostFragmentArgs.fromBundle(getArguments()).getPhotoPath();
 
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
 

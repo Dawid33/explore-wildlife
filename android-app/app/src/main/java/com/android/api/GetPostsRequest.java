@@ -3,6 +3,8 @@ package com.android.api;
 import android.util.JsonReader;
 import android.util.JsonWriter;
 
+import com.android.Global;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -11,7 +13,7 @@ import java.net.URL;
 import java.util.concurrent.Callable;
 
     public class GetPostsRequest implements Callable<GetPostsRequest.GetPostsRequestResult> {
-        public static final String postsApiUrl = "https://explorewildlife.net/api/posts";
+        public static final String postsApiUrl = Global.baseUrl + "/api/posts";
 
         public class GetPostsRequestResult {
             public JSONArray posts;

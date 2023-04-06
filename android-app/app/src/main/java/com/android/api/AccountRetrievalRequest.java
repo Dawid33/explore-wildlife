@@ -3,34 +3,31 @@ package com.android.api;
 import android.util.JsonReader;
 import android.util.JsonWriter;
 
+import com.android.Global;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.PushbackReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.Callable;
 
 public class AccountRetrievalRequest implements Callable<AccountRetrievalRequest.AccountRetrievalRequestResult> {
-
-//    NOT TESTED This will point to a link of a specific user
-    private String userID = "GLOBAL_VAR?";
-    public String userApiUrl = "https://explorewildlife.net/api/users/" + userID;
+    private String userID;
+    public String userApiUrl = Global.baseUrl + "/api/users/";
 
     public class AccountRetrievalRequestResult {
-        public JSONArray account;
+        public JSONObject account;
         public boolean requestSucceeded;
 
-        public AccountRetrievalRequestResult(boolean requestSucceeded, JSONArray account) {
+        public AccountRetrievalRequestResult(boolean requestSucceeded, JSONObject account) {
             this.requestSucceeded = requestSucceeded;
             this.account = account;
         }
     }
 
 //    This can probably set the user ID to some sort of global value?
-    public AccountRetrievalRequest(){
-//        this.userID = "";
-    }
-
     public AccountRetrievalRequest(String userID) {
         this.userID = userID;
     }
@@ -39,17 +36,17 @@ public class AccountRetrievalRequest implements Callable<AccountRetrievalRequest
     public AccountRetrievalRequestResult call() throws Exception {
         HttpURLConnection urlConnection = null;
         try {
-            URL url = new URL(userApiUrl);
+            URL url = new URL(userApiUrl + userID);
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setDoInput(true);
             urlConnection.setChunkedStreamingMode(0);
             urlConnection.connect();
 
-            // Getting the response as a String, the JSONArray constructor will convert the string to a
+            // Getting the response as a String, the JSONObject constructor will convert the string to an Object
             String response = Utils.readStream(urlConnection.getInputStream());
-            JSONArray array = new JSONArray(response);
+            JSONObject object = new JSONObject(response);
 
-            return new AccountRetrievalRequestResult(true, array);
+            return new AccountRetrievalRequestResult(true, object);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

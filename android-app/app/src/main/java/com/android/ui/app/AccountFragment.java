@@ -43,21 +43,21 @@ public class AccountFragment extends Fragment {
         String email = "TestEmail";
         String phoneNumber = "TestNumber";
 
-        FutureTask<AccountRetrievalRequest.AccountRetrievalRequestResult> account = new FutureTask<>(new AccountRetrievalRequest());
-        ExecutorService exec = Executors.newSingleThreadExecutor();
-        exec.submit(account);
-
-        try {
-            AccountRetrievalRequest.AccountRetrievalRequestResult result = account.get();
-
-// Set the values to the appropriate elements in the JSON
-            username = result.account.get(0).toString();
-            email = result.account.get(0).toString();
-            phoneNumber = result.account.get(0).toString();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        FutureTask<AccountRetrievalRequest.AccountRetrievalRequestResult> account = new FutureTask<>(new AccountRetrievalRequest());
+//        ExecutorService exec = Executors.newSingleThreadExecutor();
+//        exec.submit(account);
+//
+//        try {
+//            AccountRetrievalRequest.AccountRetrievalRequestResult result = account.get();
+//
+//// Set the values to the appropriate elements in the JSON
+//            username = result.account.get(0).toString();
+//            email = result.account.get(0).toString();
+//            phoneNumber = result.account.get(0).toString();
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         binding.signOutbutton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,7 @@ import com.android.AnimalModel;
 import com.android.AnimalsRecyclerViewInterface;
 import com.android.R;
 import com.android.databinding.FragmentBestiaryBinding;
-import com.android.databinding.FragmentPostsBinding;
+import com.android.ui.app.adapters.AnimalsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
