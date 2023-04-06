@@ -1,5 +1,7 @@
 package com.android.api;
 
+import com.android.Global;
+
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -14,7 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Callable;
 
 public class RegisterRequest implements Callable<RegisterRequest.RegisterRequestResult> {
-    private static final String registerApiUrl = "https://explorewildlife.net/api/register";
+    private static final String registerApiUrl = Global.baseUrl + "/api/register";
     String username, email, password, phoneNumber;
 
     public class RegisterRequestResult {

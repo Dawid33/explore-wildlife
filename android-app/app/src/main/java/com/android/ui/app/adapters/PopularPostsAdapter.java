@@ -1,4 +1,4 @@
-package com.android.ui.app;
+package com.android.ui.app.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,25 +10,24 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.PopularPostsRecyclerViewInterface;
 import com.android.PostModel;
-import com.android.PostsRecyclerViewInterface;
 import com.android.R;
 
 import org.json.JSONArray;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
+public class PopularPostsAdapter extends RecyclerView.Adapter<PopularPostsAdapter.ViewHolder> {
     public static final String imageApiUrl = "https://explorewildlife.net/api/image?id=";
     JSONArray data;
 
     //    ======================== TEST VARIABLES =============================
-    String test1;
-    List<String> texts;
+//    String test1;
+//    List<String> texts;
 
     Context context;
-    private PostsRecyclerViewInterface postsRecyclerViewInterface;
+    private PopularPostsRecyclerViewInterface popularPostsRecyclerViewInterface;
     ArrayList<PostModel> postModelArrayList;
 
 //    ======================== TEST VARIABLES =============================
@@ -43,8 +42,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
 //      ============ TEST VARIABLES ===============
 
-        TextView postUsername, postTime, postLikes;
-        ImageView postAvatarImage;
+        TextView postLikes;
         ImageView postImage;
 
 
@@ -63,14 +61,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         }
 
 //        Attaching stuff from the layout file to this ViewHolder class
-        public ViewHolder(@NonNull View itemView, PostsRecyclerViewInterface postsRecyclerViewInterface) {
+        public ViewHolder(@NonNull View itemView, PopularPostsRecyclerViewInterface popularPostsRecyclerViewInterface) {
             super(itemView);
 
-            postUsername = itemView.findViewById(R.id.postUsername);
-            postTime = itemView.findViewById(R.id.postTime);
             postLikes = itemView.findViewById(R.id.postLikes);
 
-            postAvatarImage = itemView.findViewById(R.id.postAvatarImage);
             postImage = itemView.findViewById(R.id.postImage);
 
 
@@ -79,8 +74,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 @Override
                 public void onClick(View view) {
 
-                    if(checkInterfaceAndPosition(itemView, postsRecyclerViewInterface)){
-                        postsRecyclerViewInterface.onItemClick(getAdapterPosition());
+                    if(checkInterfaceAndPosition(itemView, popularPostsRecyclerViewInterface)){
+                        popularPostsRecyclerViewInterface.onItemClick(getAdapterPosition());
                     }
 //                    SUPER AWESOME ONCLICK CODE GOES HERE
                 }
@@ -94,7 +89,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
          * @param postsRecyclerViewInterface
          * @return
          */
-        private boolean checkInterfaceAndPosition(@NonNull View itemView, PostsRecyclerViewInterface postsRecyclerViewInterface){
+        private boolean checkInterfaceAndPosition(@NonNull View itemView, PopularPostsRecyclerViewInterface postsRecyclerViewInterface){
             if(postsRecyclerViewInterface != null){
                 int pos = getAdapterPosition();
 
@@ -114,18 +109,14 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 //        }
     }
 
-    public PostsAdapter(JSONArray data) {
+    public PopularPostsAdapter(JSONArray data) {
         this.data = data;
     }
 
-    public PostsAdapter(String test1) {
-        this.test1 = test1;
-    }
-
-    public PostsAdapter(Context context, ArrayList<PostModel> postModelArrayList, PostsRecyclerViewInterface postsRecyclerViewInterface) {
+    public PopularPostsAdapter(Context context, ArrayList<PostModel> postModelArrayList, PopularPostsRecyclerViewInterface popularPostsRecyclerViewInterface) {
         this.context = context;
         this.postModelArrayList = postModelArrayList;
-        this.postsRecyclerViewInterface = postsRecyclerViewInterface;
+        this.popularPostsRecyclerViewInterface = popularPostsRecyclerViewInterface;
     }
 
 
@@ -142,25 +133,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.post_row_item, viewGroup, false);
-        return new PostsAdapter.ViewHolder(view, postsRecyclerViewInterface);
+                .inflate(R.layout.popular_post_row_item, viewGroup, false);
+        return new PopularPostsAdapter.ViewHolder(view, popularPostsRecyclerViewInterface);
     }
 
-//    @Override
-//    public void onBindViewHolder(@NonNull PostsAdapter.ViewHolder viewHolder, int position) {
-//        try {
-//            viewHolder.textView.setText(data.get(position).toString());
-//            try {
-//                JSONArray images = ((JSONObject) data.get(position)).getJSONArray("images");
-//                // Only get the first image for simplicity, there might be more in the array
-//                Glide.with(viewHolder.view)
-//                        .load(imageApiUrl + images.get(0))
-//                        .into(viewHolder.imageView);
-//            } catch (Exception ignored) {}
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     /**
      * Called after onCreateViewHolder is called. Binds data to the View object
@@ -170,20 +146,15 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
      * @param position   The position of the item within the adapter's data set.
      */
     @Override
-    public void onBindViewHolder(@NonNull PostsAdapter.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull PopularPostsAdapter.ViewHolder viewHolder, int position) {
 //        viewHolder.testText.setText(test1);
 //
-        viewHolder.postUsername.setText(postModelArrayList.get(position).getUsername());
-        viewHolder.postTime.setText(postModelArrayList.get(position).getPostTime());
         viewHolder.postLikes.setText(Integer.toString(postModelArrayList.get(position).getPostLikes()));
-        viewHolder.postAvatarImage.setImageResource(R.drawable.heart_draw);
-        viewHolder.postImage.setImageResource(R.drawable.wallpaper);
+        viewHolder.postImage.setImageResource(R.drawable.heart_draw);
     }
 
     @Override
     public int getItemCount() {
-//        return data.length();
-//        return 0;
         return postModelArrayList.size();
     }
 

@@ -14,6 +14,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.Random;
 import java.util.concurrent.Callable;
 
+
+import com.android.Global;
+
+import org.json.JSONObject;
+
 import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -99,5 +104,8 @@ public class CreatePostRequest implements Callable<CreatePostRequest.CreatePostR
         String generatedString = new String(array, StandardCharsets.UTF_8);
 
         return generatedString;
+
+
+
     }
 }

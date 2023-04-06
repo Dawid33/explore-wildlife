@@ -1,25 +1,12 @@
 package com.android.ui.app;
 
-import static com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY;
-
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -28,8 +15,7 @@ import com.android.LoginAndRegisterActivity;
 import com.android.PopularPostsRecyclerViewInterface;
 import com.android.PostModel;
 import com.android.databinding.FragmentHomeBinding;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
+import com.android.ui.app.adapters.PopularPostsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

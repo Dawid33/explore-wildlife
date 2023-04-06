@@ -191,6 +191,11 @@ def get_posts():
             cur.execute("SELECT post_id, image_id FROM app.post_images WHERE post_id = %s", [post["post_id"]])
             result = cur.fetchall()
             post["images"] = [x[1] for x in result]
+
+        cur.execute("select COUNT(post_id) from posts_likes pl where pl.post_id = %s;", [post["post_id"]])
+        result = cur.fetchone()
+        post["likes"] = result[0]
+
         posts.append(post)
 
     conn.close()

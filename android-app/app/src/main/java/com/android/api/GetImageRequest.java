@@ -7,6 +7,8 @@ import android.media.Image;
 import android.media.MediaCodec;
 import android.media.MediaCodecList;
 
+import com.android.Global;
+
 import org.json.JSONArray;
 
 import java.io.ByteArrayInputStream;
@@ -18,7 +20,7 @@ import java.net.URL;
 import java.util.concurrent.Callable;
 
 public class GetImageRequest implements Callable<GetImageRequest.GetImageRequestResult> {
-    public static final String postsApiUrl = "https://explorewildlife.net/api/image?id=";
+    public static final String postsApiUrl = Global.baseUrl + "/api/image?id=";
     String imageId;
 
     public class GetImageRequestResult {

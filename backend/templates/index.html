@@ -9,16 +9,16 @@
 
     <ul>
         <li>
-            <button onclick="api('http://localhost:8080/api/users')">/api/users</button>
+            <button onclick="api('http://127.0.0.1:8080/api/users')">/api/users</button>
         </li>
         <li>
-            <button onclick="api('http://localhost:8080/api/posts')">/api/posts</button>
+            <button onclick="api('http://127.0.0.1:8080/api/posts')">/api/posts</button>
         </li>
         <li>
             <button onclick="get_post()">/api/post</button>
         </li>
         <li> Login:
-            <form id="login-form" method="post" action="http://localhost:8080/api/login">
+            <form id="login-form" method="post" action="http://127.0.0.1:8080/api/login">
                 <label>Email: </label>
                     <input type="text" name="email" value="test@example.com" autocomplete="email" />
                 <label>Password: </label>
@@ -27,7 +27,7 @@
             </form>
         </li>
         <li> Register:
-            <form id="registration-form" method="post" action="http://localhost:8080/api/register">
+            <form id="registration-form" method="post" action="http://127.0.0.1:8080/api/register">
                 <label>Display Name: </label>
                 <input type="text" name="display_name" value=""/><br>
                 <label>Email: </label>
@@ -55,9 +55,9 @@
         }
 
         async function get_post() {
-            let posts = fetch('http://localhost:8080/api/posts');
+            let posts = fetch('http://127.0.0.1:8080/api/posts');
             post_id = (await (await posts).json())[0].post_id;
-            let post = (await (await fetch('http://localhost:8080/api/post?id=' + post_id)).text());
+            let post = (await (await fetch('http://127.0.0.1:8080/api/post?id=' + post_id)).text());
             output.innerText = post
         }
 

@@ -33,8 +33,6 @@ services:
       - "POSTGRES_DB=${PG_DB}"
       - "POSTGRES_USER=${PG_USER}"
       - "POSTGRES_PASSWORD=${PG_PASSWORD}"
-    volumes:
-      - "./docker/postgres_database:/var/lib/postgresql/data"
     build:
       context: docker
       dockerfile: postgres.dockerfile

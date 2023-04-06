@@ -53,7 +53,7 @@ public class MultipartFormBody {
     }
 
     @NonNull
-    public String buildForm(File path) {
+    public String buildForm() {
         StringBuilder b = new StringBuilder();
 
         for(Entry<String, Value> e : this.keys.entrySet()) {
@@ -68,17 +68,17 @@ public class MultipartFormBody {
                 b.append("Content-Disposition: form-data; name=\"").append(e.getKey()).append("\"; filename=\"").append("test").append("\"").append(LINE_FEED);
                 b.append("Content-Type: application/octet-stream").append(LINE_FEED);// + URLConnection.guessContentTypeFromName(binaryFile.getName())).append(CRLF);
                 b.append(LINE_FEED);
-                try (ByteArrayOutputStream s = new ByteArrayOutputStream()) {
-                    e.getValue().image.compress(Bitmap.CompressFormat.PNG, 50, s);
-                    byte[] raw = s.toByteArray();
-                    File f = new File(path + "test.png");
-                    FileOutputStream sf = new FileOutputStream(f);
-
-                    sf.write(raw);
-                    b.append(new String(raw)).append(LINE_FEED);
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+//                try (ByteArrayOutputStream s = new ByteArrayOutputStream()) {
+//                    e.getValue().image.compress(Bitmap.CompressFormat.PNG, 50, s);
+//                    byte[] raw = s.toByteArray();
+//                    File f = new File(path + "test.png");
+//                    FileOutputStream sf = new FileOutputStream(f);
+//
+//                    sf.write(raw);
+//                    b.append(new String(raw)).append(LINE_FEED);
+//                } catch (IOException ex) {
+//                    throw new RuntimeException(ex);
+//                }
 
 //                InputStream inputStream = null;
 //                try {

@@ -21,7 +21,6 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.android.AppActivity;
-import com.android.CreatePostDirections;
 import com.android.databinding.FragmentCameraBinding;
 import com.google.common.util.concurrent.ListenableFuture;
 
