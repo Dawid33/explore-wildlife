@@ -74,6 +74,7 @@ public class PostsFragment extends Fragment implements PostsRecyclerViewInterfac
 
     @Override
     public void onLikeClicked(PostModel postModel) {
-        Toast.makeText(this.getContext(), "Hi!!", Toast.LENGTH_SHORT).show();
+        postModel.setLiked(!postModel.isLiked());
+//        Toast.makeText(this.getContext(), "Hi!!", Toast.LENGTH_SHORT).show();
     }
 }

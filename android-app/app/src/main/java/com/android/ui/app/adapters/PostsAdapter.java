@@ -23,6 +23,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
@@ -31,7 +32,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     public static final String imageApiUrl = Global.baseUrl + "/api/image?id=";
     JSONArray postData;
 
-    private PostModel postModel;
+    private ArrayList<PostModel> postModelList = new ArrayList<>();
     private PostsRecyclerViewInterface postsListener;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -58,11 +59,24 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         this.postData = postData;
     }
 
-    public PostsAdapter(JSONArray postData, PostsRecyclerViewInterface postsRecyclerViewInterface) {
+    public PostsAdapter(JSONArray postData, PostsRecyclerViewInterface postsRecyclerViewInterface) throws JSONException {
         this.postData = postData;
         this.postsListener = postsRecyclerViewInterface;
 
-//        this.postModel = new PostModel();
+
+
+        for(int i = 0; i < postData.length(); i++){
+            String content = postData.getJSONObject(i).getString("content");
+            String createdAt = postData.getJSONObject(i).getString("created_at");
+            String createdBy = postData.getJSONObject(i).getString("created_by");
+            String likes = postData.getJSONObject(i).getString("likes");
+            String postID = postData.getJSONObject(i).getString("post_id");
+
+// Calculate is liked
+            boolean isLiked = false;
+
+            postModelList.add(new PostModel(createdBy, createdAt, Integer.parseInt(likes), isLiked, content));
+        }
     }
 
     /**
@@ -117,11 +131,23 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             @Override
             public void onClick(View view) {
 
+                PostModel currentPost = postModelList.get(viewHolder.getAdapterPosition());
+
+                int likes = Integer.parseInt(viewHolder.postLikes.getText().toString());
+
+                if(currentPost.isLiked()){
+                    viewHolder.postLikes.getCompoundDrawables()[0].setTint(ContextCompat.getColor(viewHolder.postLikes.getContext(), R.color.aquamarine));
+
+                    viewHolder.postLikes.setText(Integer.toString(likes - 1));
+                }
+                else{
+                    viewHolder.postLikes.getCompoundDrawables()[0].setTint(ContextCompat.getColor(viewHolder.postLikes.getContext(), R.color.teal_200));
+
+                    viewHolder.postLikes.setText(Integer.toString(likes + 1));
+                }
 
 
-                viewHolder.postLikes.getCompoundDrawables()[0].setTint(ContextCompat.getColor(viewHolder.postLikes.getContext(), R.color.teal_200));
-
-                postsListener.onLikeClicked(postModel);
+                postsListener.onLikeClicked(currentPost);
             }
         });
     }
