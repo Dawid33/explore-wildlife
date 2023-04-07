@@ -8,117 +8,70 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.Global;
+import com.android.api.AccountRetrievalRequest;
 import com.android.ui.app.interfaces.PopularPostsRecyclerViewInterface;
 import com.android.PostModel;
 import com.android.R;
+import com.android.ui.app.interfaces.PostsRecyclerViewInterface;
+import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 
 public class PopularPostsAdapter extends RecyclerView.Adapter<PopularPostsAdapter.ViewHolder> {
-    public static final String imageApiUrl = "https://explorewildlife.net/api/image?id=";
-    JSONArray data;
+    public static final String imageApiUrl = Global.baseUrl + "/api/image?id=";
+    JSONArray postData;
 
-    //    ======================== TEST VARIABLES =============================
-//    String test1;
-//    List<String> texts;
+    private ArrayList<PostModel> postModelList = new ArrayList<>();
+    private PostsRecyclerViewInterface postsListener;
 
-    Context context;
-    private PopularPostsRecyclerViewInterface popularPostsRecyclerViewInterface;
-    ArrayList<PostModel> postModelArrayList;
-
-//    ======================== TEST VARIABLES =============================
-
-
-    /**
-     * Define all the XML elements in this class for them to be referenced later. Using the view object, you can get the different sub elements
-     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView testText;
-        public ImageView imageView;
+        public TextView postLikes;
+        public ImageView postImage;
 
-//      ============ TEST VARIABLES ===============
-
-        TextView postLikes;
-        ImageView postImage;
-
-
-//      ============ TEST VARIABLES ===============
-
-
-//        public View view;
+        public View view;
 
         public ViewHolder(View view) {
             super(view);
-            // Define click listener for the ViewHolder's View
-//            this.view = view;
-//            textView = view.findViewById(R.id.textView);
-            testText = view.findViewById(R.id.postUsername);
-            imageView = view.findViewById(R.id.postAvatarImage);
+            this.view = view;
+            postImage = view.findViewById(R.id.postImage);
+            postLikes = view.findViewById(R.id.postLikes);
         }
+    }
 
-//        Attaching stuff from the layout file to this ViewHolder class
-        public ViewHolder(@NonNull View itemView, PopularPostsRecyclerViewInterface popularPostsRecyclerViewInterface) {
-            super(itemView);
+    public PopularPostsAdapter(JSONArray postData) {
+        this.postData = postData;
+    }
 
-            postLikes = itemView.findViewById(R.id.postLikes);
-
-            postImage = itemView.findViewById(R.id.postImage);
-
-
-//            Setting onclick for each view
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    if(checkInterfaceAndPosition(itemView, popularPostsRecyclerViewInterface)){
-                        popularPostsRecyclerViewInterface.onItemClick(getAdapterPosition());
-                    }
-//                    SUPER AWESOME ONCLICK CODE GOES HERE
-                }
-            });
-
-        }
-
-        /**
-         * Before we attempt a click, check if the interface exists, as well as if the adapter position is fine.
-         * @param itemView
-         * @param postsRecyclerViewInterface
-         * @return
-         */
-        private boolean checkInterfaceAndPosition(@NonNull View itemView, PopularPostsRecyclerViewInterface postsRecyclerViewInterface){
-            if(postsRecyclerViewInterface != null){
-                int pos = getAdapterPosition();
-
-                return pos != RecyclerView.NO_POSITION;
-            }
-            return false;
-        }
-
-//        private boolean checkInterfaceAndPosition(@NonNull View itemView, PostsRecyclerViewInterface postsRecyclerViewInterface){
-//            if(postsRecyclerViewInterface != null){
-//                int pos = getAdapterPosition();
+//    public PopularPostsAdapter(JSONArray postData, PostsRecyclerViewInterface postsRecyclerViewInterface) throws JSONException {
+//        this.postData = postData;
+//        this.postsListener = postsRecyclerViewInterface;
 //
-//                if(pos != RecyclerView.NO_POSITION){
-//                    postsRecyclerViewInterface.onItemClick(pos);
-//                }
-//            }
+//
+//
+//        for(int i = 0; i < postData.length(); i++){
+//            String content = postData.getJSONObject(i).getString("content");
+//            String createdAt = postData.getJSONObject(i).getString("created_at");
+//            String createdBy = postData.getJSONObject(i).getString("created_by");
+//            String likes = postData.getJSONObject(i).getString("likes");
+//            String postID = postData.getJSONObject(i).getString("post_id");
+//            boolean hasLiked = postData.getJSONObject(i).getBoolean("has_liked");
+//
+//// Calculate is liked
+//
+//            postModelList.add(new PostModel(postID, createdBy, createdAt, Integer.parseInt(likes), hasLiked, content));
 //        }
-    }
-
-    public PopularPostsAdapter(JSONArray data) {
-        this.data = data;
-    }
-
-    public PopularPostsAdapter(Context context, ArrayList<PostModel> postModelArrayList, PopularPostsRecyclerViewInterface popularPostsRecyclerViewInterface) {
-        this.context = context;
-        this.postModelArrayList = postModelArrayList;
-        this.popularPostsRecyclerViewInterface = popularPostsRecyclerViewInterface;
-    }
-
+//    }
 
     /**
      * This is called whenever ViewHolder is created. This ViewHolder is the one extended from the RecyclerView ViewHolder
@@ -130,33 +83,76 @@ public class PopularPostsAdapter extends RecyclerView.Adapter<PopularPostsAdapte
      */
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+    public PopularPostsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.popular_post_row_item, viewGroup, false);
-        return new PopularPostsAdapter.ViewHolder(view, popularPostsRecyclerViewInterface);
+                .inflate(R.layout.post_row_item, viewGroup, false);
+        return new PopularPostsAdapter.ViewHolder(view);
     }
 
-
-    /**
-     * Called after onCreateViewHolder is called. Binds data to the View object
-     *
-     * @param viewHolder The ViewHolder which should be updated to represent the contents of the
-     *                   item at the given position in the data set.
-     * @param position   The position of the item within the adapter's data set.
-     */
     @Override
     public void onBindViewHolder(@NonNull PopularPostsAdapter.ViewHolder viewHolder, int position) {
-//        viewHolder.testText.setText(test1);
-//
-        viewHolder.postLikes.setText(Integer.toString(postModelArrayList.get(position).getPostLikes()));
-        viewHolder.postImage.setImageResource(R.drawable.heart_draw);
+        PostModel currentPost = postModelList.get(viewHolder.getAdapterPosition());
+
+        int likes = Integer.parseInt(viewHolder.postLikes.getText().toString());
+
+        if(currentPost.isLiked()){
+            viewHolder.postLikes.getCompoundDrawables()[0].setTint(ContextCompat.getColor(viewHolder.postLikes.getContext(), R.color.teal_200));
+        }
+
+        try {
+            viewHolder.postLikes.setText(postData.getJSONObject(position).getString("likes"));
+            try {
+                ExecutorService exec = Executors.newSingleThreadExecutor();
+                JSONObject post = postData.getJSONObject(position);
+                FutureTask<AccountRetrievalRequest.AccountRetrievalRequestResult> getUser = new FutureTask<>(new AccountRetrievalRequest((String) post.get("created_by")));
+                exec.submit(getUser);
+                AccountRetrievalRequest.AccountRetrievalRequestResult userResult = getUser.get();
+                JSONArray images = ((JSONObject) postData.get(position)).getJSONArray("images");
+
+
+                // Only get the first image for simplicity, there might be more in the array
+                Glide.with(viewHolder.view)
+                        .load(imageApiUrl + images.get(0))
+                        .into(viewHolder.postImage);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        viewHolder.postLikes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PostModel currentPost = postModelList.get(viewHolder.getAdapterPosition());
+
+                int likes = Integer.parseInt(viewHolder.postLikes.getText().toString());
+
+
+                String UID = Global.loggedInUserID;
+
+                if(currentPost.isLiked()){
+                    viewHolder.postLikes.getCompoundDrawables()[0].setTint(ContextCompat.getColor(viewHolder.postLikes.getContext(), R.color.aquamarine));
+
+                    viewHolder.postLikes.setText(Integer.toString(--likes));
+                }
+                else{
+                    viewHolder.postLikes.getCompoundDrawables()[0].setTint(ContextCompat.getColor(viewHolder.postLikes.getContext(), R.color.teal_200));
+
+                    viewHolder.postLikes.setText(Integer.toString(++likes));
+                }
+
+
+                postsListener.onLikeClicked(currentPost);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return postModelArrayList.size();
+        return postData.length();
     }
-
 
 }
