@@ -3,6 +3,7 @@ package com.android.api;
 import com.android.Global;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -18,13 +19,15 @@ public class LikePostRequest implements Callable<LikePostRequest.LikePostRequest
     public LikePostRequest(String postID){
         this.postID = postID;
 
-        likeApiUrl = Global.baseUrl + "api/" + this.postID + "/toggle-like";
+        likeApiUrl = Global.baseUrl + "/api/posts/" + this.postID + "/toggle-like";
     }
 
     public class LikePostRequestResult {
         public boolean requestSucceeded;
 
-        public LikePostRequestResult(boolean requestSucceeded) {
+        public String error;
+
+        public LikePostRequestResult(boolean requestSucceeded, String error) {
             this.requestSucceeded = requestSucceeded;
         }
     }
@@ -33,6 +36,7 @@ public class LikePostRequest implements Callable<LikePostRequest.LikePostRequest
     public LikePostRequest.LikePostRequestResult call() throws Exception {
         HttpURLConnection urlConnection = null;
 
+        // Create Multipart form to send with the posts request.
         String boundary = "===" + System.currentTimeMillis() + "===";
         MultipartFormBody form = new MultipartFormBody(boundary);
         form.addField("user_id", Global.loggedInUserID);
@@ -40,9 +44,8 @@ public class LikePostRequest implements Callable<LikePostRequest.LikePostRequest
         try {
             URL url = new URL(likeApiUrl);
             urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
             urlConnection.setChunkedStreamingMode(0);
-            urlConnection.connect();
             urlConnection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
 
             // Open a stream to write data to the request body
@@ -55,16 +58,23 @@ public class LikePostRequest implements Callable<LikePostRequest.LikePostRequest
             // Read the response
             String response = Utils.readStream(urlConnection.getInputStream());
 
-            return new LikePostRequest.LikePostRequestResult(true);
+            JSONObject json = new JSONObject(response);
+            System.out.println(json);
+            if (json.has("success")) {
+                boolean success = (boolean) json.get("success");
+                if (success) {
+                    return new LikePostRequest.LikePostRequestResult(true, "");
+                } else if (json.has("error")) {
+                    return new LikePostRequest.LikePostRequestResult(false, (String) json.get("error"));
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (urlConnection != null) {
-                urlConnection.disconnect();
-            }
+            if (urlConnection != null) { urlConnection.disconnect(); }
         }
+        return new LikePostRequest.LikePostRequestResult(false, "Unknown error occurred.");
 
-        return new LikePostRequest.LikePostRequestResult(false);
     }
 
 }
