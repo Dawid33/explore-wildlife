@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.PopularPostsRecyclerViewInterface;
+import com.android.ui.app.interfaces.PopularPostsRecyclerViewInterface;
 import com.android.PostModel;
 import com.android.R;
 

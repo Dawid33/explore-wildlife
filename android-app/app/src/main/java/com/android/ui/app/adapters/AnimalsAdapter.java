@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.AnimalModel;
-import com.android.AnimalsRecyclerViewInterface;
+import com.android.ui.app.interfaces.AnimalsRecyclerViewInterface;
 import com.android.R;
 
 import org.json.JSONArray;

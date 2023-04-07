@@ -15,11 +15,13 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.android.PostModel;
 import com.android.api.AccountRetrievalRequest;
 import com.android.api.GetPostsRequest;
 import com.android.api.UploadImageRequest;
 import com.android.databinding.FragmentPostsBinding;
 import com.android.ui.app.adapters.PostsAdapter;
+import com.android.ui.app.interfaces.PostsRecyclerViewInterface;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
 
@@ -29,7 +31,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
-public class PostsFragment extends Fragment {
+public class PostsFragment extends Fragment implements PostsRecyclerViewInterface {
 
     private FragmentPostsBinding binding;
 
@@ -58,12 +60,20 @@ public class PostsFragment extends Fragment {
 
             if (result.requestSucceeded) {
                 binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                binding.recyclerView.setAdapter(new PostsAdapter(result.posts));
+//                binding.recyclerView.setAdapter(new PostsAdapter(result.posts));
+
+                binding.recyclerView.setAdapter(new PostsAdapter(result.posts, this));
+
             } else {
                 getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Error getting latest posts", Toast.LENGTH_SHORT).show());
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onLikeClicked(PostModel postModel) {
+        Toast.makeText(this.getContext(), "Hi!!", Toast.LENGTH_SHORT).show();
     }
 }

@@ -1,4 +1,4 @@
-package com.android;
+package com.android.ui.app.interfaces;
 
 public interface AnimalsRecyclerViewInterface {
 

@@ -1,5 +1,6 @@
 package com.android.ui.app.adapters;
 
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,11 +8,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.Global;
+import com.android.PostModel;
 import com.android.R;
 import com.android.api.AccountRetrievalRequest;
+import com.android.ui.app.interfaces.PostsRecyclerViewInterface;
 import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
@@ -25,6 +30,9 @@ import java.util.concurrent.FutureTask;
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
     public static final String imageApiUrl = Global.baseUrl + "/api/image?id=";
     JSONArray postData;
+
+    private PostModel postModel;
+    private PostsRecyclerViewInterface postsListener;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView postUsername;
@@ -48,6 +56,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
     public PostsAdapter(JSONArray postData) {
         this.postData = postData;
+    }
+
+    public PostsAdapter(JSONArray postData, PostsRecyclerViewInterface postsRecyclerViewInterface) {
+        this.postData = postData;
+        this.postsListener = postsRecyclerViewInterface;
+
+//        this.postModel = new PostModel();
     }
 
     /**
@@ -97,6 +112,18 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        viewHolder.postLikes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+
+                viewHolder.postLikes.getCompoundDrawables()[0].setTint(ContextCompat.getColor(viewHolder.postLikes.getContext(), R.color.teal_200));
+
+                postsListener.onLikeClicked(postModel);
+            }
+        });
     }
 
     @Override

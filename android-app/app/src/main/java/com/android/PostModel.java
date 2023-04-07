@@ -10,6 +10,7 @@ public class PostModel {
 //    WILL PROBABLY NEED TO REPLACE THE TYPE FOR IMAGE AT ONE POINT, PERHAPS A REFERENCE TO WHERE IT IS STORED?
     private int image;
     private int avatar;
+    private boolean isLiked = false;
 
     public PostModel(String username, String time, int likes) {
         this.username = username;

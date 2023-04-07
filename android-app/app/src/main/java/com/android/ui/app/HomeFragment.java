@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.android.AppActivity;
 import com.android.LoginAndRegisterActivity;
-import com.android.PopularPostsRecyclerViewInterface;
+import com.android.ui.app.interfaces.PopularPostsRecyclerViewInterface;
 import com.android.PostModel;
 import com.android.databinding.FragmentHomeBinding;
 import com.android.ui.app.adapters.PopularPostsAdapter;
