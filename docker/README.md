@@ -46,7 +46,7 @@ sudo rm -rf docker/postgres_database/
 ```commandline
 docker compose down
 docker-compose down --rmi all --volumes
-docker compse up -d
+docker compose up -d
 ```
 
 When the database is first created it runs the `docker/init.sql` file to set

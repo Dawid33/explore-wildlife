@@ -79,6 +79,10 @@ BEGIN
     INSERT INTO app.users (profile_pic_id, user_id, display_name, email, password) VALUES (image_id, test_id, 'test', 'test@example.com', 'test');
 
     INSERT INTO app.posts (post_id, content, created_by, has_images) VALUES (post_id, 'This is my post', test_id, true);
+--    INSERT INTO app.posts (content, created_by, has_images) VALUES ('Just text post', test_id, false);
+--    INSERT INTO app.posts (content, created_by, has_images) VALUES ('This is another post', test_id, false);
+
+    INSERT INTO app.images (image_id, owner, name, image_path) VALUES (image_id, test_id, 'Test Image', 'images/test.jpeg');
     INSERT INTO app.post_images (post_id, image_id) VALUES (post_id, image_id);
 END $$;
 
