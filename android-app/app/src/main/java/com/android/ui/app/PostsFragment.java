@@ -1,5 +1,6 @@
 package com.android.ui.app;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,9 +16,13 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.android.AppActivity;
+import com.android.LoginAndRegisterActivity;
 import com.android.PostModel;
 import com.android.api.AccountRetrievalRequest;
 import com.android.api.GetPostsRequest;
+import com.android.api.LikePostRequest;
+import com.android.api.RegisterRequest;
 import com.android.api.UploadImageRequest;
 import com.android.databinding.FragmentPostsBinding;
 import com.android.ui.app.adapters.PostsAdapter;
@@ -75,6 +80,26 @@ public class PostsFragment extends Fragment implements PostsRecyclerViewInterfac
     @Override
     public void onLikeClicked(PostModel postModel) {
         postModel.setLiked(!postModel.isLiked());
+
+        FutureTask<LikePostRequest.LikePostRequestResult> like = new FutureTask<>(new LikePostRequest(postModel.getPostID()));
+        ExecutorService exec = Executors.newSingleThreadExecutor();
+        exec.submit(like);
+        try {
+            LikePostRequest.LikePostRequestResult result = like.get();
+            if (!result.requestSucceeded) {
+//                getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Like Error: " + result.error, Toast.LENGTH_SHORT).show());
+                getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Like Error", Toast.LENGTH_SHORT).show());
+
+            }
+
+            // Switch activity no matter what in case login system doesn't work.
+//            LoginAndRegisterActivity currentActivity = (LoginAndRegisterActivity)getActivity();
+//            Intent app = new Intent(currentActivity, AppActivity.class);
+//            startActivity(app);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 //        Toast.makeText(this.getContext(), "Hi!!", Toast.LENGTH_SHORT).show();
     }
 }

@@ -9,6 +9,8 @@ public class PostModel {
 
     private String content;
 
+    private String postID;
+
 //    WILL PROBABLY NEED TO REPLACE THE TYPE FOR IMAGE AT ONE POINT, PERHAPS A REFERENCE TO WHERE IT IS STORED?
     private int image;
     private int avatar;
@@ -23,7 +25,8 @@ public class PostModel {
 
     private boolean isLiked = false;
 
-    public PostModel(String username, String time, int likes, boolean isLiked, String content) {
+    public PostModel(String postID, String username, String time, int likes, boolean isLiked, String content) {
+        this.postID = postID;
         this.username = username;
         this.content = content;
         this.time = time;
@@ -54,6 +57,10 @@ public class PostModel {
 
     public int getPostLikes() {
         return likes;
+    }
+
+    public String getPostID() {
+        return postID;
     }
 
     public int getPostAvatar() {

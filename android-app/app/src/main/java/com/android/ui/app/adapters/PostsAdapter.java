@@ -75,7 +75,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 // Calculate is liked
             boolean isLiked = false;
 
-            postModelList.add(new PostModel(createdBy, createdAt, Integer.parseInt(likes), isLiked, content));
+            postModelList.add(new PostModel(postID, createdBy, createdAt, Integer.parseInt(likes), isLiked, content));
         }
     }
 
@@ -135,15 +135,17 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
                 int likes = Integer.parseInt(viewHolder.postLikes.getText().toString());
 
+                String UID = Global.loggedInUserID;
+
                 if(currentPost.isLiked()){
                     viewHolder.postLikes.getCompoundDrawables()[0].setTint(ContextCompat.getColor(viewHolder.postLikes.getContext(), R.color.aquamarine));
 
-                    viewHolder.postLikes.setText(Integer.toString(likes - 1));
+                    viewHolder.postLikes.setText(Integer.toString(--likes));
                 }
                 else{
                     viewHolder.postLikes.getCompoundDrawables()[0].setTint(ContextCompat.getColor(viewHolder.postLikes.getContext(), R.color.teal_200));
 
-                    viewHolder.postLikes.setText(Integer.toString(likes + 1));
+                    viewHolder.postLikes.setText(Integer.toString(++likes));
                 }
 
 
