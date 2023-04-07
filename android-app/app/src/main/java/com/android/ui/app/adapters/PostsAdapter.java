@@ -71,11 +71,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             String createdBy = postData.getJSONObject(i).getString("created_by");
             String likes = postData.getJSONObject(i).getString("likes");
             String postID = postData.getJSONObject(i).getString("post_id");
+            boolean hasLiked = postData.getJSONObject(i).getBoolean("has_liked");
 
 // Calculate is liked
-            boolean isLiked = false;
 
-            postModelList.add(new PostModel(postID, createdBy, createdAt, Integer.parseInt(likes), isLiked, content));
+            postModelList.add(new PostModel(postID, createdBy, createdAt, Integer.parseInt(likes), hasLiked, content));
         }
     }
 
@@ -98,6 +98,14 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull PostsAdapter.ViewHolder viewHolder, int position) {
+        PostModel currentPost = postModelList.get(viewHolder.getAdapterPosition());
+
+        int likes = Integer.parseInt(viewHolder.postLikes.getText().toString());
+
+        if(currentPost.isLiked()){
+            viewHolder.postLikes.getCompoundDrawables()[0].setTint(ContextCompat.getColor(viewHolder.postLikes.getContext(), R.color.teal_200));
+        }
+
         try {
             viewHolder.postTime.setText(postData.getJSONObject(position).getString("created_at"));
             viewHolder.postLikes.setText(postData.getJSONObject(position).getString("likes"));
@@ -130,10 +138,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         viewHolder.postLikes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 PostModel currentPost = postModelList.get(viewHolder.getAdapterPosition());
 
                 int likes = Integer.parseInt(viewHolder.postLikes.getText().toString());
+
 
                 String UID = Global.loggedInUserID;
 

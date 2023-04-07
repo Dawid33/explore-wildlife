@@ -95,7 +95,7 @@
                         android:layout_marginStart="30dp"
                         android:drawableLeft="@drawable/heart_draw"
                         android:drawablePadding="5dp"
-                        android:text="69,420"
+                        android:text="69420"
                         android:textColor="@color/aquamarine"
                         app:drawableTint="@color/aquamarine"
                         app:layout_constraintBottom_toBottomOf="parent"
