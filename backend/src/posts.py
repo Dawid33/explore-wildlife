@@ -196,6 +196,22 @@ def get_posts():
         result = cur.fetchone()
         post["likes"] = result[0]
 
+        current_user = request.args.get('user_id')
+
+        has_liked = False
+
+        if current_user is not None and current_user != "null":
+
+            print("User: " + current_user)
+
+            cur.execute("select posts_likes_id from posts_likes pl where pl.post_id = %s and user_id = %s;", (post["post_id"], current_user))
+            result = cur.fetchone()
+
+            if result:
+                has_liked = True
+
+        post["has_liked"] = has_liked
+
         posts.append(post)
 
     conn.close()
