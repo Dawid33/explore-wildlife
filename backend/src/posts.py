@@ -67,12 +67,14 @@ def create_post():
 
             # Create a post with that UUID
             cursor.execute(
-                f'INSERT INTO app.posts (post_id, title, description, latitude, longitude, created_by, coordinates, location) VALUES '
+                f'INSERT INTO app.posts (post_id, title, description, latitude, longitude, created_by, coordinates, location, has_images) VALUES '
                 f'(%s, \'{post_title}\', \'{post_description}\', {post_latitude}, {post_longitude}, \'{created_by}\', ARRAY[{post_latitude}, {post_longitude}],'
-                f'\'SRID=4326;POINT({post_longitude} {post_latitude})\')', (post_id,))
+                f'\'SRID=4326;POINT({post_longitude} {post_latitude})\', \'True\')', (post_id,))
 
             # Create a link between the new post and image id
             cursor.execute('INSERT INTO app.post_images (post_id, image_id) VALUES (%s, %s)', (post_id, post_image_id))
+
+            print("New image added!!")
 
             db_conn.commit()
         except Exception as e:
