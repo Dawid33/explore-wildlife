@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -12,13 +13,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.android.AppActivity;
 import com.android.LoginAndRegisterActivity;
+import com.android.api.GetPostsRequest;
+import com.android.api.LikePostRequest;
 import com.android.ui.app.interfaces.PopularPostsRecyclerViewInterface;
 import com.android.PostModel;
 import com.android.databinding.FragmentHomeBinding;
 import com.android.ui.app.adapters.PopularPostsAdapter;
 
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 
 public class HomeFragment extends Fragment implements PopularPostsRecyclerViewInterface {
 
@@ -53,12 +61,43 @@ public class HomeFragment extends Fragment implements PopularPostsRecyclerViewIn
 //                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
             }
         });
-        prepareTestPosts();
 
-        popularPostsAdapter = new PopularPostsAdapter(this.getContext(), postModelArrayList, this);
+        FutureTask<GetPostsRequest.GetPostsRequestResult> getPosts = new FutureTask<>(new GetPostsRequest());
+        ExecutorService exec = Executors.newSingleThreadExecutor();
+        exec.submit(getPosts);
+        // TODO: This will probably cause problems in the future as it will make the app slow.
+        // The data should be loaded in the background in a non-blocking way.
+        try {
+            // Get posts from backend to populate the recycler view.
+            GetPostsRequest.GetPostsRequestResult result = getPosts.get();
 
-        binding.recyclerViewPopularPosts.setAdapter(popularPostsAdapter);
-        binding.recyclerViewPopularPosts.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
+            if (result.requestSucceeded) {
+                LinearLayoutManager layoutManager
+                        = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+
+
+                binding.recyclerViewPopularPosts.setLayoutManager(layoutManager);
+//                binding.recyclerView.setAdapter(new PostsAdapter(result.posts));
+
+                binding.recyclerViewPopularPosts.setAdapter(new PopularPostsAdapter(result.posts, this));
+
+            } else {
+                getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Error getting latest posts", Toast.LENGTH_SHORT).show());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+//        prepareTestPosts();
+
+//        popularPostsAdapter = new PopularPostsAdapter(this.getContext(), postModelArrayList, this);
+//        try {
+//            popularPostsAdapter = new PopularPostsAdapter(postModelArrayList, this);
+//        } catch (JSONException e) {
+//            throw new RuntimeException(e);
+//        }
+//        binding.recyclerViewPopularPosts.setAdapter(popularPostsAdapter);
+//        binding.recyclerViewPopularPosts.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
         binding.progressBarAchievements.setProgress(0);
 
     }
@@ -82,7 +121,22 @@ public class HomeFragment extends Fragment implements PopularPostsRecyclerViewIn
     }
 
     @Override
-    public void onItemClick(int position) {
+    public void onLikeClicked(PostModel postModel) {
+        postModel.setLiked(!postModel.isLiked());
+
+        FutureTask<LikePostRequest.LikePostRequestResult> like = new FutureTask<>(new LikePostRequest(postModel.getPostID()));
+        ExecutorService exec = Executors.newSingleThreadExecutor();
+        exec.submit(like);
+        try {
+            LikePostRequest.LikePostRequestResult result = like.get();
+            if (!result.requestSucceeded) {
+                getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Like Error", Toast.LENGTH_SHORT).show());
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 }

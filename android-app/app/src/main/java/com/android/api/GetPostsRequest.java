@@ -13,7 +13,7 @@ import java.net.URL;
 import java.util.concurrent.Callable;
 
     public class GetPostsRequest implements Callable<GetPostsRequest.GetPostsRequestResult> {
-        public static final String postsApiUrl = Global.baseUrl + "/api/posts" +  "?user_id=" + Global.loggedInUserID;
+        public static String postsApiUrl = Global.baseUrl + "/api/posts" +  "?user_id=" + Global.loggedInUserID;
 
         public class GetPostsRequestResult {
             public JSONArray posts;
@@ -25,8 +25,13 @@ import java.util.concurrent.Callable;
             }
         }
 
+        private void updateUrl(){
+            postsApiUrl = Global.baseUrl + "/api/posts" +  "?user_id=" + Global.loggedInUserID;
+        }
+
         @Override
         public GetPostsRequestResult call() throws Exception {
+            updateUrl();
             HttpURLConnection urlConnection = null;
             try {
                 URL url = new URL(postsApiUrl);

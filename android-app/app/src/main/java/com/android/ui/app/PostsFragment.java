@@ -32,28 +32,13 @@ import com.bumptech.glide.request.FutureTarget;
 
 import org.json.JSONObject;
 
-public class PostsFragment extends Fragment implements PostsRecyclerViewInterface {
-
-//    ================= TEST CODE ================
-
-    //    Creating the recycler view adapter
-//    private RecyclerView.Adapter adapter;
-
-    PostsAdapter postsAdapter;
-
-    private static final String createPostApiUrl = "http://10.0.2.2:8080/api/posts";
-
-    //    This list will be everything stored in the recycler view
-    private List<String> list;
-
-    ArrayList<PostModel> postModelArrayList = new ArrayList<>();
-
 //    ================= TEST CODE ================
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
 public class PostsFragment extends Fragment implements PostsRecyclerViewInterface {
+
 
     private FragmentPostsBinding binding;
 

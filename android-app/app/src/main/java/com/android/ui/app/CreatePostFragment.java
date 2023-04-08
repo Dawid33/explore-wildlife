@@ -96,7 +96,11 @@ public class CreatePostFragment extends Fragment {
             BitmapFactory.Options bmOptions = new BitmapFactory.Options();
             Bitmap bitmap = BitmapFactory.decodeFile(UriString,bmOptions);
 
-            FutureTask<UploadImageRequest.UploadImageRequestResult> uploadImage = new FutureTask<>(new UploadImageRequest(bitmap));
+            Matrix matrix = new Matrix();
+            matrix.postRotate(90);
+            Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+
+            FutureTask<UploadImageRequest.UploadImageRequestResult> uploadImage = new FutureTask<>(new UploadImageRequest(rotated));
             ExecutorService exec = Executors.newSingleThreadExecutor();
             exec.submit(uploadImage);
 

@@ -33,7 +33,7 @@ public class PopularPostsAdapter extends RecyclerView.Adapter<PopularPostsAdapte
     JSONArray postData;
 
     private ArrayList<PostModel> postModelList = new ArrayList<>();
-    private PostsRecyclerViewInterface postsListener;
+    private PopularPostsRecyclerViewInterface postsListener;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView postLikes;
@@ -53,25 +53,25 @@ public class PopularPostsAdapter extends RecyclerView.Adapter<PopularPostsAdapte
         this.postData = postData;
     }
 
-//    public PopularPostsAdapter(JSONArray postData, PostsRecyclerViewInterface postsRecyclerViewInterface) throws JSONException {
-//        this.postData = postData;
-//        this.postsListener = postsRecyclerViewInterface;
-//
-//
-//
-//        for(int i = 0; i < postData.length(); i++){
-//            String content = postData.getJSONObject(i).getString("content");
-//            String createdAt = postData.getJSONObject(i).getString("created_at");
-//            String createdBy = postData.getJSONObject(i).getString("created_by");
-//            String likes = postData.getJSONObject(i).getString("likes");
-//            String postID = postData.getJSONObject(i).getString("post_id");
-//            boolean hasLiked = postData.getJSONObject(i).getBoolean("has_liked");
-//
-//// Calculate is liked
-//
-//            postModelList.add(new PostModel(postID, createdBy, createdAt, Integer.parseInt(likes), hasLiked, content));
-//        }
-//    }
+    public PopularPostsAdapter(JSONArray postData, PopularPostsRecyclerViewInterface postsRecyclerViewInterface) throws JSONException {
+        this.postData = postData;
+        this.postsListener = postsRecyclerViewInterface;
+
+
+
+        for(int i = 0; i < postData.length(); i++){
+            String content = postData.getJSONObject(i).getString("content");
+            String createdAt = postData.getJSONObject(i).getString("created_at");
+            String createdBy = postData.getJSONObject(i).getString("created_by");
+            String likes = postData.getJSONObject(i).getString("likes");
+            String postID = postData.getJSONObject(i).getString("post_id");
+            boolean hasLiked = postData.getJSONObject(i).getBoolean("has_liked");
+
+// Calculate is liked
+
+            postModelList.add(new PostModel(postID, createdBy, createdAt, Integer.parseInt(likes), hasLiked, content));
+        }
+    }
 
     /**
      * This is called whenever ViewHolder is created. This ViewHolder is the one extended from the RecyclerView ViewHolder
@@ -86,7 +86,7 @@ public class PopularPostsAdapter extends RecyclerView.Adapter<PopularPostsAdapte
     public PopularPostsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.post_row_item, viewGroup, false);
+                .inflate(R.layout.popular_post_row_item, viewGroup, false);
         return new PopularPostsAdapter.ViewHolder(view);
     }
 
@@ -97,6 +97,7 @@ public class PopularPostsAdapter extends RecyclerView.Adapter<PopularPostsAdapte
         int likes = Integer.parseInt(viewHolder.postLikes.getText().toString());
 
         if(currentPost.isLiked()){
+
             viewHolder.postLikes.getCompoundDrawables()[0].setTint(ContextCompat.getColor(viewHolder.postLikes.getContext(), R.color.teal_200));
         }
 
