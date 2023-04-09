@@ -243,6 +243,63 @@ def get_post_image():
         }
 
 
+@bp.route("/posts/popular", methods=['GET'])
+def get_popular_posts():
+    conn = db.get_db()
+    cur = conn.cursor()
+
+    number_of_results = 10
+
+    # Checking if values exist
+    try:
+        number_of_results = request.form['num_results']
+    except Exception as e:
+        print('No amount specified, using default value')
+
+    cur.execute(
+        f"select posts.post_id, title, content, created_by, posts.created_at, ST_X(location::geometry), "
+        f"ST_Y(location::geometry), COUNT(posts_likes_id) as like_count FROM app.posts LEFT JOIN app.posts_likes ON "
+        f"app.posts.post_id = app.posts_likes.post_id GROUP BY posts.post_id, title, content, created_by, "
+        f"posts.created_at, ST_X(location::geometry), ST_Y(location::geometry) order by like_count desc limit "
+        f"{number_of_results}")
+
+    result = cur.fetchall()
+    posts = []
+    for raw_post in result:
+        post = {"post_id": raw_post[0], "title": raw_post[1], "content": raw_post[2], "created_by": raw_post[3],
+                "created_at": raw_post[4], "longitude": raw_post[6], "latitude": raw_post[7]}
+        if bool(raw_post[5]):
+            cur.execute("SELECT post_id, image_id FROM app.post_images WHERE post_id = %s", [post["post_id"]])
+            result = cur.fetchall()
+            post["images"] = [x[1] for x in result]
+
+        cur.execute("select COUNT(post_id) from posts_likes pl where pl.post_id = %s;", [post["post_id"]])
+        result = cur.fetchone()
+        post["likes"] = result[0]
+
+        current_user = request.args.get('user_id')
+
+        has_liked = False
+
+        if current_user is not None and current_user != "null":
+
+            print("User: " + current_user)
+
+            cur.execute("select posts_likes_id from posts_likes pl where pl.post_id = %s and user_id = %s;",
+                        (post["post_id"], current_user))
+            result = cur.fetchone()
+
+            if result:
+                has_liked = True
+
+        post["has_liked"] = has_liked
+
+        posts.append(post)
+
+    conn.close()
+    print(posts)
+    return posts
+
 @bp.route("/post/nearest", methods=['GET'])
 def get_nearest_posts():
     earth_radius = 6371
