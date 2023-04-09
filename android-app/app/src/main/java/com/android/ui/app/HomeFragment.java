@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.android.AppActivity;
 import com.android.LoginAndRegisterActivity;
+import com.android.api.GetPopularPostsRequest;
 import com.android.api.GetPostsRequest;
 import com.android.api.LikePostRequest;
 import com.android.ui.app.interfaces.PopularPostsRecyclerViewInterface;
@@ -62,14 +63,14 @@ public class HomeFragment extends Fragment implements PopularPostsRecyclerViewIn
             }
         });
 
-        FutureTask<GetPostsRequest.GetPostsRequestResult> getPosts = new FutureTask<>(new GetPostsRequest());
+        FutureTask<GetPopularPostsRequest.GetPopularPostsRequestResult> getPosts = new FutureTask<>(new GetPopularPostsRequest(10));
         ExecutorService exec = Executors.newSingleThreadExecutor();
         exec.submit(getPosts);
         // TODO: This will probably cause problems in the future as it will make the app slow.
         // The data should be loaded in the background in a non-blocking way.
         try {
             // Get posts from backend to populate the recycler view.
-            GetPostsRequest.GetPostsRequestResult result = getPosts.get();
+            GetPopularPostsRequest.GetPopularPostsRequestResult result = getPosts.get();
 
             if (result.requestSucceeded) {
                 LinearLayoutManager layoutManager
