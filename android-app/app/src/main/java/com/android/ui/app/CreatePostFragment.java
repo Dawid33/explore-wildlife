@@ -3,6 +3,7 @@ package com.android.ui.app;
 import static com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -50,6 +51,8 @@ public class CreatePostFragment extends Fragment implements AdapterView.OnItemSe
     private FragmentCreatePostBinding binding;
 
     private double longitude = 0, latitude = 0;
+
+    private CreatePostFragmentListener listener;
 
     public CreatePostFragment() {
         // Required empty public constructor
@@ -100,6 +103,11 @@ public class CreatePostFragment extends Fragment implements AdapterView.OnItemSe
 
     }
 
+//    Interface for communicating with the activity
+    public interface CreatePostFragmentListener {
+        void onPostCreateSuccess();
+}
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -131,6 +139,8 @@ public class CreatePostFragment extends Fragment implements AdapterView.OnItemSe
                 CreatePostRequest.CreatePostRequestResult createPostResult = createPost.get();
                 if (createPostResult.success) {
                     System.out.println("SUCCESS IN CREATING POST");
+                    listener.onPostCreateSuccess();
+
                 } else {
                     System.out.println("FAILED IN CREATING POST");
                 }
@@ -263,5 +273,25 @@ public class CreatePostFragment extends Fragment implements AdapterView.OnItemSe
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+//        Make sure that the context implements this interface
+        if(context instanceof CreatePostFragmentListener){
+            listener = (CreatePostFragmentListener) context;
+        }
+        else{
+            throw new RuntimeException(context.toString() + " must implement CreatePostFragmentListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        listener = null;
     }
 }
