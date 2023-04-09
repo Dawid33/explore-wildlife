@@ -243,10 +243,12 @@ def get_post_image():
         }
 
 
-@bp.route("/post/popular", methods=['GET'])
+@bp.route("/posts/popular", methods=['GET'])
 def get_popular_posts():
     conn = db.get_db()
     cur = conn.cursor()
+
+    number_of_results = 10
 
     # Checking if values exist
     try:
@@ -258,7 +260,7 @@ def get_popular_posts():
         f"select posts.post_id, title, content, created_by, posts.created_at, ST_X(location::geometry), "
         f"ST_Y(location::geometry), COUNT(posts_likes_id) as like_count FROM app.posts LEFT JOIN app.posts_likes ON "
         f"app.posts.post_id = app.posts_likes.post_id GROUP BY posts.post_id, title, content, created_by, "
-        f"posts.created_at, ST_X(location::geometry), ST_Y(location::geometry) order by like_count limit "
+        f"posts.created_at, ST_X(location::geometry), ST_Y(location::geometry) order by like_count desc limit "
         f"{number_of_results}")
 
     result = cur.fetchall()
