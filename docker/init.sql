@@ -18,7 +18,7 @@ CREATE TABLE app.users (
 );
 
 CREATE TABLE app.posts (
-	post_id uuid NOT NULL DEFAULT uuid_generate_v4(),
+	post_id uuid NOT NULL DEFAULT uuid_generate_v4() PRIMARY KEY,
 	title varchar NOT NULL DEFAULT 'Post Title',
 	description varchar DEFAULT 'Post Description',
 	content varchar NULL DEFAULT 'Default content.',
@@ -64,7 +64,7 @@ CREATE TABLE app.comments_edges (
 );
 
 CREATE TABLE app.images (
-	image_id uuid NOT NULL DEFAULT uuid_generate_v4(),
+	image_id uuid NOT NULL DEFAULT uuid_generate_v4() PRIMARY KEY,
 	name varchar NULL DEFAULT 'Default image name',
 	owner uuid NOT NULL,
     added_at timestamp NOT NULL DEFAULT NOW(),
@@ -78,6 +78,54 @@ CREATE TABLE app.post_images (
 
 -- TODO: Test this whether it actually speeds up queries.
 CREATE INDEX latest_posts_index ON app.posts (created_at DESC);
+
+ALTER TABLE app.users
+ADD CONSTRAINT fk_profile_pic
+FOREIGN KEY(profile_pic_id)
+REFERENCES app.images(image_id);
+
+ALTER TABLE app.posts
+ADD CONSTRAINT fk_created_by
+FOREIGN KEY(created_by)
+REFERENCES app.users(user_id)
+ON DELETE CASCADE;
+
+ALTER TABLE app.images
+ADD CONSTRAINT fk_owner
+FOREIGN KEY(owner)
+REFERENCES app.users(user_id)
+ON DELETE CASCADE;
+
+ALTER TABLE app.posts_likes
+ADD CONSTRAINT fk_post_id
+FOREIGN KEY(post_id)
+REFERENCES app.posts(post_id)
+ON DELETE CASCADE,
+ADD CONSTRAINT fk_user_id
+FOREIGN KEY(user_id)
+REFERENCES app.users(user_id)
+ON DELETE CASCADE;
+
+ALTER TABLE app.posts_species
+ADD CONSTRAINT fk_post_id
+FOREIGN KEY(post_id)
+REFERENCES app.posts(post_id)
+ON DELETE CASCADE,
+ADD CONSTRAINT fk_species_id
+FOREIGN KEY(species_id)
+REFERENCES app.species(species_id)
+ON DELETE CASCADE;
+
+ALTER TABLE app.post_images
+ADD CONSTRAINT fk_post_id
+FOREIGN KEY(post_id)
+REFERENCES app.posts(post_id)
+ON DELETE CASCADE,
+ADD CONSTRAINT fk_image_id
+FOREIGN KEY(image_id)
+REFERENCES app.images(image_id)
+ON DELETE CASCADE;
+
 
 DO $$
 DECLARE
