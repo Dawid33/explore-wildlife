@@ -265,11 +265,11 @@ def get_popular_posts():
     posts = []
     for raw_post in result:
         post = {"post_id": raw_post[0], "title": raw_post[1], "content": raw_post[2], "created_by": raw_post[3],
-                "created_at": raw_post[4], "longitude": raw_post[6], "latitude": raw_post[7]}
-        if bool(raw_post[5]):
-            cur.execute("SELECT post_id, image_id FROM app.post_images WHERE post_id = %s", [post["post_id"]])
-            result = cur.fetchall()
-            post["images"] = [x[1] for x in result]
+                "created_at": raw_post[4], "longitude": raw_post[5], "latitude": raw_post[6]}
+
+        cur.execute("SELECT post_id, image_id FROM app.post_images WHERE post_id = %s", [post["post_id"]])
+        result = cur.fetchall()
+        post["images"] = [x[1] for x in result]
 
         cur.execute("select COUNT(post_id) from posts_likes pl where pl.post_id = %s;", [post["post_id"]])
         result = cur.fetchone()
