@@ -27,6 +27,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.android.api.LoginRequest;
 import com.android.databinding.ActivityAppBinding;
 import com.android.ui.app.AccountFragment;
+import com.android.ui.app.CreatePostFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -37,7 +38,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
-public class AppActivity extends AppCompatActivity {
+public class AppActivity extends AppCompatActivity implements CreatePostFragment.CreatePostFragmentListener {
     private ActivityAppBinding binding;
     private FusedLocationProviderClient fusedLocationClient;
     private Button locationButton;
@@ -150,5 +151,15 @@ public class AppActivity extends AppCompatActivity {
                         }
                     }
             );
+
+    @Override
+    public void onPostCreateSuccess() {
+//        BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+//        NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
+
+        navController.navigate(R.id.action_createPost_to_bottom_nav_home);
+
+    }
 }
 
