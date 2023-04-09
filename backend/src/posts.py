@@ -67,9 +67,9 @@ def create_post():
 
             # Create a post with that UUID
             cursor.execute(
-                f'INSERT INTO app.posts (post_id, title, description, latitude, longitude, created_by, coordinates, location, has_images) VALUES '
+                f'INSERT INTO app.posts (post_id, title, description, latitude, longitude, created_by, coordinates, location) VALUES '
                 f'(%s, \'{post_title}\', \'{post_description}\', {post_latitude}, {post_longitude}, \'{created_by}\', ARRAY[{post_latitude}, {post_longitude}],'
-                f'\'SRID=4326;POINT({post_longitude} {post_latitude})\', \'True\')', (post_id,))
+                f'\'SRID=4326;POINT({post_longitude} {post_latitude})\')', (post_id,))
 
             # Create a link between the new post and image id
             cursor.execute('INSERT INTO app.post_images (post_id, image_id) VALUES (%s, %s)', (post_id, post_image_id))
@@ -160,22 +160,20 @@ def like_post(post):
 def get_posts():
     conn = db.get_db()
     cur = conn.cursor()
-    # cur.execute(
-    #     "SELECT post_id, content, created_by, created_at, has_images FROM app.posts  where created_at in (SELECT max(created_at) FROM app.posts GROUP BY created_at) order by created_at desc limit 10")
 
     cur.execute(
-        "SELECT post_id, title, content, created_by, created_at, has_images, ST_X(location::geometry), "
+        "SELECT post_id, title, content, created_by, created_at, ST_X(location::geometry), "
         "ST_Y(location::geometry) FROM app.posts  where created_at in (SELECT max(created_at) FROM app.posts GROUP BY "
         "created_at) order by created_at desc limit 10")
 
     result = cur.fetchall()
     posts = []
     for raw_post in result:
-        post = {"post_id": raw_post[0], "title": raw_post[1], "content": raw_post[2], "created_by": raw_post[3], "created_at": raw_post[4], "longitude": raw_post[6], "latitude": raw_post[7]}
-        if bool(raw_post[5]):
-            cur.execute("SELECT post_id, image_id FROM app.post_images WHERE post_id = %s", [post["post_id"]])
-            result = cur.fetchall()
-            post["images"] = [x[1] for x in result]
+        post = {"post_id": raw_post[0], "title": raw_post[1], "content": raw_post[2], "created_by": raw_post[3], "created_at": raw_post[4], "longitude": raw_post[5], "latitude": raw_post[6]}
+
+        cur.execute("SELECT post_id, image_id FROM app.post_images WHERE post_id = %s", [post["post_id"]])
+        result = cur.fetchall()
+        post["images"] = [x[1] for x in result]
 
         cur.execute("select COUNT(post_id) from posts_likes pl where pl.post_id = %s;", [post["post_id"]])
         result = cur.fetchone()
