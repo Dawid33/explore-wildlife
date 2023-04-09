@@ -2,6 +2,8 @@ CREATE EXTENSION postgis;
 
 CREATE SCHEMA app;
 
+CREATE TYPE category as ENUM ('SCENERY', 'ANIMAL', 'PLANT');
+
 -- Needed to enable sql function that generates UUID's https://www.postgresql.org/docs/current/uuid-ossp.html
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA app;
 
@@ -26,7 +28,8 @@ CREATE TABLE app.posts (
     latitude float DEFAULT 1,
     longitude float DEFAULT 1,
     coordinates float[2],
-    location geography
+    location geography,
+    post_category category NOT NULL DEFAULT 'SCENERY'
 );
 
 CREATE TABLE app.posts_likes (
@@ -34,6 +37,18 @@ CREATE TABLE app.posts_likes (
 	post_id uuid NOT NULL,
 	user_id uuid NOT NULL,
     created_at timestamp NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE app.species (
+    species_id SERIAL PRIMARY KEY,
+    species_name varchar NOT NULL DEFAULT 'Test Species',
+    species_image_path varchar DEFAULT NULL
+);
+
+CREATE TABLE app.posts_species (
+    posts_species_id SERIAL PRIMARY KEY,
+    post_id uuid NOT NULL,
+	species_id uuid NOT NULL
 );
 
 CREATE TABLE app.comments (

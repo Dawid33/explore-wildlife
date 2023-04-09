@@ -38,6 +38,7 @@ def create_post():
         post_longitude = float(request.form['post_longitude'])
         post_image_id = request.form['post_image_id']
         created_by = request.form['created_by']
+        post_category = request.form['post_category']
         image = ""
     except Exception as e:
         print(e)
@@ -67,9 +68,9 @@ def create_post():
 
             # Create a post with that UUID
             cursor.execute(
-                f'INSERT INTO app.posts (post_id, title, description, latitude, longitude, created_by, coordinates, location) VALUES '
+                f'INSERT INTO app.posts (post_id, title, description, latitude, longitude, created_by, coordinates, location, post_category) VALUES '
                 f'(%s, \'{post_title}\', \'{post_description}\', {post_latitude}, {post_longitude}, \'{created_by}\', ARRAY[{post_latitude}, {post_longitude}],'
-                f'\'SRID=4326;POINT({post_longitude} {post_latitude})\')', (post_id,))
+                f'\'SRID=4326;POINT({post_longitude} {post_latitude})\'), \'{post_category}\'', (post_id,))
 
             # Create a link between the new post and image id
             cursor.execute('INSERT INTO app.post_images (post_id, image_id) VALUES (%s, %s)', (post_id, post_image_id))
@@ -80,6 +81,45 @@ def create_post():
         except Exception as e:
             print(e)
             result['error'] = 'Internal Error: Database request failed, unable to create post'
+
+    if post_category == 'ANIMAL':
+        try:
+            species_name = request.form['species_name']
+
+            try:
+                cursor = db_conn.cursor()
+                cursor.execute('SELECT species_id FROM app.species WHERE species_name = %s', species_name)
+                species_id = cursor.fetchone()[0]
+
+                cursor.execute("SELECT \"uuid_generate_v4\"()")
+                posts_species_id = cursor.fetchone()[0]
+
+                # If the animal doesn't exist, add it to the animals table and create a link between post and animal
+                # Otherwise, simply add the link
+                if cursor.fetchone() is None:
+                    cursor.execute("SELECT \"uuid_generate_v4\"()")
+                    species_id = cursor.fetchone()[0]
+
+                    cursor.execute('INSERT INTO app.species (species_id, species_name) VALUES (%s, %s)',
+                                   (species_id, species_name))
+
+                    cursor.execute('INSERT INTO app.post_species (post_species_id, post_id, species_id) VALUES (%s, '
+                                   '%s, %s)',
+                                   (posts_species_id, post_id, species_id))
+                else:
+                    cursor.execute('INSERT INTO app.post_species (post_species_id, post_id, species_id) VALUES (%s, '
+                                   '%s, %s)',
+                                   (posts_species_id, post_id, species_id))
+
+                db_conn.commit()
+            except Exception as e:
+                print(e)
+                result['error'] = 'Internal Error: Database request failed, unable to create post'
+
+        except Exception as e:
+            print(e)
+            result['error'] = 'Internal Error: Failed while reading post request form data'
+            return result
 
     result['success'] = True
     db_conn.close()
@@ -171,7 +211,8 @@ def get_posts():
     result = cur.fetchall()
     posts = []
     for raw_post in result:
-        post = {"post_id": raw_post[0], "title": raw_post[1], "content": raw_post[2], "created_by": raw_post[3], "created_at": raw_post[4], "longitude": raw_post[5], "latitude": raw_post[6]}
+        post = {"post_id": raw_post[0], "title": raw_post[1], "content": raw_post[2], "created_by": raw_post[3],
+                "created_at": raw_post[4], "longitude": raw_post[5], "latitude": raw_post[6]}
 
         cur.execute("SELECT post_id, image_id FROM app.post_images WHERE post_id = %s", [post["post_id"]])
         result = cur.fetchall()
@@ -189,7 +230,8 @@ def get_posts():
 
             print("User: " + current_user)
 
-            cur.execute("select posts_likes_id from posts_likes pl where pl.post_id = %s and user_id = %s;", (post["post_id"], current_user))
+            cur.execute("select posts_likes_id from posts_likes pl where pl.post_id = %s and user_id = %s;",
+                        (post["post_id"], current_user))
             result = cur.fetchone()
 
             if result:
@@ -299,6 +341,7 @@ def get_popular_posts():
     conn.close()
     print(posts)
     return posts
+
 
 @bp.route("/post/nearest", methods=['GET'])
 def get_nearest_posts():
