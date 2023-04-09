@@ -108,6 +108,8 @@ def like_post(post):
         result['error'] = 'Internal Error: Failed while reading post request form data'
         return result
 
+    print("User ID: " + user_id)
+
     # Checking if can connect to database
     try:
         conn = db.get_db()

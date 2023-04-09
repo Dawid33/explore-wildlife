@@ -69,14 +69,70 @@ DECLARE
 test_id uuid := uuid_generate_v4();
 image_id uuid := uuid_generate_v4();
 post_id uuid := uuid_generate_v4();
+
+user_id1 uuid := uuid_generate_v4();
+image_id1 uuid := uuid_generate_v4();
+post_id1 uuid := uuid_generate_v4();
+profile_pic_id1 uuid := uuid_generate_v4();
+
+user_id2 uuid := uuid_generate_v4();
+image_id2 uuid := uuid_generate_v4();
+post_id2 uuid := uuid_generate_v4();
+profile_pic_id2 uuid := uuid_generate_v4();
+
+user_id3 uuid := uuid_generate_v4();
+image_id3 uuid := uuid_generate_v4();
+post_id3 uuid := uuid_generate_v4();
+profile_pic_id3 uuid := uuid_generate_v4();
+
+user_id4 uuid := uuid_generate_v4();
+image_id4 uuid := uuid_generate_v4();
+post_id4 uuid := uuid_generate_v4();
+profile_pic_id4 uuid := uuid_generate_v4();
 BEGIN
     INSERT INTO app.images (image_id, owner, name, image_path) VALUES (image_id, test_id, 'Test Image', 'images/test.jpeg');
+
+    INSERT INTO app.images (image_id, owner, name, image_path) VALUES (profile_pic_id1, user_id1, 'Test Image', 'images/frog_king.jpg');
+
+    INSERT INTO app.images (image_id, owner, name, image_path) VALUES (image_id1, user_id1, 'Test Image', 'images/scene1.jpg');
+
+    INSERT INTO app.images (image_id, owner, name, image_path) VALUES (profile_pic_id2, user_id2, 'Test Image', 'images/messi.jpg');
+
+    INSERT INTO app.images (image_id, owner, name, image_path) VALUES (image_id2, user_id2, 'Test Image', 'images/mushroom.jpg');
+
+    INSERT INTO app.images (image_id, owner, name, image_path) VALUES (profile_pic_id3, user_id3, 'Test Image', 'images/tom.jpg');
+
+    INSERT INTO app.images (image_id, owner, name, image_path) VALUES (image_id3, user_id3, 'Test Image', 'images/bird.jpg');
+
+    INSERT INTO app.images (image_id, owner, name, image_path) VALUES (profile_pic_id4, user_id4, 'Test Image', 'images/woman.jpg');
+
+      INSERT INTO app.images (image_id, owner, name, image_path) VALUES (image_id4, user_id4, 'Test Image', 'images/badger.jpg');
 
     INSERT INTO app.users (display_name, email, password) VALUES ('default', 'default@example.com', 'default');
     INSERT INTO app.users (display_name, email, password) VALUES ('John Doe test', 'jdoe@example.com', 'jdoe');
     INSERT INTO app.users (profile_pic_id, user_id, display_name, email, password) VALUES (image_id, test_id, 'test', 'test@example.com', 'test');
 
+    INSERT INTO app.users (profile_pic_id, user_id, display_name, email, password) VALUES (profile_pic_id1, user_id1, 'test1', 'test1@example.com', 'test');
+
+    INSERT INTO app.users (profile_pic_id, user_id, display_name, email, password) VALUES (profile_pic_id2, user_id2, 'test2', 'test2@example.com', 'test');
+
+    INSERT INTO app.users (profile_pic_id, user_id, display_name, email, password) VALUES (profile_pic_id3, user_id3, 'test3', 'test3@example.com', 'test');
+
+    INSERT INTO app.users (profile_pic_id, user_id, display_name, email, password) VALUES (profile_pic_id4, user_id4, 'test4', 'test4@example.com', 'test');
+
     INSERT INTO app.posts (post_id, content, created_by) VALUES (post_id, 'This is my post', test_id);
     INSERT INTO app.post_images (post_id, image_id) VALUES (post_id, image_id);
+
+    INSERT INTO app.posts (post_id, content, created_by) VALUES (post_id1, 'This is my post', user_id1);
+    INSERT INTO app.post_images (post_id, image_id) VALUES (post_id1, image_id1);
+
+      INSERT INTO app.posts (post_id, content, created_by) VALUES (post_id2, 'This is my post', user_id2);
+    INSERT INTO app.post_images (post_id, image_id) VALUES (post_id2, image_id2);
+
+      INSERT INTO app.posts (post_id, content, created_by) VALUES (post_id3, 'This is my post', user_id3);
+    INSERT INTO app.post_images (post_id, image_id) VALUES (post_id3, image_id3);
+
+      INSERT INTO app.posts (post_id, content, created_by) VALUES (post_id4, 'This is my post', user_id4);
+    INSERT INTO app.post_images (post_id, image_id) VALUES (post_id4, image_id4);
 END $$;
 
