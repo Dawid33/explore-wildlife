@@ -29,4 +29,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="category">CATEGORY</string>
     <string name="title">TITLE</string>
+
+    <string-array name="categories">
+        <item>Scenery</item>
+        <item>Animal</item>
+        <item>Plant</item>
+    </string-array>
 </resources>

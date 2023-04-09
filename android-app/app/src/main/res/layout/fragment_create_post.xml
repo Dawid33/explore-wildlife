@@ -116,33 +116,43 @@
                 android:layout_width="match_parent"
                 android:layout_height="15dp" />
 
-            <com.google.android.material.textfield.TextInputLayout
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+
+<!--                android:hint="@string/category"-->
+<!--                android:textColorHint="@color/myrtle_green"-->
+<!--                app:boxStrokeColor="#000"-->
+<!--                app:boxStrokeWidth="0dp"-->
+<!--                app:boxStrokeWidthFocused="0dp"-->
+<!--                app:hintAnimationEnabled="true"-->
+<!--                app:hintEnabled="true"-->
+<!--                app:hintTextColor="@color/myrtle_green"-->
+<!--                app:startIconDrawable="@drawable/categories_draw"-->
+<!--                app:startIconTint="@color/myrtle_green">-->
+
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:background="@drawable/edit_round"-->
+<!--                    android:backgroundTint="#040909"-->
+<!--                    android:inputType="textPersonName"-->
+<!--                    android:textColor="@color/columbia_blue"-->
+<!--                    android:textColorHint="@color/myrtle_green"-->
+<!--                    android:textCursorDrawable="@drawable/color_cursor"-->
+<!--                    android:textSize="11sp" />-->
+
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+
+            <Spinner
+                android:id="@+id/spinner_category"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="wrap_content"/>
 
-                android:hint="@string/category"
-                android:textColorHint="@color/myrtle_green"
-                app:boxStrokeColor="#000"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp"
-                app:hintAnimationEnabled="true"
-                app:hintEnabled="true"
-                app:hintTextColor="@color/myrtle_green"
-                app:startIconDrawable="@drawable/categories_draw"
-                app:startIconTint="@color/myrtle_green">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edit_round"
-                    android:backgroundTint="#040909"
-                    android:inputType="textPersonName"
-                    android:textColor="@color/columbia_blue"
-                    android:textColorHint="@color/myrtle_green"
-                    android:textCursorDrawable="@drawable/color_cursor"
-                    android:textSize="11sp" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+            <Spinner
+                android:id="@+id/spinner_species"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
             <Space
                 android:layout_width="match_parent"

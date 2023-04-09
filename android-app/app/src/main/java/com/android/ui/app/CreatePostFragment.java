@@ -4,6 +4,7 @@ import static com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -13,6 +14,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -21,6 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import com.android.R;
 import com.android.api.CreatePostRequest;
 import com.android.api.UploadImageRequest;
 import com.android.databinding.FragmentCreatePostBinding;
@@ -29,18 +33,23 @@ import com.google.android.gms.location.LocationServices;
 
 import org.json.JSONException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
-public class CreatePostFragment extends Fragment {
+public class CreatePostFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private String coordinates = null;
     private String cityName = null;
 
+    private String category = "SCENERY";
+    private String species = "";
     private FragmentCreatePostBinding binding;
+
+    private double longitude = 0, latitude = 0;
 
     public CreatePostFragment() {
         // Required empty public constructor
@@ -63,8 +72,13 @@ public class CreatePostFragment extends Fragment {
                         Geocoder geocoder = new Geocoder(getContext());
                         try {
 
+                            latitude = location.getLatitude();
+                            longitude = location.getLongitude();
+
                             // Gets the coordinates of the location and concatenates them into a string.
-                            coordinates = location.getLatitude() + ", " + location.getLongitude();
+//                            coordinates = location.getLatitude() + ", " + location.getLongitude();
+                            coordinates = latitude + ", " + longitude;
+
 
                             // Gets city closest to cooridantes.
                             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
@@ -81,6 +95,8 @@ public class CreatePostFragment extends Fragment {
                     Manifest.permission.READ_EXTERNAL_STORAGE
             });
         }
+
+
 
     }
 
@@ -108,7 +124,9 @@ public class CreatePostFragment extends Fragment {
                 UploadImageRequest.UploadImageRequestResult result = uploadImage.get();
                 String image_id = (String) result.data.get("image_id");
 
-                FutureTask<CreatePostRequest.CreatePostRequestResult> createPost = new FutureTask<>(new CreatePostRequest("My Post", image_id));
+
+
+                FutureTask<CreatePostRequest.CreatePostRequestResult> createPost = new FutureTask<>(new CreatePostRequest(binding.postTitleInput.getText().toString(), image_id, longitude, latitude, binding.postDescriptionInput.getText().toString(), category, species));
                 exec.submit(createPost);
                 CreatePostRequest.CreatePostRequestResult createPostResult = createPost.get();
                 if (createPostResult.success) {
@@ -125,6 +143,28 @@ public class CreatePostFragment extends Fragment {
                 e.printStackTrace();
             }
         });
+
+        //        Setting up Spinner
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.categories, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinnerCategory.setAdapter(adapter);
+
+        binding.spinnerCategory.setOnItemSelectedListener(this);
+
+//        TESTING ANIMALS SPINNER
+
+        ArrayList<String> animals = prepareTestAnimals();
+
+        String[] animalNames = new String[animals.size()];
+
+        animalNames = animals.toArray(animalNames);
+
+        ArrayAdapter<String> adapterSpecies = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, animalNames);
+        binding.spinnerSpecies.setAdapter(adapterSpecies);
+
+        binding.spinnerSpecies.setOnItemSelectedListener(this);
+
+        binding.spinnerSpecies.setVisibility(View.GONE);
 
         return binding.getRoot();
     }
@@ -172,5 +212,56 @@ public class CreatePostFragment extends Fragment {
         Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 
         binding.createPostImage.setImageBitmap(rotated);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+        if(parent.getId() == R.id.spinner_category){
+            category = parent.getItemAtPosition(position).toString().toUpperCase();
+//        Toast.makeText(getContext(), category, Toast.LENGTH_SHORT).show();
+
+            if(category.equals("ANIMAL")){
+                binding.spinnerSpecies.setVisibility(View.VISIBLE);
+            }
+            else{
+                binding.spinnerSpecies.setVisibility(View.GONE);
+            }
+        }
+        else{
+            species = parent.getItemAtPosition(position).toString().toUpperCase();
+            Toast.makeText(getContext(), species, Toast.LENGTH_SHORT).show();
+
+        }
+
+
+    }
+
+    private ArrayList<String> prepareTestAnimals(){
+//        Get entire animals array
+        ArrayList<String> animalNamesList = new ArrayList<>();
+        TypedArray animalResources = getResources().obtainTypedArray(R.array.animals);
+        TypedArray currentAnimal;
+
+
+
+        for(int i = 0; i < animalResources.length(); i++){
+//            Find resourceID of one animal in the array
+            int resourceId = animalResources.getResourceId(i, -1);
+            if (resourceId < 0) {
+                continue;
+            }
+
+            currentAnimal = getResources().obtainTypedArray(resourceId);
+            animalNamesList.add(currentAnimal.getString(0));
+//            animalModelArrayList.add(new AnimalModel(currentAnimal.getString(0), 0, currentAnimal.getDrawable(1)));
+        }
+
+        return animalNamesList;
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }
