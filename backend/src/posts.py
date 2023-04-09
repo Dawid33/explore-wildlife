@@ -70,7 +70,7 @@ def create_post():
             cursor.execute(
                 f'INSERT INTO app.posts (post_id, title, description, latitude, longitude, created_by, coordinates, location, post_category) VALUES '
                 f'(%s, \'{post_title}\', \'{post_description}\', {post_latitude}, {post_longitude}, \'{created_by}\', ARRAY[{post_latitude}, {post_longitude}],'
-                f'\'SRID=4326;POINT({post_longitude} {post_latitude})\'), \'{post_category}\'', (post_id,))
+                f'\'SRID=4326;POINT({post_longitude} {post_latitude})\', \'{post_category}\')', (post_id,))
 
             # Create a link between the new post and image id
             cursor.execute('INSERT INTO app.post_images (post_id, image_id) VALUES (%s, %s)', (post_id, post_image_id))
@@ -84,32 +84,34 @@ def create_post():
 
     if post_category == 'ANIMAL':
         try:
+
             species_name = request.form['species_name']
 
             try:
                 cursor = db_conn.cursor()
-                cursor.execute('SELECT species_id FROM app.species WHERE species_name = %s', species_name)
-                species_id = cursor.fetchone()[0]
 
-                cursor.execute("SELECT \"uuid_generate_v4\"()")
-                posts_species_id = cursor.fetchone()[0]
+                cursor.execute(f'SELECT species_id FROM app.species WHERE species_name=\'{species_name}\'')
+
 
                 # If the animal doesn't exist, add it to the animals table and create a link between post and animal
                 # Otherwise, simply add the link
                 if cursor.fetchone() is None:
-                    cursor.execute("SELECT \"uuid_generate_v4\"()")
+
+                    print("Species name: ")
+
+                    cursor.execute(f'INSERT INTO app.species (species_name) VALUES (\'{species_name}\')')
+
+                    cursor.execute(f'SELECT species_id FROM app.species WHERE species_name = \'{species_name}\'')
                     species_id = cursor.fetchone()[0]
 
-                    cursor.execute('INSERT INTO app.species (species_id, species_name) VALUES (%s, %s)',
-                                   (species_id, species_name))
-
-                    cursor.execute('INSERT INTO app.post_species (post_species_id, post_id, species_id) VALUES (%s, '
-                                   '%s, %s)',
-                                   (posts_species_id, post_id, species_id))
+                    cursor.execute(f'INSERT INTO app.posts_species (post_id, species_id) VALUES ('
+                                   f'\'{post_id}\', \'{species_id}\')')
                 else:
-                    cursor.execute('INSERT INTO app.post_species (post_species_id, post_id, species_id) VALUES (%s, '
-                                   '%s, %s)',
-                                   (posts_species_id, post_id, species_id))
+                    cursor.execute(f'SELECT species_id FROM app.species WHERE species_name = \'{species_name}\'')
+                    species_id = cursor.fetchone()[0]
+
+                    cursor.execute(f'INSERT INTO app.posts_species (post_id, species_id) VALUES ('
+                                   f'\'{post_id}\', \'{species_id}\')')
 
                 db_conn.commit()
             except Exception as e:

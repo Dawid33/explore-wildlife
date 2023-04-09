@@ -48,7 +48,7 @@ CREATE TABLE app.species (
 CREATE TABLE app.posts_species (
     posts_species_id SERIAL PRIMARY KEY,
     post_id uuid NOT NULL,
-	species_id uuid NOT NULL
+	species_id int NOT NULL
 );
 
 CREATE TABLE app.comments (
