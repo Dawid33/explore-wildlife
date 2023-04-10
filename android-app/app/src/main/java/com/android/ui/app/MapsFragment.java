@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment;
 
 import com.android.AppActivity;
 import com.android.LoginAndRegisterActivity;
+import com.android.api.GetNearestPostsRequest;
+import com.android.api.GetPostsRequest;
 import com.android.databinding.FragmentHomeBinding;
 import com.android.R;
 import com.android.databinding.FragmentMapsBinding;
@@ -26,9 +28,16 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 
 public class MapsFragment extends Fragment {
 
@@ -96,6 +105,21 @@ public class MapsFragment extends Fragment {
             placeMarker(marker.name, marker.info, marker.latitude, marker.longitude, );
         }
         */
+
+        FutureTask<GetNearestPostsRequest.GetNearestPostsRequestResult> getPosts = new FutureTask<>(new GetNearestPostsRequest(centre.latitude, centre.longitude));
+        ExecutorService exec = Executors.newSingleThreadExecutor();
+        exec.submit(getPosts);
+        try {
+            JSONArray posts = getPosts.get().posts;
+            for(int i = 0; i < posts.length(); i++) {
+                JSONObject post = posts.getJSONObject(i);
+                placeMarker(post.getString("title"), post.getString("description"), post.getDouble("latitude"), post.getDouble("longitude"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     public void placeMarker(String name, String info, double latitude, double longitude) {

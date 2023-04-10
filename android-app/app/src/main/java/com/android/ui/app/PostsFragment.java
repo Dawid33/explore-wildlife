@@ -59,18 +59,13 @@ public class PostsFragment extends Fragment implements PostsRecyclerViewInterfac
         FutureTask<GetPostsRequest.GetPostsRequestResult> getPosts = new FutureTask<>(new GetPostsRequest());
         ExecutorService exec = Executors.newSingleThreadExecutor();
         exec.submit(getPosts);
-        // TODO: This will probably cause problems in the future as it will make the app slow.
-        // The data should be loaded in the background in a non-blocking way.
         try {
             // Get posts from backend to populate the recycler view.
             GetPostsRequest.GetPostsRequestResult result = getPosts.get();
 
             if (result.requestSucceeded) {
                 binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-//                binding.recyclerView.setAdapter(new PostsAdapter(result.posts));
-
                 binding.recyclerView.setAdapter(new PostsAdapter(result.posts, this));
-
             } else {
                 getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Error getting latest posts", Toast.LENGTH_SHORT).show());
             }

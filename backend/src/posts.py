@@ -361,30 +361,30 @@ def get_nearest_posts():
     conn = db.get_db()
     cur = conn.cursor()
     # cur.execute("SELECT image_name FROM app.posts WHERE post_id = %s;", [id])
-    cur.execute("SELECT ST_X(location::geometry), ST_Y(location::geometry) FROM app.posts WHERE post_id = %s;", [id])
+    # cur.execute("SELECT ST_X(location::geometry), ST_Y(location::geometry) FROM app.posts WHERE post_id = %s;", [id])
 
-    result = cur.fetchall()
+    # result = cur.fetchall()
 
-    if result:
-        latitude = result[0][1]
-        longitude = result[0][0]
+    # if result:
+    latitude = str(request.args.get('lat'))
+    longitude = str(request.args.get('long'))
 
-        # print(result[0][0])
+    # print(result[0][0])
 
-        print("Latitude: ", latitude)
-        print("Longitude: ", longitude)
+    print("Latitude: ", latitude)
+    print("Longitude: ", longitude)
 
-        # cur.execute(f"SELECT post_id, ({earth_radius} * acos(cos(radians({latitude})) * cos(radians(coordinates[0])) * cos(radians(coordinates[1]) - radians({longitude})) + sin(radians({latitude})) * sin(radians(radians(coordinates[0])))) AS distance FROM app.posts HAVING distance < {distance} ORDER BY distance LIMIT {number_of_results} OFFSET 0;")
+    # cur.execute(f"SELECT post_id, ({earth_radius} * acos(cos(radians({latitude})) * cos(radians(coordinates[0])) * cos(radians(coordinates[1]) - radians({longitude})) + sin(radians({latitude})) * sin(radians(radians(coordinates[0])))) AS distance FROM app.posts HAVING distance < {distance} ORDER BY distance LIMIT {number_of_results} OFFSET 0;")
 
-        # cur.execute(
-        #     f"SELECT post_id, ({earth_radius} * acos(cos(radians({latitude})) * cos(radians(coordinates[0])) * cos(radians(coordinates[1]) - radians({longitude})) + sin(radians({latitude})) * sin(radians(radians(coordinates[0])))) AS distance FROM app.posts HAVING distance < {distance} ORDER BY distance LIMIT {number_of_results} OFFSET 0;")
+    # cur.execute(
+    #     f"SELECT post_id, ({earth_radius} * acos(cos(radians({latitude})) * cos(radians(coordinates[0])) * cos(radians(coordinates[1]) - radians({longitude})) + sin(radians({latitude})) * sin(radians(radians(coordinates[0])))) AS distance FROM app.posts HAVING distance < {distance} ORDER BY distance LIMIT {number_of_results} OFFSET 0;")
 
-        cur.execute(
-            f"SELECT * FROM app.posts order by location <-> \'SRID=4326;POINT({longitude} {latitude})\' limit {number_of_results};")
-        result = cur.fetchall()
+    cur.execute(
+        f"SELECT title, description, latitude, longitude, post_category FROM app.posts order by location <-> \'SRID=4326;POINT({longitude} {latitude})\' limit {number_of_results};")
+    result = [{"title": x[0], "description": x[1], "latitude": x[2], "longitude": x[3], "post_category": x[4]} for x in cur.fetchall()]
+    print(result)
 
     conn.close()
-
     return result
 
     # if result[0]:
