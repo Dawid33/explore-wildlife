@@ -197,7 +197,7 @@
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="20dp" />
+                android:layout_height="10dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -234,7 +234,7 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:background="@drawable/mountain_draw_md"
-                        android:backgroundTint="@color/myrtle_green"
+                        android:backgroundTint="@color/aquamarine"
                         app:tint="@color/myrtle_green" />
 
                     <Space
@@ -254,7 +254,7 @@
                         android:layout_height="match_parent" />
 
                     <ImageButton
-                        android:id="@+id/mushroomButtonSelection"
+                        android:id="@+id/plantButtonSelection"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:background="@drawable/mushroom_draw_md"
@@ -264,13 +264,13 @@
 
             </LinearLayout>
 
-            <Spinner
-                android:id="@+id/spinner_category"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/edit_round"
-                android:backgroundTint="@color/editText"
-                android:padding="10dp" />
+<!--            <Spinner-->
+<!--                android:id="@+id/spinner_category"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@drawable/edit_round"-->
+<!--                android:backgroundTint="@color/editText"-->
+<!--                android:padding="10dp" />-->
 
             <Space
                 android:id="@+id/spinner_space"
@@ -279,11 +279,15 @@
 
             <Spinner
                 android:id="@+id/spinner_species"
-                android:layout_width="match_parent"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_round"
                 android:backgroundTint="@color/editText"
                 android:padding="10dp"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
 
             <RelativeLayout
                 android:layout_width="144dp"

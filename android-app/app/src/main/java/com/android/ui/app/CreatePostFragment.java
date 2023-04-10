@@ -24,6 +24,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.android.Global;
@@ -120,6 +121,42 @@ public class CreatePostFragment extends Fragment implements AdapterView.OnItemSe
 
         setThumbnail();
 
+        binding.animalsButtonSelection.setOnClickListener(view -> {
+            // Change background tint of button to indicate selection of category.
+            binding.animalsButtonSelection.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.aquamarine));
+            binding.sceneryButtonSelection.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.myrtle_green));
+            binding.plantButtonSelection.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.myrtle_green));
+
+            binding.spinnerSpecies.setVisibility(View.VISIBLE);
+            binding.spinnerSpace.setVisibility(View.VISIBLE);
+
+            category = "ANIMAL";
+        });
+
+        binding.sceneryButtonSelection.setOnClickListener(view -> {
+            // Change background tint of button to indicate selection of category.
+            binding.animalsButtonSelection.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.myrtle_green));
+            binding.sceneryButtonSelection.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.aquamarine));
+            binding.plantButtonSelection.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.myrtle_green));
+
+            binding.spinnerSpecies.setVisibility(View.GONE);
+            binding.spinnerSpace.setVisibility(View.GONE);
+
+            category = "SCENERY";
+        });
+
+        binding.plantButtonSelection.setOnClickListener(view -> {
+            // Change background tint of button to indicate selection of category.
+            binding.animalsButtonSelection.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.myrtle_green));
+            binding.sceneryButtonSelection.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.myrtle_green));
+            binding.plantButtonSelection.setBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.aquamarine));
+
+            binding.spinnerSpecies.setVisibility(View.GONE);
+            binding.spinnerSpace.setVisibility(View.GONE);
+
+            category = "PLANT";
+        });
+
         binding.createPostButton.setOnClickListener(view -> {
             binding.createPostButton.setVisibility(View.GONE);
             LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -190,9 +227,9 @@ public class CreatePostFragment extends Fragment implements AdapterView.OnItemSe
         //        Setting up Spinner
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.categories, R.layout.spinner_item);
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        binding.spinnerCategory.setAdapter(adapter);
-
-        binding.spinnerCategory.setOnItemSelectedListener(this);
+//        binding.spinnerCategory.setAdapter(adapter);
+//
+//        binding.spinnerCategory.setOnItemSelectedListener(this);
 
 //        TESTING ANIMALS SPINNER
 
@@ -208,6 +245,7 @@ public class CreatePostFragment extends Fragment implements AdapterView.OnItemSe
         binding.spinnerSpecies.setOnItemSelectedListener(this);
 
         binding.spinnerSpecies.setVisibility(View.GONE);
+        binding.spinnerSpace.setVisibility(View.GONE);
 
         return binding.getRoot();
     }
@@ -258,21 +296,22 @@ public class CreatePostFragment extends Fragment implements AdapterView.OnItemSe
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-        if (parent.getId() == R.id.spinner_category) {
-            category = parent.getItemAtPosition(position).toString().toUpperCase();
-
-            if (category.equals("ANIMAL")) {
-                binding.spinnerSpecies.setVisibility(View.VISIBLE);
-                binding.spinnerSpace.setVisibility(View.VISIBLE);
-            } else {
-                binding.spinnerSpecies.setVisibility(View.GONE);
-                binding.spinnerSpace.setVisibility(View.GONE);
-            }
-        } else {
+//        if (parent.getId() == R.id.spinner_category) {
+//            category = parent.getItemAtPosition(position).toString().toUpperCase();
+//
+//            if (category.equals("ANIMAL")) {
+//                binding.spinnerSpecies.setVisibility(View.VISIBLE);
+//                binding.spinnerSpace.setVisibility(View.VISIBLE);
+//            } else {
+//                binding.spinnerSpecies.setVisibility(View.GONE);
+//                binding.spinnerSpace.setVisibility(View.GONE);
+//            }
+//        } else {
+//            Toast.makeText(getContext(), species, Toast.LENGTH_SHORT).show();
+//        }
+        if (parent.getId() == R.id.spinner_species) {
             species = parent.getItemAtPosition(position).toString().toUpperCase();
-            Toast.makeText(getContext(), species, Toast.LENGTH_SHORT).show();
         }
-
     }
 
     private ArrayList<String> prepareTestAnimals() {
