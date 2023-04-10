@@ -1,5 +1,7 @@
 package com.android.ui.app.adapters;
 
+import static com.android.ui.app.adapters.PopularPostsAdapter.imageApiUrl;
+
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +31,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
-    public static final String imageApiUrl = Global.baseUrl + "/api/image?id=";
     JSONArray postData;
 
     private ArrayList<PostModel> postModelList = new ArrayList<>();
@@ -62,8 +63,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     public PostsAdapter(JSONArray postData, PostsRecyclerViewInterface postsRecyclerViewInterface) throws JSONException {
         this.postData = postData;
         this.postsListener = postsRecyclerViewInterface;
-
-
 
         for(int i = 0; i < postData.length(); i++){
             String content = postData.getJSONObject(i).getString("content");

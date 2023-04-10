@@ -1,5 +1,7 @@
 package com.android.ui.app;
 
+import static com.android.Global.imageApiUrl;
+
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -15,8 +17,10 @@ import com.android.AppActivity;
 import com.android.Global;
 import com.android.LoginAndRegisterActivity;
 import com.android.api.AccountRetrievalRequest;
+import com.android.api.GetImageRequest;
 import com.android.api.LoginRequest;
 import com.android.databinding.FragmentAccountBinding;
+import com.bumptech.glide.Glide;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -51,11 +55,15 @@ public class AccountFragment extends Fragment {
         try {
             AccountRetrievalRequest.AccountRetrievalRequestResult result = account.get();
 
+            System.out.println(imageApiUrl + result.account.get("profile_pic_id"));
+            Glide.with(this)
+                    .load(imageApiUrl + result.account.get("profile_pic_id"))
+                    .into(binding.profilePicture);
+
             // Set the values to the appropriate elements in the JSON
             username = result.account.get("display_name").toString();
             email = result.account.get("email").toString();
             phoneNumber = result.account.get("phone_number").toString();
-
         } catch (Exception e) {
             e.printStackTrace();
         }

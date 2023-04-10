@@ -51,10 +51,15 @@ CREATE TABLE app.posts_species (
 	species_id int NOT NULL
 );
 
-CREATE TABLE app.comments (
-	parent_post_id uuid NOT NULL,
-	comment_id uuid NOT NULL DEFAULT uuid_generate_v4(),
-	created_by uuid NOT NULL,
+CREATE TABLE app.posts_species (
+    posts_species_id SERIAL PRIMARY KEY,
+    post_id uuid NOT NULL,
+	species_id int NOT NULL
+);
+
+CREATE TABLE app.users_species (
+	post uuid NOT NULL,
+	owner uuid NOT NULL,
     created_at timestamp NOT NULL DEFAULT NOW()
 );
 

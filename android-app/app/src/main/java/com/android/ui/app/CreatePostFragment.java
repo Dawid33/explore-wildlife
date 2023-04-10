@@ -140,7 +140,6 @@ public class CreatePostFragment extends Fragment implements AdapterView.OnItemSe
                 if (createPostResult.success) {
                     System.out.println("SUCCESS IN CREATING POST");
                     listener.onPostCreateSuccess();
-
                 } else {
                     System.out.println("FAILED IN CREATING POST");
                 }

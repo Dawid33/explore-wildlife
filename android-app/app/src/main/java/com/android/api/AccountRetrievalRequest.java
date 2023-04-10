@@ -1,5 +1,6 @@
 package com.android.api;
 
+import android.graphics.Bitmap;
 import android.util.JsonReader;
 import android.util.JsonWriter;
 
@@ -20,8 +21,9 @@ public class AccountRetrievalRequest implements Callable<AccountRetrievalRequest
     public class AccountRetrievalRequestResult {
         public JSONObject account;
         public boolean requestSucceeded;
+        public Bitmap pfp;
 
-        public AccountRetrievalRequestResult(boolean requestSucceeded, JSONObject account) {
+        public AccountRetrievalRequestResult(boolean requestSucceeded, JSONObject account, Bitmap pfp) {
             this.requestSucceeded = requestSucceeded;
             this.account = account;
         }
@@ -46,7 +48,7 @@ public class AccountRetrievalRequest implements Callable<AccountRetrievalRequest
             String response = Utils.readStream(urlConnection.getInputStream());
             JSONObject object = new JSONObject(response);
 
-            return new AccountRetrievalRequestResult(true, object);
+            return new AccountRetrievalRequestResult(true, object, null);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -55,6 +57,6 @@ public class AccountRetrievalRequest implements Callable<AccountRetrievalRequest
             }
         }
 
-        return new AccountRetrievalRequestResult(false, null);
+        return new AccountRetrievalRequestResult(false, null, null);
     }
 }

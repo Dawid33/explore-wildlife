@@ -7,5 +7,6 @@ public class Global {
 //     public static String baseUrl = "http://10.0.2.2";
      // Running production
      public static String baseUrl = "https://explorewildlife.net";
+     public static final String imageApiUrl = Global.baseUrl + "/api/image?id=";
      public static String loggedInUserID = null;
 }
