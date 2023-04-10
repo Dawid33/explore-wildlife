@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -25,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import com.android.Global;
 import com.android.R;
 import com.android.api.CreatePostRequest;
 import com.android.api.UploadImageRequest;
@@ -34,12 +36,15 @@ import com.google.android.gms.location.LocationServices;
 
 import org.json.JSONException;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
 
 public class CreatePostFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
@@ -100,13 +105,13 @@ public class CreatePostFragment extends Fragment implements AdapterView.OnItemSe
         }
 
 
-
     }
 
-//    Interface for communicating with the activity
+    //    Interface for communicating with the activity
     public interface CreatePostFragmentListener {
         void onPostCreateSuccess();
-}
+    }
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -116,41 +121,70 @@ public class CreatePostFragment extends Fragment implements AdapterView.OnItemSe
         setThumbnail();
 
         binding.createPostButton.setOnClickListener(view -> {
-            String UriString = CreatePostFragmentArgs.fromBundle(getArguments()).getPhotoPath();
-            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-            Bitmap bitmap = BitmapFactory.decodeFile(UriString,bmOptions);
+            binding.createPostButton.setVisibility(View.GONE);
+            LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            int waitingSpinnerId = layoutInflater.inflate(R.layout.waiting_spinner, binding.createPostLinearLayout).getId();
 
-            Matrix matrix = new Matrix();
-            matrix.postRotate(90);
-            Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+            Global.executorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    String UriString = CreatePostFragmentArgs.fromBundle(getArguments()).getPhotoPath();
+                    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+                    Bitmap bitmap = BitmapFactory.decodeFile(UriString, bmOptions);
 
-            FutureTask<UploadImageRequest.UploadImageRequestResult> uploadImage = new FutureTask<>(new UploadImageRequest(rotated));
-            ExecutorService exec = Executors.newSingleThreadExecutor();
-            exec.submit(uploadImage);
+                    // My phone makes very large images that make the upload time out.
+                    if (bitmap.getByteCount() > 2_000_000) {
+                        ByteArrayOutputStream out = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 20, out);
+                        bitmap = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
+                    }
 
-            try {
-                UploadImageRequest.UploadImageRequestResult result = uploadImage.get();
-                String image_id = (String) result.data.get("image_id");
+                    Matrix matrix = new Matrix();
+                    matrix.postRotate(90);
+                    Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 
+                    FutureTask<UploadImageRequest.UploadImageRequestResult> uploadImage = new FutureTask<>(new UploadImageRequest(rotated));
+                    Global.executorService.submit(uploadImage);
 
+                    try {
+                        // Timout after 5 seconds of uploading the image.
+                        UploadImageRequest.UploadImageRequestResult result = uploadImage.get();
+                        if (result == null || !result.requestSucceeded) {
+                            System.out.println("FAILED TO UPLOAD IMAGE");
+                            getActivity().runOnUiThread(() -> {
+                                Toast.makeText(getContext(), "Failed to upload image.", Toast.LENGTH_SHORT).show();
+                                getActivity().runOnUiThread(() -> Toast.makeText(getContext(), "Fail", Toast.LENGTH_SHORT).show());
+                            });
+                        } else {
+                            String image_id = (String) result.data.get("image_id");
 
-                FutureTask<CreatePostRequest.CreatePostRequestResult> createPost = new FutureTask<>(new CreatePostRequest(binding.postTitleInput.getText().toString(), image_id, longitude, latitude, binding.postDescriptionInput.getText().toString(), category, species));
-                exec.submit(createPost);
-                CreatePostRequest.CreatePostRequestResult createPostResult = createPost.get();
-                if (createPostResult.success) {
-                    System.out.println("SUCCESS IN CREATING POST");
-                    listener.onPostCreateSuccess();
-                } else {
-                    System.out.println("FAILED IN CREATING POST");
+                            FutureTask<CreatePostRequest.CreatePostRequestResult> createPost = new FutureTask<>(new CreatePostRequest(binding.postTitleInput.getText().toString(), image_id, longitude, latitude, binding.postDescriptionInput.getText().toString(), category, species));
+                            Global.executorService.submit(createPost);
+                            CreatePostRequest.CreatePostRequestResult createPostResult = createPost.get();
+                            if (createPostResult.success) {
+                                System.out.println("SUCCESS IN CREATING POST");
+                                getActivity().runOnUiThread(() -> {
+                                    Toast.makeText(getContext(), "Success!", Toast.LENGTH_SHORT).show();
+                                    listener.onPostCreateSuccess();
+                                });
+                            } else {
+                                System.out.println("FAILED IN CREATING POST");
+
+                                getActivity().runOnUiThread(() -> {
+                                    getActivity().runOnUiThread(() -> Toast.makeText(getContext(), "Fail", Toast.LENGTH_SHORT).show());
+                                    listener.onPostCreateSuccess();
+                                });
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        getActivity().runOnUiThread(() -> {
+                            binding.createPostButton.setVisibility(View.VISIBLE);
+                            getActivity().runOnUiThread(() -> Toast.makeText(getContext(), "Fail", Toast.LENGTH_SHORT).show());
+                        });
+                    }
                 }
-
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            });
         });
 
         //        Setting up Spinner
@@ -185,7 +219,7 @@ public class CreatePostFragment extends Fragment implements AdapterView.OnItemSe
                         Boolean fineLocationGranted = result.getOrDefault(
                                 Manifest.permission.ACCESS_FINE_LOCATION, false);
                         Boolean coarseLocationGranted = result.getOrDefault(
-                                Manifest.permission.ACCESS_COARSE_LOCATION,false);
+                                Manifest.permission.ACCESS_COARSE_LOCATION, false);
                         if (fineLocationGranted != null && fineLocationGranted) {
                             // Location permission granted fully.
                         } else if (coarseLocationGranted != null && coarseLocationGranted) {
@@ -196,16 +230,14 @@ public class CreatePostFragment extends Fragment implements AdapterView.OnItemSe
 
                         Boolean readStorageGranted = result.getOrDefault(Manifest.permission.READ_EXTERNAL_STORAGE, false);
 
-                        if(readStorageGranted){
+                        if (readStorageGranted) {
 //                            Nice.
-                        }
-                        else {
+                        } else {
                             Toast.makeText(getContext(), "App needs to view thumbnails", Toast.LENGTH_SHORT).show();
 
                         }
                     }
             );
-
 
 
     private void setThumbnail() {
@@ -214,7 +246,7 @@ public class CreatePostFragment extends Fragment implements AdapterView.OnItemSe
 
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
 
-        Bitmap bitmap = BitmapFactory.decodeFile(UriString,bmOptions);
+        Bitmap bitmap = BitmapFactory.decodeFile(UriString, bmOptions);
         // Rotate the thumbnail to the correct orientation.
         Matrix matrix = new Matrix();
         matrix.postRotate(90);
@@ -226,18 +258,16 @@ public class CreatePostFragment extends Fragment implements AdapterView.OnItemSe
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-        if(parent.getId() == R.id.spinner_category){
+        if (parent.getId() == R.id.spinner_category) {
             category = parent.getItemAtPosition(position).toString().toUpperCase();
 //        Toast.makeText(getContext(), category, Toast.LENGTH_SHORT).show();
 
-            if(category.equals("ANIMAL")){
+            if (category.equals("ANIMAL")) {
                 binding.spinnerSpecies.setVisibility(View.VISIBLE);
-            }
-            else{
+            } else {
                 binding.spinnerSpecies.setVisibility(View.GONE);
             }
-        }
-        else{
+        } else {
             species = parent.getItemAtPosition(position).toString().toUpperCase();
             Toast.makeText(getContext(), species, Toast.LENGTH_SHORT).show();
 
@@ -246,15 +276,14 @@ public class CreatePostFragment extends Fragment implements AdapterView.OnItemSe
 
     }
 
-    private ArrayList<String> prepareTestAnimals(){
+    private ArrayList<String> prepareTestAnimals() {
 //        Get entire animals array
         ArrayList<String> animalNamesList = new ArrayList<>();
         TypedArray animalResources = getResources().obtainTypedArray(R.array.animals);
         TypedArray currentAnimal;
 
 
-
-        for(int i = 0; i < animalResources.length(); i++){
+        for (int i = 0; i < animalResources.length(); i++) {
 //            Find resourceID of one animal in the array
             int resourceId = animalResources.getResourceId(i, -1);
             if (resourceId < 0) {
@@ -279,10 +308,9 @@ public class CreatePostFragment extends Fragment implements AdapterView.OnItemSe
         super.onAttach(context);
 
 //        Make sure that the context implements this interface
-        if(context instanceof CreatePostFragmentListener){
+        if (context instanceof CreatePostFragmentListener) {
             listener = (CreatePostFragmentListener) context;
-        }
-        else{
+        } else {
             throw new RuntimeException(context.toString() + " must implement CreatePostFragmentListener");
         }
     }

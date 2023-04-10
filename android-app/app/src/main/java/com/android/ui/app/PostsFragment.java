@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.android.AppActivity;
+import com.android.Global;
 import com.android.LoginAndRegisterActivity;
 import com.android.PostModel;
 import com.android.api.AccountRetrievalRequest;
@@ -30,6 +31,7 @@ import com.android.ui.app.interfaces.PostsRecyclerViewInterface;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 //    ================= TEST CODE ================
@@ -57,21 +59,32 @@ public class PostsFragment extends Fragment implements PostsRecyclerViewInterfac
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         FutureTask<GetPostsRequest.GetPostsRequestResult> getPosts = new FutureTask<>(new GetPostsRequest());
-        ExecutorService exec = Executors.newSingleThreadExecutor();
-        exec.submit(getPosts);
-        try {
-            // Get posts from backend to populate the recycler view.
-            GetPostsRequest.GetPostsRequestResult result = getPosts.get();
+        Global.executorService.submit(getPosts);
+        PostsFragment p = this;
+        Global.executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    // Get posts from backend to populate the recycler view.
+                    GetPostsRequest.GetPostsRequestResult result = getPosts.get();
 
-            if (result.requestSucceeded) {
-                binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                binding.recyclerView.setAdapter(new PostsAdapter(result.posts, this));
-            } else {
-                getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Error getting latest posts", Toast.LENGTH_SHORT).show());
+                    if (result.requestSucceeded) {
+                        getActivity().runOnUiThread(() -> {
+                            binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                            try {
+                                binding.recyclerView.setAdapter(new PostsAdapter(result.posts, p));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    } else {
+                        getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Error getting latest posts", Toast.LENGTH_SHORT).show());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     @Override

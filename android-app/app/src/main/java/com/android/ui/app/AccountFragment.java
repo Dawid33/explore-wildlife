@@ -43,30 +43,34 @@ public class AccountFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        PUT CODE HERE FOR PULLING USER INFORMATION FROM THE DATABASE
-        String username = "DefaultDisplayName";
-        String email = "DefaultEmail";
-        String phoneNumber = "DefaultPhoneNumber";
-
         FutureTask<AccountRetrievalRequest.AccountRetrievalRequestResult> account = new FutureTask<>(new AccountRetrievalRequest(Global.loggedInUserID));
-        ExecutorService exec = Executors.newSingleThreadExecutor();
-        exec.submit(account);
+        Global.executorService.submit(account);
+        Global.executorService.execute(() -> {
+            String username = "", phoneNumber = "", email = "";
+            try {
+                AccountRetrievalRequest.AccountRetrievalRequestResult result = account.get();
 
-        try {
-            AccountRetrievalRequest.AccountRetrievalRequestResult result = account.get();
+                System.out.println(imageApiUrl + result.account.get("profile_pic_id"));
 
-            System.out.println(imageApiUrl + result.account.get("profile_pic_id"));
-            Glide.with(this)
-                    .load(imageApiUrl + result.account.get("profile_pic_id"))
-                    .into(binding.profilePicture);
+                // Set the values to the appropriate elements in the JSON
+                final String finalUsername = result.account.get("display_name").toString();
+                final String finalEmail = result.account.get("email").toString();
+                final String finalPhoneNumber = result.account.get("phone_number").toString();
+                String profilePicId = result.account.getString("profile_pic_id");
 
-            // Set the values to the appropriate elements in the JSON
-            username = result.account.get("display_name").toString();
-            email = result.account.get("email").toString();
-            phoneNumber = result.account.get("phone_number").toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                getActivity().runOnUiThread(() -> {
+                    Glide.with(getContext())
+                            .load(imageApiUrl + profilePicId)
+                            .into(binding.profilePicture);
+                    binding.accountUsername.setText(finalUsername);
+                    binding.accountEmail.setText(finalEmail);
+                    binding.accountPhoneNumber.setText(finalPhoneNumber);
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });
 
         binding.signOutbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,11 +81,9 @@ public class AccountFragment extends Fragment {
             }
         });
 
-        binding.accountUsername.setText(username);
-
-        binding.accountEmail.setText(email);
-
-        binding.accountPhoneNumber.setText(phoneNumber);
+        binding.accountUsername.setText("DefaultDisplayName");
+        binding.accountEmail.setText("DefaultEmail");
+        binding.accountPhoneNumber.setText("DefaultPhoneNumber");
 
         binding.accountInfoButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -9,7 +9,7 @@
     tools:context="com.android.ui.app.AccountFragment">
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/createPostLinearLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/app_background"

@@ -30,17 +30,18 @@
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/idSearchView"
-        android:layout_width="200dp"
-        android:layout_height="60dp"
+        android:layout_width="312dp"
+        android:layout_height="62dp"
         android:layout_alignLeft="@+id/idRefresh"
         android:layout_margin="10dp"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="116dp"
         android:background="#BFBFBF"
         android:elevation="5dp"
         app:iconifiedByDefault="false"
-        app:layout_constraintStart_toStartOf="@id/idRefresh"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@id/idRefresh"
         app:layout_constraintTop_toTopOf="parent"
         app:queryHint="Search for wildlife" />
 </androidx.constraintlayout.widget.ConstraintLayout>

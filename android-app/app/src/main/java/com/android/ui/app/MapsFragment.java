@@ -118,8 +118,6 @@ public class MapsFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
     public void placeMarker(String name, String info, double latitude, double longitude) {

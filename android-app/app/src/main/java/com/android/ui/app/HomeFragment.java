@@ -69,38 +69,46 @@ public class HomeFragment extends Fragment implements PopularPostsRecyclerViewIn
         });
 
         FutureTask<GetPopularPostsRequest.GetPopularPostsRequestResult> getPosts = new FutureTask<>(new GetPopularPostsRequest(10));
-        ExecutorService exec = Executors.newSingleThreadExecutor();
-        exec.submit(getPosts);
-        // TODO: This will probably cause problems in the future as it will make the app slow.
-        // The data should be loaded in the background in a non-blocking way.
-        try {
-            // Get posts from backend to populate the recycler view.
-            GetPopularPostsRequest.GetPopularPostsRequestResult result = getPosts.get();
+        Global.executorService.submit(getPosts);
+        Global.executorService.execute(() -> {
+            try {
+                // Get posts from backend to populate the recycler view.
+                GetPopularPostsRequest.GetPopularPostsRequestResult result = getPosts.get();
 
-            if (result.requestSucceeded) {
-                LinearLayoutManager layoutManager
-                        = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
-                binding.recyclerViewPopularPosts.setLayoutManager(layoutManager);
-                binding.recyclerViewPopularPosts.setAdapter(new PopularPostsAdapter(result.posts, this));
-
-            } else {
-                getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Error getting latest posts", Toast.LENGTH_SHORT).show());
+                if (result.requestSucceeded) {
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+                    getActivity().runOnUiThread(() -> {
+                        try {
+                            binding.recyclerViewPopularPosts.setLayoutManager(layoutManager);
+                            binding.recyclerViewPopularPosts.setAdapter(new PopularPostsAdapter(result.posts, this));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                } else {
+                    getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Error getting latest posts", Toast.LENGTH_SHORT).show());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        TypedArray animalResources = getResources().obtainTypedArray(R.array.animals);
-        FutureTask<GetAnimalsRequest.GetAnimalRequestResponse> animals = new FutureTask<>(new GetAnimalsRequest(Global.loggedInUserID));
-        exec.submit(animals);
-        GetAnimalsRequest.GetAnimalRequestResponse response = null;
-        try {
-            response = animals.get();
-            binding.progressBarAchievements.setProgress(response.animals.length());
-            binding.achievementsText.setText(response.animals.length() + " animals out of " + animalResources.length() + " collected");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            TypedArray animalResources = getResources().obtainTypedArray(R.array.animals);
+            FutureTask<GetAnimalsRequest.GetAnimalRequestResponse> animals = new FutureTask<>(new GetAnimalsRequest(Global.loggedInUserID));
+            Global.executorService.submit(animals);
+            GetAnimalsRequest.GetAnimalRequestResponse response = null;
+            try {
+                response = animals.get();
+                int receivedLength = response.animals.length();
+                int actualLength = animalResources.length();
+                getActivity().runOnUiThread(() -> {
+                    binding.progressBarAchievements.setProgress(receivedLength);
+                    binding.achievementsText.setText(receivedLength + " animals out of " + actualLength + " collected");
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
     }
 
     @Override

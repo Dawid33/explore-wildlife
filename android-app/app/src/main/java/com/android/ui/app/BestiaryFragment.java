@@ -53,22 +53,27 @@ public class BestiaryFragment extends Fragment implements AnimalsRecyclerViewInt
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        try {
-            prepareTestAnimals();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        animalsAdapter = new AnimalsAdapter(this.getContext(), animalModelArrayList, this);
-
-        int count = 0;
-        for (int i = 0; i < animalModelArrayList.size(); i++ ) {
-            if (animalModelArrayList.get(i).getWitnessedInstances() > 0) {
-                count += 1;
+        Global.executorService.execute(() -> {
+            try {
+                prepareTestAnimals();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        }
-        binding.collected.setText(count + "/" + animalModelArrayList.size() + " Collected");
-        binding.animalsRecyclerView.setAdapter(animalsAdapter);
+            getActivity().runOnUiThread(() -> {
+                animalsAdapter = new AnimalsAdapter(this.getContext(), animalModelArrayList, this);
+
+                int count = 0;
+                for (int i = 0; i < animalModelArrayList.size(); i++ ) {
+                    if (animalModelArrayList.get(i).getWitnessedInstances() > 0) {
+                        count += 1;
+                    }
+                }
+                binding.collected.setText(count + "/" + animalModelArrayList.size() + " Collected");
+                binding.animalsRecyclerView.setAdapter(animalsAdapter);
+            });
+        });
+
+        binding.collected.setText("Loading Animals...");
         binding.animalsRecyclerView.setLayoutManager(new GridLayoutManager(this.getContext(), 3));
     }
 
@@ -89,8 +94,7 @@ public class BestiaryFragment extends Fragment implements AnimalsRecyclerViewInt
         }
 
         FutureTask<GetAnimalsRequest.GetAnimalRequestResponse> animals = new FutureTask<>(new GetAnimalsRequest(Global.loggedInUserID));
-        ExecutorService exec = Executors.newSingleThreadExecutor();
-        exec.submit(animals);
+        Global.executorService.submit(animals);
         GetAnimalsRequest.GetAnimalRequestResponse response = animals.get();
 
         for(int i = 0; i < response.animals.length(); i++) {
