@@ -37,6 +37,10 @@ public class AnimalModel {
         return name;
     }
 
+    public void setWitnessedInstances(int value) {
+        this.witnessedInstances = value;
+    }
+
     public int getWitnessedInstances() {
         return witnessedInstances;
     }

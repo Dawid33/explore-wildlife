@@ -39,7 +39,7 @@ def create_post():
         post_image_id = request.form['post_image_id']
         created_by = request.form['created_by']
         post_category = request.form['post_category']
-        image = ""
+        species_name = request.form['species_name']
     except Exception as e:
         print(e)
         result['error'] = 'Internal Error: Failed while reading post request form data'
