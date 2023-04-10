@@ -51,18 +51,6 @@ CREATE TABLE app.posts_species (
 	species_id int NOT NULL
 );
 
-CREATE TABLE app.posts_species (
-    posts_species_id SERIAL PRIMARY KEY,
-    post_id uuid NOT NULL,
-	species_id int NOT NULL
-);
-
-CREATE TABLE app.users_species (
-	post uuid NOT NULL,
-	owner uuid NOT NULL,
-    created_at timestamp NOT NULL DEFAULT NOW()
-);
-
 CREATE TABLE app.comments_edges (
 	parent uuid NOT NULL,
 	child uuid NOT NULL
