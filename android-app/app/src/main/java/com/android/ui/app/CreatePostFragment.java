@@ -188,8 +188,8 @@ public class CreatePostFragment extends Fragment implements AdapterView.OnItemSe
         });
 
         //        Setting up Spinner
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.categories, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.categories, R.layout.spinner_item);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         binding.spinnerCategory.setAdapter(adapter);
 
         binding.spinnerCategory.setOnItemSelectedListener(this);
@@ -202,7 +202,7 @@ public class CreatePostFragment extends Fragment implements AdapterView.OnItemSe
 
         animalNames = animals.toArray(animalNames);
 
-        ArrayAdapter<String> adapterSpecies = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, animalNames);
+        ArrayAdapter<String> adapterSpecies = new ArrayAdapter<>(getContext(), R.layout.spinner_dropdown_item, animalNames);
         binding.spinnerSpecies.setAdapter(adapterSpecies);
 
         binding.spinnerSpecies.setOnItemSelectedListener(this);
@@ -260,19 +260,18 @@ public class CreatePostFragment extends Fragment implements AdapterView.OnItemSe
 
         if (parent.getId() == R.id.spinner_category) {
             category = parent.getItemAtPosition(position).toString().toUpperCase();
-//        Toast.makeText(getContext(), category, Toast.LENGTH_SHORT).show();
 
             if (category.equals("ANIMAL")) {
                 binding.spinnerSpecies.setVisibility(View.VISIBLE);
+                binding.spinnerSpace.setVisibility(View.VISIBLE);
             } else {
                 binding.spinnerSpecies.setVisibility(View.GONE);
+                binding.spinnerSpace.setVisibility(View.GONE);
             }
         } else {
             species = parent.getItemAtPosition(position).toString().toUpperCase();
             Toast.makeText(getContext(), species, Toast.LENGTH_SHORT).show();
-
         }
-
 
     }
 
