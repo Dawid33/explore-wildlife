@@ -57,16 +57,16 @@ public class HomeFragment extends Fragment implements PopularPostsRecyclerViewIn
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding.goToLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AppActivity app = (AppActivity) getActivity();
-                Intent loginIntent = new Intent(app, LoginAndRegisterActivity.class);
-                startActivity(loginIntent);
-//                NavHostFragment.findNavController(HomeFragment.this)
-//                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
-            }
-        });
+//        binding.goToLogin.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                AppActivity app = (AppActivity) getActivity();
+//                Intent loginIntent = new Intent(app, LoginAndRegisterActivity.class);
+//                startActivity(loginIntent);
+////                NavHostFragment.findNavController(HomeFragment.this)
+////                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
+//            }
+//        });
 
         FutureTask<GetPopularPostsRequest.GetPopularPostsRequestResult> getPosts = new FutureTask<>(new GetPopularPostsRequest(10));
         Global.executorService.submit(getPosts);

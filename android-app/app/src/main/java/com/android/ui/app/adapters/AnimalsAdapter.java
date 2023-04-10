@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,6 +44,7 @@ public class AnimalsAdapter extends RecyclerView.Adapter<AnimalsAdapter.ViewHold
 
         TextView animalName, timesEncountered;
         ImageView animalImage;
+        CardView timesEncounteredContainer;
 
 
 
@@ -52,6 +54,7 @@ public class AnimalsAdapter extends RecyclerView.Adapter<AnimalsAdapter.ViewHold
 
             animalName = itemView.findViewById(R.id.animalName);
             timesEncountered = itemView.findViewById(R.id.timesEncountered);
+            timesEncounteredContainer = itemView.findViewById(R.id.timesEncounteredContainer);
 
             animalImage = itemView.findViewById(R.id.animalImage);
 
@@ -122,6 +125,7 @@ public class AnimalsAdapter extends RecyclerView.Adapter<AnimalsAdapter.ViewHold
             viewHolder.animalImage.setColorFilter(ContextCompat.getColor(context, R.color.aquamarine));
         } else {
             viewHolder.timesEncountered.setVisibility(View.GONE);
+            viewHolder.timesEncounteredContainer.setVisibility(View.GONE);
         }
         viewHolder.timesEncountered.setText(Integer.toString(animalModelArrayList.get(position).getWitnessedInstances()));
         viewHolder.animalImage.setImageDrawable(animalModelArrayList.get(position).getDrawableImage());

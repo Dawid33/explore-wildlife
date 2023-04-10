@@ -31,14 +31,15 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent=".75">
+            app:layout_constraintWidth_percent=".75"
+            android:theme= "@style/Theme.Material3.Dark">
 
             <TextView
                 android:id="@+id/account_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Create Post"
-                android:textColor="#ffffff"
+                android:textColor="@color/columbia_blue"
                 android:textSize="25sp"
                 android:textStyle="bold" />
 
@@ -52,9 +53,7 @@
 
                 android:hint="@string/title"
                 android:textColorHint="@color/myrtle_green"
-                app:boxStrokeColor="#000"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp"
+                app:boxStrokeColor="@color/columbia_blue"
                 app:hintAnimationEnabled="true"
                 app:hintEnabled="true"
                 app:hintTextColor="@color/myrtle_green"
@@ -70,14 +69,15 @@
                     android:inputType="text"
                     android:textColor="@color/columbia_blue"
                     android:textColorHint="@color/myrtle_green"
+                    app:hintTextColor="@color/columbia_blue"
                     android:textCursorDrawable="@drawable/color_cursor"
-                    android:textSize="11sp" />
+                    android:textSize="14sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="15dp" />
+                android:layout_height="10dp" />
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -108,13 +108,9 @@
                     android:textColor="@color/columbia_blue"
                     android:textColorHint="@color/myrtle_green"
                     android:textCursorDrawable="@drawable/color_cursor"
-                    android:textSize="11sp" />
+                    android:textSize="14sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="15dp" />
 
 <!--            <com.google.android.material.textfield.TextInputLayout-->
 <!--                android:layout_width="match_parent"-->
@@ -144,31 +140,9 @@
 
 <!--            </com.google.android.material.textfield.TextInputLayout>-->
 
-            <Spinner
-                android:id="@+id/spinner_category"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/edit_round"
-                android:backgroundTint="@color/editText"
-                android:padding="10dp"
-                />
-
             <Space
-                android:id="@+id/spinner_space"
                 android:layout_width="match_parent"
                 android:layout_height="10dp" />
-
-            <Spinner
-                android:id="@+id/spinner_species"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/edit_round"
-                android:backgroundTint="@color/editText"
-                android:padding="10dp"/>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="15dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -209,7 +183,7 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/edit_round"
                             android:backgroundTint="#040909"
-                            android:hint="..."
+                            android:hint="Replace this with your description. "
                             android:inputType="textMultiLine"
                             android:minHeight="40dp"
                             android:textColor="@color/columbia_blue"
@@ -223,8 +197,93 @@
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="15dp" />
+                android:layout_height="20dp" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Category Selection"
+                    android:textColor="@color/myrtle_green"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/moreInfoHome">
+
+                    <ImageButton
+                        android:id="@+id/sceneryButtonSelection"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/mountain_draw_md"
+                        android:backgroundTint="@color/myrtle_green"
+                        app:tint="@color/myrtle_green" />
+
+                    <Space
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent" />
+
+                    <ImageButton
+                        android:id="@+id/animalsButtonSelection"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/wildlife_draw_md"
+                        android:backgroundTint="@color/myrtle_green"
+                        app:tint="@color/myrtle_green" />
+
+                    <Space
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent" />
+
+                    <ImageButton
+                        android:id="@+id/mushroomButtonSelection"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/mushroom_draw_md"
+                        android:backgroundTint="@color/myrtle_green"
+                        app:tint="@color/myrtle_green" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <Spinner
+                android:id="@+id/spinner_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_round"
+                android:backgroundTint="@color/editText"
+                android:padding="10dp" />
+
+            <Space
+                android:id="@+id/spinner_space"
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <Spinner
+                android:id="@+id/spinner_species"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_round"
+                android:backgroundTint="@color/editText"
+                android:padding="10dp"/>
 
             <RelativeLayout
                 android:layout_width="144dp"

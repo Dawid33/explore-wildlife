@@ -30,6 +30,7 @@
                     android:layout_height="50dp"
                     android:background="@drawable/bg_oval"
                     android:outlineProvider="background"
+                    android:scaleType="fitXY"
                     android:clipToOutline="true"
                     tools:srcCompat="@tools:sample/avatars" />
 
@@ -52,7 +53,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="3d ago"
-                        android:textColor="@color/aquamarine"/>
+                        android:textColor="@color/myrtle_green"/>
 
                 </LinearLayout>
 
@@ -96,8 +97,8 @@
                         android:drawableLeft="@drawable/heart_draw"
                         android:drawablePadding="5dp"
                         android:text="69420"
-                        android:textColor="@color/aquamarine"
-                        app:drawableTint="@color/aquamarine"
+                        android:textColor="@color/myrtle_green"
+                        app:drawableTint="@color/myrtle_green"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />

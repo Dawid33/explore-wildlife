@@ -98,7 +98,8 @@ public class PopularPostsAdapter extends RecyclerView.Adapter<PopularPostsAdapte
 
         if(currentPost.isLiked()){
 
-            viewHolder.postLikes.getCompoundDrawables()[0].setTint(ContextCompat.getColor(viewHolder.postLikes.getContext(), R.color.teal_200));
+            viewHolder.postLikes.getCompoundDrawables()[0].setTint(ContextCompat.getColor(viewHolder.postLikes.getContext(), R.color.aquamarine));
+            viewHolder.postLikes.setTextColor(ContextCompat.getColor(viewHolder.postLikes.getContext(), R.color.aquamarine));
         }
 
         try {
@@ -135,16 +136,15 @@ public class PopularPostsAdapter extends RecyclerView.Adapter<PopularPostsAdapte
                 String UID = Global.loggedInUserID;
 
                 if(currentPost.isLiked()){
-                    viewHolder.postLikes.getCompoundDrawables()[0].setTint(ContextCompat.getColor(viewHolder.postLikes.getContext(), R.color.aquamarine));
-
+                    viewHolder.postLikes.getCompoundDrawables()[0].setTint(ContextCompat.getColor(viewHolder.postLikes.getContext(), R.color.myrtle_green));
+                    viewHolder.postLikes.setTextColor(ContextCompat.getColor(viewHolder.postLikes.getContext(), R.color.myrtle_green));
                     viewHolder.postLikes.setText(Integer.toString(--likes));
                 }
                 else{
-                    viewHolder.postLikes.getCompoundDrawables()[0].setTint(ContextCompat.getColor(viewHolder.postLikes.getContext(), R.color.teal_200));
-
+                    viewHolder.postLikes.getCompoundDrawables()[0].setTint(ContextCompat.getColor(viewHolder.postLikes.getContext(), R.color.aquamarine));
+                    viewHolder.postLikes.setTextColor(ContextCompat.getColor(viewHolder.postLikes.getContext(), R.color.aquamarine));
                     viewHolder.postLikes.setText(Integer.toString(++likes));
                 }
-
 
                 postsListener.onLikeClicked(currentPost);
             }

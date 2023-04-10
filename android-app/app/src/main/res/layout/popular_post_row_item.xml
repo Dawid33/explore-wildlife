@@ -6,12 +6,12 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="vertical"
-    android:paddingBottom="30dp">
+    android:paddingHorizontal="10dp">
 
 
     <ImageView
         android:id="@+id/postImage"
-        android:layout_width="200dp"
+        android:layout_width="wrap_content"
         android:layout_height="200dp"
         android:adjustViewBounds="true"
         android:background="@drawable/bg_rounded_corners"
@@ -27,7 +27,7 @@
         android:drawableLeft="@drawable/heart_draw"
         android:drawablePadding="5dp"
         android:text="69420"
-        android:textColor="@color/aquamarine"
-        app:drawableTint="@color/aquamarine" />
+        android:textColor="@color/myrtle_green"
+        app:drawableTint="@color/myrtle_green" />
 
 </LinearLayout>

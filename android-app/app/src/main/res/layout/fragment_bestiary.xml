@@ -10,21 +10,23 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@drawable/bg_rounded_corners"
         android:backgroundTint="@color/card_background"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginStart="30dp"
         android:layout_marginTop="80dp"
-        android:layout_marginEnd="30dp">
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="110dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linearLayout4"
             android:layout_width="match_parent"
-            android:layout_height="60dp">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/textView4"
@@ -42,7 +44,8 @@
                 android:id="@+id/collected"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="13dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="2dp"
                 android:text="0/18 Collected"
                 android:textColor="@color/myrtle_green"
                 app:layout_constraintBottom_toBottomOf="@+id/textView4"
@@ -56,7 +59,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginTop="8dp"
                 android:text="···"
-                android:textColor="@color/aquamarine"
+                android:textColor="@color/columbia_blue"
                 android:textSize="23sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -66,12 +69,11 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/animalsRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="180dp"
+            android:layout_height="wrap_content"
             android:clipToPadding="false"
             android:paddingStart="15dp"
-            android:paddingEnd="10dp"
-         />
+            android:paddingEnd="10dp"/>
+<!--            android:paddingBottom="180dp" />-->
 
     </LinearLayout>
 
