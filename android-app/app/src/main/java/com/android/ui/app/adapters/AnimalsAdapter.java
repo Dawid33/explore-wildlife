@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.AnimalModel;
@@ -117,22 +118,18 @@ public class AnimalsAdapter extends RecyclerView.Adapter<AnimalsAdapter.ViewHold
     public void onBindViewHolder(@NonNull AnimalsAdapter.ViewHolder viewHolder, int position) {
 
         viewHolder.animalName.setText(animalModelArrayList.get(position).getName());
+        if (animalModelArrayList.get(position).getWitnessedInstances() > 0) {
+            viewHolder.animalImage.setColorFilter(ContextCompat.getColor(context, R.color.aquamarine));
+        } else {
+            viewHolder.timesEncountered.setVisibility(View.GONE);
+        }
         viewHolder.timesEncountered.setText(Integer.toString(animalModelArrayList.get(position).getWitnessedInstances()));
         viewHolder.animalImage.setImageDrawable(animalModelArrayList.get(position).getDrawableImage());
-
-        viewHolder.timesEncountered.setVisibility(View.GONE);
-//        viewHolder.animalName.setText("Test");
-//        viewHolder.timesEncountered.setText("0");
-
-//        viewHolder.animalImage.setImageResource(animalModelArrayList.get(position).getImage());
-//        viewHolder.animalImage.setImageResource(R.drawable.heart_draw);
 
     }
 
     @Override
     public int getItemCount() {
-//        return data.length();
-//        return 0;
         return animalModelArrayList.size();
     }
 

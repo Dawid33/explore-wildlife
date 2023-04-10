@@ -1,7 +1,7 @@
 from flask import Flask
 import psycopg2.extras
 import multiprocessing
-from src import images, login, posts, users
+from src import images, login, posts, users, species
 import gunicorn.app.base
 from werkzeug.middleware.proxy_fix import ProxyFix
 
@@ -10,6 +10,7 @@ app.register_blueprint(posts.bp)
 app.register_blueprint(login.bp)
 app.register_blueprint(images.bp)
 app.register_blueprint(users.bp)
+app.register_blueprint(species.bp)
 
 app.wsgi_app = ProxyFix(
     app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1

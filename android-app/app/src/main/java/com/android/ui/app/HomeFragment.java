@@ -1,6 +1,7 @@
 package com.android.ui.app;
 
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.android.AppActivity;
+import com.android.Global;
 import com.android.LoginAndRegisterActivity;
+import com.android.R;
+import com.android.api.GetAnimalsRequest;
 import com.android.api.GetPopularPostsRequest;
 import com.android.api.GetPostsRequest;
 import com.android.api.LikePostRequest;
@@ -25,6 +29,7 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
@@ -75,11 +80,7 @@ public class HomeFragment extends Fragment implements PopularPostsRecyclerViewIn
             if (result.requestSucceeded) {
                 LinearLayoutManager layoutManager
                         = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
-
-
                 binding.recyclerViewPopularPosts.setLayoutManager(layoutManager);
-//                binding.recyclerView.setAdapter(new PostsAdapter(result.posts));
-
                 binding.recyclerViewPopularPosts.setAdapter(new PopularPostsAdapter(result.posts, this));
 
             } else {
@@ -89,30 +90,17 @@ public class HomeFragment extends Fragment implements PopularPostsRecyclerViewIn
             e.printStackTrace();
         }
 
-//        prepareTestPosts();
-
-//        popularPostsAdapter = new PopularPostsAdapter(this.getContext(), postModelArrayList, this);
-//        try {
-//            popularPostsAdapter = new PopularPostsAdapter(postModelArrayList, this);
-//        } catch (JSONException e) {
-//            throw new RuntimeException(e);
-//        }
-//        binding.recyclerViewPopularPosts.setAdapter(popularPostsAdapter);
-//        binding.recyclerViewPopularPosts.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false));
-        binding.progressBarAchievements.setProgress(0);
-
-    }
-
-    private void prepareTestPosts(){
-        String testUsername = "testUser", testTime = "1d ago";
-        int testLikes = 4200;
-
-        int testPostAvatar, testImage;
-
-        for (int i = 0; i < 10; i++) {
-            postModelArrayList.add(new PostModel(testUsername, testTime, testLikes));
+        TypedArray animalResources = getResources().obtainTypedArray(R.array.animals);
+        FutureTask<GetAnimalsRequest.GetAnimalRequestResponse> animals = new FutureTask<>(new GetAnimalsRequest(Global.loggedInUserID));
+        exec.submit(animals);
+        GetAnimalsRequest.GetAnimalRequestResponse response = null;
+        try {
+            response = animals.get();
+            binding.progressBarAchievements.setProgress(response.animals.length());
+            binding.achievementsText.setText(response.animals.length() + " animals out of " + animalResources.length() + " collected");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
     }
 
     @Override
