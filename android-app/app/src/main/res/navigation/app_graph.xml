@@ -15,7 +15,14 @@
         android:id="@+id/bottom_nav_account"
         android:name="com.android.ui.app.AccountFragment"
         android:label="Account"
-        tools:layout="@layout/fragment_account" />
+        tools:layout="@layout/fragment_account" >
+        <action
+            android:id="@+id/action_bottom_nav_account_to_accountEditFragment"
+            app:destination="@id/accountEditFragment" />
+        <action
+            android:id="@+id/action_bottom_nav_account_to_passwordEditFragment"
+            app:destination="@id/passwordEditFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/bottom_nav_posts"
@@ -59,5 +66,23 @@
         <action
             android:id="@+id/action_createPost_to_bottom_nav_home"
             app:destination="@id/bottom_nav_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/accountEditFragment"
+        android:name="com.android.ui.app.AccountEditFragment"
+        android:label="fragment_account_edit"
+        tools:layout="@layout/fragment_account_edit" >
+        <action
+            android:id="@+id/action_accountEditFragment_to_bottom_nav_account"
+            app:destination="@id/bottom_nav_account" />
+    </fragment>
+    <fragment
+        android:id="@+id/passwordEditFragment"
+        android:name="com.android.ui.app.PasswordEditFragment"
+        android:label="fragment_password_edit"
+        tools:layout="@layout/fragment_password_edit" >
+        <action
+            android:id="@+id/action_passwordEditFragment_to_bottom_nav_account"
+            app:destination="@id/bottom_nav_account" />
     </fragment>
 </navigation>

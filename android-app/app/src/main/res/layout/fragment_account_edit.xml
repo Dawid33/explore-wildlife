@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_background"
-    tools:context=".ui.RegisterFragment">
+    tools:context=".ui.app.AccountEditFragment">
 
     <LinearLayout
         android:id="@+id/createPostLinearLayout"
@@ -23,7 +23,7 @@
         app:layout_constraintWidth_percent=".75">
 
         <TextView
-            android:id="@+id/username"
+            android:id="@+id/textPasswordEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Edit Account Info"
