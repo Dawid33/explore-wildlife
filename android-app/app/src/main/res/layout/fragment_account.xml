@@ -10,19 +10,17 @@
 
     <LinearLayout
         android:id="@+id/createPostLinearLayout"
-        android:layout_width="0dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:background="@color/app_background"
         android:gravity="center"
         android:orientation="vertical"
-
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHeight_percent=".75"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5"
-        app:layout_constraintWidth_percent=".75">
+        android:layout_marginBottom="60dp"
+        android:theme= "@style/Theme.Material3.Dark">
 
 
         <LinearLayout
@@ -56,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center|left"
                     android:text="Sergiu Mereacre"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/columbia_blue"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
