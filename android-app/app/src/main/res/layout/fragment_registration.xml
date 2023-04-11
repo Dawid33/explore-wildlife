@@ -216,7 +216,7 @@
 
         <Button
             style="@style/Widget.Material3.Button.ElevatedButton"
-            android:id="@+id/sign_up_btn"
+            android:id="@+id/signUpBtn"
             android:layout_width="119dp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/aquamarine"

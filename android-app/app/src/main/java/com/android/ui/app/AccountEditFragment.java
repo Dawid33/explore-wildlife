@@ -9,6 +9,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -16,38 +21,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.provider.MediaStore;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageButton;
-
 import com.android.Global;
-import com.android.R;
 import com.android.api.AccountRetrievalRequest;
+import com.android.api.UpdateProfileRequest;
 import com.android.databinding.FragmentAccountEditBinding;
 import com.bumptech.glide.Glide;
 
 import java.io.IOException;
-import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AccountEditFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class AccountEditFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class AccountEditFragment extends Fragment {
 
     // TODO: Rename and change types of parameters
     private FragmentAccountEditBinding binding;
-    private String mParam1;
-    private String mParam2;
     private Drawable selectedImageDrawable = null;
 
     public AccountEditFragment() {
@@ -66,8 +55,6 @@ public class AccountEditFragment extends Fragment {
     public static AccountEditFragment newInstance(String param1, String param2) {
         AccountEditFragment fragment = new AccountEditFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -76,8 +63,6 @@ public class AccountEditFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -151,9 +136,9 @@ public class AccountEditFragment extends Fragment {
                     Glide.with(getContext())
                             .load(imageApiUrl + profilePicId)
                             .into(binding.profilePictureEdit);
-                    binding.usernameInput.setText(finalUsername);
-                    binding.emailInput.setText(finalEmail);
-                    binding.phoneNumberInput.setText(finalPhoneNumber);
+                    binding.usernameEditInput.setText(finalUsername);
+                    binding.emailEditInput.setText(finalEmail);
+                    binding.phoneNumberEditInput.setText(finalPhoneNumber);
                 });
             } catch (Exception e) {
                 e.printStackTrace();
@@ -165,6 +150,28 @@ public class AccountEditFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 imageChoser();
+            }
+        });
+
+        binding.saveChangesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String username = String.valueOf(binding.usernameEditInput.getText());
+                String email = String.valueOf(binding.emailEditInput.getText());
+                String phoneNumber = String.valueOf(binding.phoneNumberEditInput.getText());
+
+                FutureTask<UpdateProfileRequest.UpdateProfileRequestResult> updateProfile = new FutureTask<>(new UpdateProfileRequest( username, email, phoneNumber));
+                ExecutorService exec = Executors.newSingleThreadExecutor();
+                exec.submit(updateProfile);
+                try {
+                    UpdateProfileRequest.UpdateProfileRequestResult result = updateProfile.get();
+                    if (!result.isRegistered) {
+                        getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Update Error: " + result.error, Toast.LENGTH_SHORT).show());
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
