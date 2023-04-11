@@ -38,7 +38,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
-public class AppActivity extends AppCompatActivity implements CreatePostFragment.CreatePostFragmentListener {
+public class AppActivity extends AppCompatActivity implements CreatePostFragment.CreatePostFragmentListener, AccountFragment.AccountFragmentListener {
     private ActivityAppBinding binding;
     private FusedLocationProviderClient fusedLocationClient;
     private Button locationButton;
@@ -154,12 +154,23 @@ public class AppActivity extends AppCompatActivity implements CreatePostFragment
 
     @Override
     public void onPostCreateSuccess() {
-//        BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-//        NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
-
         navController.navigate(R.id.action_createPost_to_bottom_nav_home);
 
+    }
+
+    @Override
+    public void goToEditAccount() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+
+        navController.navigate(R.id.action_bottom_nav_account_to_accountEditFragment);
+    }
+
+    @Override
+    public void goToEditPassword() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+
+        navController.navigate(R.id.action_bottom_nav_account_to_passwordEditFragment);
     }
 }
 

@@ -2,6 +2,7 @@ package com.android.ui.app;
 
 import static com.android.Global.imageApiUrl;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -29,6 +30,9 @@ import java.util.concurrent.FutureTask;
 public class AccountFragment extends Fragment {
 
     private FragmentAccountBinding binding;
+
+    private AccountFragment.AccountFragmentListener listener;
+
 
     @Override
     public View onCreateView(
@@ -88,14 +92,14 @@ public class AccountFragment extends Fragment {
         binding.accountInfoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                listener.goToEditAccount();
             }
         });
 
         binding.accountPasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                listener.goToEditPassword();
             }
         });
     }
@@ -104,5 +108,31 @@ public class AccountFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    //    Interface for communicating with the activity
+    public interface AccountFragmentListener {
+        void goToEditAccount();
+
+        void goToEditPassword();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+//        Make sure that the context implements this interface
+        if (context instanceof AccountFragment.AccountFragmentListener) {
+            listener = (AccountFragment.AccountFragmentListener) context;
+        } else {
+            throw new RuntimeException(context.toString() + " must implement AccountFragmentListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        listener = null;
     }
 }
