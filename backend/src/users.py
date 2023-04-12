@@ -140,30 +140,13 @@ def update_profile_pic(user_id):
         "success": False,
     }
 
-    try:
-        file = request.files['file']
-        # file = request.data
-
-        print('File: ', file)
-
-        # if user does not select file, browser also
-        # submit an empty part without filename
-        if file.filename == '':
-            print("No file!!")
-
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            print('File name: ', filename)
-
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            image = filename
-
-
-    except Exception as e:
-        print("No image")
-        print(e)
-        result['error'] = 'Internal Error: Failed while reading post request form data'
+    if 'image' not in request.files:
+        result['error'] = "Missing image in http request"
         return result
+    image = request.files['image']
+    print("Awesome!!")
+
+
 
     try:
         db_conn = db.get_db()
@@ -172,11 +155,37 @@ def update_profile_pic(user_id):
         result['error'] = 'Internal Error: Cannot connect to database'
         return result
 
+    cur = db_conn.cursor()
+
+    try:
+        cur.execute("SELECT \"uuid_generate_v4\"()")
+        image_id = cur.fetchone()[0]
+
+        image_path = f"images/{image_id}.png"
+
+        # Make every image exist under "default" user for now until we have login working properly.
+        cur.execute("SELECT user_id FROM app.users WHERE display_name = 'default';")
+        default_user_uuid = cur.fetchone()[0]
+        cur.execute(
+            'INSERT INTO app.images (image_id, name, owner, image_path) VALUES (%s, %s, %s, %s);',
+            (image_id, str(image.filename), default_user_uuid, str(image_path)))
+
+        result["image_id"] = image_id
+        db_conn.commit()
+
+        image = request.files['image']
+        image.save(image_path)
+    except Exception as e:
+        result['error'] = "Internal Error: DB "
+        print(e)
+        return result
+
+
     if result.get('error') is None:
         try:
             cursor = db_conn.cursor()
             cursor.execute(f"UPDATE app.users "
-                           f"SET profile_pic_name = \'{image}\'"
+                           f"SET profile_pic_id = \'{result['image_id']}\'"
                            f"WHERE user_id = \'{user_id}\'")
             db_conn.commit()
         except Exception as e:
