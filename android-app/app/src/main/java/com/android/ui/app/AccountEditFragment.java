@@ -6,6 +6,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -23,11 +25,17 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.android.Global;
+import com.android.R;
 import com.android.api.AccountRetrievalRequest;
+import com.android.api.CreatePostRequest;
 import com.android.api.UpdateProfileRequest;
+import com.android.api.UploadImageRequest;
+import com.android.api.UploadProfilePictureRequest;
 import com.android.databinding.FragmentAccountEditBinding;
 import com.bumptech.glide.Glide;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -160,10 +168,71 @@ public class AccountEditFragment extends Fragment {
                     if (!result.isRegistered) {
                         getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Update Error: " + result.error, Toast.LENGTH_SHORT).show());
                     }
-                    listener.goToBackEditAccount();
+//                    listener.goToBackEditAccount();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+//                UPDATING PROFILE PIC
+                binding.saveChangesBtn.setVisibility(View.GONE);
+                LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                int waitingSpinnerId = layoutInflater.inflate(R.layout.waiting_spinner, binding.createPostLinearLayout).getId();
+
+                Global.executorService.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        Bitmap bitmap = null;
+
+                        if (selectedImageDrawable instanceof BitmapDrawable) {
+                            BitmapDrawable bitmapDrawable = (BitmapDrawable) selectedImageDrawable;
+                            if(bitmapDrawable.getBitmap() != null) {
+                                bitmap = bitmapDrawable.getBitmap();
+                            }
+                        }
+
+//                        String UriString = CreatePostFragmentArgs.fromBundle(getArguments()).getPhotoPath();
+//                        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+//                        Bitmap bitmap = BitmapFactory.decodeFile(UriString, bmOptions);
+//
+//
+
+                        // My phone makes very large images that make the upload time out.
+                        if (bitmap.getByteCount() > 2_000_000) {
+                            ByteArrayOutputStream out = new ByteArrayOutputStream();
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, out);
+                            bitmap = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
+                        }
+
+                        Matrix matrix = new Matrix();
+                        matrix.postRotate(90);
+//                        Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+
+                        FutureTask<UploadProfilePictureRequest.UploadProfilePictureRequestResult> uploadImage = new FutureTask<>(new UploadProfilePictureRequest(bitmap));
+                        Global.executorService.submit(uploadImage);
+
+                        try {
+                            // Timout after 5 seconds of uploading the image.
+                            UploadProfilePictureRequest.UploadProfilePictureRequestResult result = uploadImage.get();
+                            if (result == null || !result.requestSucceeded) {
+                                System.out.println("FAILED TO UPLOAD IMAGE");
+                                getActivity().runOnUiThread(() -> {
+                                    Toast.makeText(getContext(), "Failed to upload image.", Toast.LENGTH_SHORT).show();
+                                    getActivity().runOnUiThread(() -> Toast.makeText(getContext(), "Fail", Toast.LENGTH_SHORT).show());
+                                });
+                            }
+                            }
+
+                         catch (Exception e) {
+                            e.printStackTrace();
+                            getActivity().runOnUiThread(() -> {
+                                binding.saveChangesBtn.setVisibility(View.VISIBLE);
+                                getActivity().runOnUiThread(() -> Toast.makeText(getContext(), "Fail", Toast.LENGTH_SHORT).show());
+                            });
+                        }
+                    }
+                });
+
+                listener.goToBackEditAccount();
             }
         });
     }
