@@ -3,6 +3,7 @@ package com.android.ui.app;
 import static com.android.Global.imageApiUrl;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -39,24 +40,16 @@ public class AccountEditFragment extends Fragment {
     private FragmentAccountEditBinding binding;
     private Drawable selectedImageDrawable = null;
 
+    private AccountEditFragment.AccountEditFragmentListener listener;
+
+
     public AccountEditFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AccountEditFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AccountEditFragment newInstance(String param1, String param2) {
-        AccountEditFragment fragment = new AccountEditFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
+    //    Interface for communicating with the activity
+    public interface AccountEditFragmentListener {
+        void goToBackEditAccount();
     }
 
     @Override
@@ -158,7 +151,8 @@ public class AccountEditFragment extends Fragment {
             public void onClick(View v) {
                 String username = String.valueOf(binding.usernameEditInput.getText());
                 String email = String.valueOf(binding.emailEditInput.getText());
-                String phoneNumber = String.valueOf(binding.phoneNumberEditInput.getText());
+                String phoneNumber = String.valueOf(binding.phoneNumberEditInput
+                        .getText());
 
                 FutureTask<UpdateProfileRequest.UpdateProfileRequestResult> updateProfile = new FutureTask<>(new UpdateProfileRequest( username, email, phoneNumber));
                 ExecutorService exec = Executors.newSingleThreadExecutor();
@@ -168,7 +162,7 @@ public class AccountEditFragment extends Fragment {
                     if (!result.isRegistered) {
                         getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Update Error: " + result.error, Toast.LENGTH_SHORT).show());
                     }
-
+                    listener.goToBackEditAccount();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -180,5 +174,24 @@ public class AccountEditFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+//        Make sure that the context implements this interface
+        if (context instanceof AccountFragment.AccountFragmentListener) {
+            listener = (AccountEditFragment.AccountEditFragmentListener) context;
+        } else {
+            throw new RuntimeException(context.toString() + " must implement AccountFragmentListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        listener = null;
     }
 }

@@ -16,8 +16,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Callable;
 
 public class UpdateProfileRequest implements Callable<UpdateProfileRequest.UpdateProfileRequestResult> {
-    private static final String registerApiUrl = Global.baseUrl + "/api/users/" + Global.loggedInUserID + "/update-profile-pic";
-    String username, email, phoneNumber;
+    private static final String registerApiUrl = Global.baseUrl + "/api/users/" + Global.loggedInUserID;
+    String username, email, phoneNumber = "";
 
     public class UpdateProfileRequestResult {
         public String error;
@@ -44,6 +44,7 @@ public class UpdateProfileRequest implements Callable<UpdateProfileRequest.Updat
         MultipartFormBody form = new MultipartFormBody(boundary);
         form.addField("email", this.email);
         form.addField("display_name", this.username);
+        form.addField("phone_number", this.phoneNumber);
 
         // Adding the phone number filed.
         // form.addField("phone_number", this.phoneNumber);
@@ -52,6 +53,7 @@ public class UpdateProfileRequest implements Callable<UpdateProfileRequest.Updat
             URL url = new URL(registerApiUrl);
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setDoOutput(true);
+            urlConnection.setRequestMethod("PUT");
             urlConnection.setChunkedStreamingMode(0);
             urlConnection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
 
