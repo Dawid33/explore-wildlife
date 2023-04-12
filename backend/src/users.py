@@ -103,7 +103,7 @@ def update_profile(user_id):
 
     try:
         cursor = db_conn.cursor()
-        cursor.execute('SELECT email FROM app.users WHERE email = %s', (email,))
+        cursor.execute('SELECT email FROM app.users WHERE email = %s AND user_id != %s', (email, user_id,))
         possible_user = cursor.fetchone()
     except Exception as e:
         print(e)
