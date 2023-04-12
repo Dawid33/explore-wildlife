@@ -29,6 +29,7 @@ import com.android.databinding.ActivityAppBinding;
 import com.android.ui.app.AccountEditFragment;
 import com.android.ui.app.AccountFragment;
 import com.android.ui.app.CreatePostFragment;
+import com.android.ui.app.PasswordEditFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -39,7 +40,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
-public class AppActivity extends AppCompatActivity implements CreatePostFragment.CreatePostFragmentListener, AccountFragment.AccountFragmentListener, AccountEditFragment.AccountEditFragmentListener {
+public class AppActivity extends AppCompatActivity implements CreatePostFragment.CreatePostFragmentListener, AccountFragment.AccountFragmentListener, AccountEditFragment.AccountEditFragmentListener, PasswordEditFragment.PasswordEditFragmentListener {
     private ActivityAppBinding binding;
     private FusedLocationProviderClient fusedLocationClient;
     private Button locationButton;
@@ -179,6 +180,13 @@ public class AppActivity extends AppCompatActivity implements CreatePostFragment
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
 
         navController.navigate(R.id.action_accountEditFragment_to_bottom_nav_account);
+    }
+
+    @Override
+    public void goToBackEditAccountFromPasswordEdit() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+
+        navController.navigate(R.id.action_passwordEditFragment_to_bottom_nav_account);
     }
 }
 

@@ -15,42 +15,38 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Callable;
 
-public class UpdateProfileRequest implements Callable<UpdateProfileRequest.UpdateProfileRequestResult> {
-    private static final String updateProfileApiUrl = Global.baseUrl + "/api/users/" + Global.loggedInUserID;
-    String username, email, phoneNumber = "";
+public class UpdatePasswordRequest implements Callable<UpdatePasswordRequest.UpdatePasswordRequestResult> {
+    private static final String updatePasswordApiUrl = Global.baseUrl + "/api/users/" + Global.loggedInUserID + "/password";
+    String password;
 
-    public class UpdateProfileRequestResult {
+    public class UpdatePasswordRequestResult {
         public String error;
         public boolean isRegistered;
 
-        public UpdateProfileRequestResult(boolean isLoggedIn, String error) {
+        public UpdatePasswordRequestResult(boolean isLoggedIn, String error) {
             this.error = error;
             this.isRegistered = isLoggedIn;
         }
     }
 
-    public UpdateProfileRequest(String username, String email, String phoneNumber) {
-        this.username = username;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
+    public UpdatePasswordRequest(String password) {
+        this.password = password;
     }
 
     @Override
-    public UpdateProfileRequestResult call() {
+    public UpdatePasswordRequestResult call() {
         HttpURLConnection urlConnection = null;
 
         // Create Multipart form to send with the posts request.
         String boundary = "===" + System.currentTimeMillis() + "===";
         MultipartFormBody form = new MultipartFormBody(boundary);
-        form.addField("email", this.email);
-        form.addField("display_name", this.username);
-        form.addField("phone_number", this.phoneNumber);
+        form.addField("password", this.password);
 
         // Adding the phone number filed.
         // form.addField("phone_number", this.phoneNumber);
 
         try {
-            URL url = new URL(updateProfileApiUrl);
+            URL url = new URL(updatePasswordApiUrl);
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setDoOutput(true);
             urlConnection.setRequestMethod("PUT");
@@ -72,9 +68,9 @@ public class UpdateProfileRequest implements Callable<UpdateProfileRequest.Updat
             if (json.has("success")) {
                 boolean success = (boolean) json.get("success");
                 if (success) {
-                    return new UpdateProfileRequestResult(true, "");
+                    return new UpdatePasswordRequestResult(true, "");
                 } else if (json.has("error")) {
-                    return new UpdateProfileRequestResult(false, (String) json.get("error"));
+                    return new UpdatePasswordRequestResult(false, (String) json.get("error"));
                 }
             }
         } catch (Exception e) {
@@ -84,6 +80,6 @@ public class UpdateProfileRequest implements Callable<UpdateProfileRequest.Updat
         } finally {
             if (urlConnection != null) { urlConnection.disconnect(); }
         }
-        return new UpdateProfileRequestResult(false, "Unknown error occurred.");
+        return new UpdatePasswordRequestResult(false, "Unknown error occurred.");
     }
 }
