@@ -152,88 +152,81 @@ public class AccountEditFragment extends Fragment {
             }
         });
 
-        binding.saveChangesBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String username = String.valueOf(binding.usernameEditInput.getText());
-                String email = String.valueOf(binding.emailEditInput.getText());
-                String phoneNumber = String.valueOf(binding.phoneNumberEditInput
-                        .getText());
+        binding.saveChangesBtn.setOnClickListener(v -> {
+            String username = String.valueOf(binding.usernameEditInput.getText());
+            String email = String.valueOf(binding.emailEditInput.getText());
+            String phoneNumber = String.valueOf(binding.phoneNumberEditInput
+                    .getText());
 
-                FutureTask<UpdateProfileRequest.UpdateProfileRequestResult> updateProfile = new FutureTask<>(new UpdateProfileRequest( username, email, phoneNumber));
-                ExecutorService exec = Executors.newSingleThreadExecutor();
-                exec.submit(updateProfile);
-                try {
-                    UpdateProfileRequest.UpdateProfileRequestResult result = updateProfile.get();
-                    if (!result.isRegistered) {
-                        getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Update Error: " + result.error, Toast.LENGTH_SHORT).show());
-                    }
-//                    listener.goToBackEditAccount();
-                } catch (Exception e) {
-                    e.printStackTrace();
+            FutureTask<UpdateProfileRequest.UpdateProfileRequestResult> updateProfile = new FutureTask<>(new UpdateProfileRequest( username, email, phoneNumber));
+            ExecutorService exec = Executors.newSingleThreadExecutor();
+            exec.submit(updateProfile);
+            try {
+                UpdateProfileRequest.UpdateProfileRequestResult result = updateProfile.get();
+                if (!result.isRegistered) {
+                    getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Update Error: " + result.error, Toast.LENGTH_SHORT).show());
                 }
+//                    listener.goToBackEditAccount();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
 //                UPDATING PROFILE PIC
-                binding.saveChangesBtn.setVisibility(View.GONE);
-                LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                int waitingSpinnerId = layoutInflater.inflate(R.layout.waiting_spinner, binding.createPostLinearLayout).getId();
+            binding.saveChangesBtn.setVisibility(View.GONE);
+            LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            int waitingSpinnerId = layoutInflater.inflate(R.layout.waiting_spinner, binding.createPostLinearLayout).getId();
 
-                Global.executorService.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        Bitmap bitmap = null;
+            Global.executorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    Bitmap bitmap = null;
 
-                        if (selectedImageDrawable instanceof BitmapDrawable) {
-                            BitmapDrawable bitmapDrawable = (BitmapDrawable) selectedImageDrawable;
-                            if(bitmapDrawable.getBitmap() != null) {
-                                bitmap = bitmapDrawable.getBitmap();
+                    if (selectedImageDrawable instanceof BitmapDrawable) {
+                        BitmapDrawable bitmapDrawable = (BitmapDrawable) selectedImageDrawable;
+                        if(bitmapDrawable.getBitmap() != null) {
+                            bitmap = bitmapDrawable.getBitmap();
+
+                            // My phone makes very large images that make the upload time out.
+                            if (bitmap.getByteCount() > 2_000_000) {
+                                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                                bitmap.compress(Bitmap.CompressFormat.JPEG, 20, out);
+                                bitmap = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
                             }
-                        }
 
-//                        String UriString = CreatePostFragmentArgs.fromBundle(getArguments()).getPhotoPath();
-//                        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-//                        Bitmap bitmap = BitmapFactory.decodeFile(UriString, bmOptions);
-//
-//
+                            Matrix matrix = new Matrix();
+                            matrix.postRotate(90);
 
-                        // My phone makes very large images that make the upload time out.
-                        if (bitmap.getByteCount() > 2_000_000) {
-                            ByteArrayOutputStream out = new ByteArrayOutputStream();
-                            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, out);
-                            bitmap = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
-                        }
+                            FutureTask<UploadProfilePictureRequest.UploadProfilePictureRequestResult> uploadImage = new FutureTask<>(new UploadProfilePictureRequest(bitmap));
+                            Global.executorService.submit(uploadImage);
 
-                        Matrix matrix = new Matrix();
-                        matrix.postRotate(90);
-//                        Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                            try {
+                                // Timeout after 5 seconds of uploading the image.
+                                UploadProfilePictureRequest.UploadProfilePictureRequestResult result = uploadImage.get();
+                                if (result == null || !result.requestSucceeded) {
+                                    System.out.println("FAILED TO UPLOAD IMAGE");
+                                    getActivity().runOnUiThread(() -> {
+                                        Toast.makeText(getContext(), "Failed to upload image.", Toast.LENGTH_SHORT).show();
+                                        getActivity().runOnUiThread(() -> Toast.makeText(getContext(), "Fail", Toast.LENGTH_SHORT).show());
+                                    });
+                                }
+                            }
 
-                        FutureTask<UploadProfilePictureRequest.UploadProfilePictureRequestResult> uploadImage = new FutureTask<>(new UploadProfilePictureRequest(bitmap));
-                        Global.executorService.submit(uploadImage);
-
-                        try {
-                            // Timout after 5 seconds of uploading the image.
-                            UploadProfilePictureRequest.UploadProfilePictureRequestResult result = uploadImage.get();
-                            if (result == null || !result.requestSucceeded) {
-                                System.out.println("FAILED TO UPLOAD IMAGE");
+                            catch (Exception e) {
+                                e.printStackTrace();
                                 getActivity().runOnUiThread(() -> {
-                                    Toast.makeText(getContext(), "Failed to upload image.", Toast.LENGTH_SHORT).show();
+                                    binding.saveChangesBtn.setVisibility(View.VISIBLE);
                                     getActivity().runOnUiThread(() -> Toast.makeText(getContext(), "Fail", Toast.LENGTH_SHORT).show());
                                 });
                             }
-                            }
 
-                         catch (Exception e) {
-                            e.printStackTrace();
-                            getActivity().runOnUiThread(() -> {
-                                binding.saveChangesBtn.setVisibility(View.VISIBLE);
-                                getActivity().runOnUiThread(() -> Toast.makeText(getContext(), "Fail", Toast.LENGTH_SHORT).show());
-                            });
+
                         }
                     }
-                });
 
-                listener.goToBackEditAccount();
-            }
+                }
+            });
+
+            listener.goToBackEditAccount();
         });
     }
 
