@@ -159,9 +159,6 @@ BEGIN
 
     INSERT INTO app.users (user_id, display_name, email, password) VALUES (user_id4, 'test4', 'test4@example.com', 'test');
 
-
-    INSERT INTO app.images (image_id, owner, name, image_path) VALUES (image_id, test_id, 'Test Image', 'images/test.jpeg');
-
     INSERT INTO app.images (image_id, owner, name, image_path) VALUES (profile_pic_id1, user_id1, 'Test Image', 'images/frog_king.jpg');
 
     INSERT INTO app.images (image_id, owner, name, image_path) VALUES (image_id1, user_id1, 'Test Image', 'images/scene1.jpg');
@@ -180,8 +177,7 @@ BEGIN
 
     UPDATE app.users
     SET profile_pic_id = image_id
-    WHERE user_id = test_id;
-
+    WHERE user_id = profile_pic_id1;
     UPDATE app.users
     SET profile_pic_id = profile_pic_id1
     WHERE user_id = user_id1;
@@ -208,9 +204,6 @@ BEGIN
 --    INSERT INTO app.users (profile_pic_id, user_id, display_name, email, password) VALUES (profile_pic_id3, user_id3, 'test3', 'test3@example.com', 'test');
 --
 --    INSERT INTO app.users (profile_pic_id, user_id, display_name, email, password) VALUES (profile_pic_id4, user_id4, 'test4', 'test4@example.com', 'test');
-
-    INSERT INTO app.posts (post_id, content, created_by) VALUES (post_id, 'This is my post', test_id);
-    INSERT INTO app.post_images (post_id, image_id) VALUES (post_id, image_id);
 
     INSERT INTO app.posts (post_id, content, created_by) VALUES (post_id1, 'This is my post', user_id1);
     INSERT INTO app.post_images (post_id, image_id) VALUES (post_id1, image_id1);

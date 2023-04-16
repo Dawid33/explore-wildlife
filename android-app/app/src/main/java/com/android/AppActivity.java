@@ -122,18 +122,18 @@ public class AppActivity extends AppCompatActivity implements CreatePostFragment
 
         // In case we are debugging and starting the app from this activity
         // log in with the test account so that we have his uuid for
-        if (Global.loggedInUserID == null) {
-            FutureTask<LoginRequest.LoginRequestResult> login = new FutureTask<>(new LoginRequest("test@example.com", "test"));
-            ExecutorService exec = Executors.newSingleThreadExecutor();
-            exec.submit(login);
-            try {
-                Global.loggedInUserID = login.get().userUuid;
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+//        if (Global.loggedInUserID == null) {
+//            FutureTask<LoginRequest.LoginRequestResult> login = new FutureTask<>(new LoginRequest("test@example.com", "test"));
+//            ExecutorService exec = Executors.newSingleThreadExecutor();
+//            exec.submit(login);
+//            try {
+//                Global.loggedInUserID = login.get().userUuid;
+//            } catch (ExecutionException e) {
+//                e.printStackTrace();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     // Getting location permission making sure its fine and coarse. Printing a toast if not.
