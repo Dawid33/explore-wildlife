@@ -95,6 +95,7 @@ public class AnimalsAdapter extends RecyclerView.Adapter<AnimalsAdapter.ViewHold
     public AnimalsAdapter(Context context, ArrayList<AnimalModel> animalModelArrayList, AnimalsRecyclerViewInterface animalsRecyclerViewInterface) {
         this.context = context;
         this.animalModelArrayList = animalModelArrayList;
+        System.out.println("SIZE = " + animalModelArrayList.size());
         this.animalsRecyclerViewInterface = animalsRecyclerViewInterface;
     }
 
@@ -119,7 +120,6 @@ public class AnimalsAdapter extends RecyclerView.Adapter<AnimalsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull AnimalsAdapter.ViewHolder viewHolder, int position) {
-
         viewHolder.animalName.setText(animalModelArrayList.get(position).getName());
         if (animalModelArrayList.get(position).getWitnessedInstances() > 0) {
             viewHolder.animalImage.setColorFilter(ContextCompat.getColor(context, R.color.aquamarine));

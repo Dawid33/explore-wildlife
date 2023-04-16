@@ -91,6 +91,15 @@ public class HomeFragment extends Fragment implements PopularPostsRecyclerViewIn
             } catch (Exception e) {
                 e.printStackTrace();
             }
+//            if (result.requestSucceeded) {
+//                LinearLayoutManager layoutManager
+//                        = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+//                binding.recyclerViewPopularPosts.setLayoutManager(layoutManager);
+//                binding.recyclerViewPopularPosts.setAdapter(new PopularPostsAdapter(result.posts, this));
+//
+//            } else {
+//                getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Error getting latest posts", Toast.LENGTH_SHORT).show());
+//            }
 
             TypedArray animalResources = getResources().obtainTypedArray(R.array.animals);
             FutureTask<GetAnimalsRequest.GetAnimalRequestResponse> animals = new FutureTask<>(new GetAnimalsRequest(Global.loggedInUserID));
@@ -108,7 +117,6 @@ public class HomeFragment extends Fragment implements PopularPostsRecyclerViewIn
                 e.printStackTrace();
             }
         });
-
     }
 
     @Override

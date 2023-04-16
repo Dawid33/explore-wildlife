@@ -54,14 +54,13 @@ public class BestiaryFragment extends Fragment implements AnimalsRecyclerViewInt
         super.onViewCreated(view, savedInstanceState);
 
         Global.executorService.execute(() -> {
-            try {
-                prepareTestAnimals();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
             getActivity().runOnUiThread(() -> {
+                try {
+                    prepareTestAnimals();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 animalsAdapter = new AnimalsAdapter(this.getContext(), animalModelArrayList, this);
-
                 int count = 0;
                 for (int i = 0; i < animalModelArrayList.size(); i++ ) {
                     if (animalModelArrayList.get(i).getWitnessedInstances() > 0) {
@@ -72,7 +71,6 @@ public class BestiaryFragment extends Fragment implements AnimalsRecyclerViewInt
                 binding.animalsRecyclerView.setAdapter(animalsAdapter);
             });
         });
-
         binding.collected.setText("Loading Animals...");
         binding.animalsRecyclerView.setLayoutManager(new GridLayoutManager(this.getContext(), 3));
     }
@@ -95,6 +93,8 @@ public class BestiaryFragment extends Fragment implements AnimalsRecyclerViewInt
 
         FutureTask<GetAnimalsRequest.GetAnimalRequestResponse> animals = new FutureTask<>(new GetAnimalsRequest(Global.loggedInUserID));
         Global.executorService.submit(animals);
+        ExecutorService exec = Executors.newSingleThreadExecutor();
+        exec.submit(animals);
         GetAnimalsRequest.GetAnimalRequestResponse response = animals.get();
 
         for(int i = 0; i < response.animals.length(); i++) {
