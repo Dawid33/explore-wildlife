@@ -22,10 +22,12 @@ public class RegisterRequest implements Callable<RegisterRequest.RegisterRequest
     public class RegisterRequestResult {
         public String error;
         public boolean isRegistered;
+        public String registeredUuid;
 
-        public RegisterRequestResult(boolean isLoggedIn, String error) {
+        public RegisterRequestResult(boolean isLoggedIn, String error, String registeredUuid) {
             this.error = error;
             this.isRegistered = isLoggedIn;
+            this.registeredUuid = registeredUuid;
         }
     }
 
@@ -72,9 +74,9 @@ public class RegisterRequest implements Callable<RegisterRequest.RegisterRequest
             if (json.has("success")) {
                 boolean success = (boolean) json.get("success");
                 if (success) {
-                    return new RegisterRequestResult(true, "");
+                    return new RegisterRequestResult(true, "", (String) json.get("user_id"));
                 } else if (json.has("error")) {
-                    return new RegisterRequestResult(false, (String) json.get("error"));
+                    return new RegisterRequestResult(false, (String) json.get("error"), null);
                 }
             }
         } catch (Exception e) {
@@ -84,6 +86,6 @@ public class RegisterRequest implements Callable<RegisterRequest.RegisterRequest
         } finally {
             if (urlConnection != null) { urlConnection.disconnect(); }
         }
-        return new RegisterRequestResult(false, "Unknown error occurred.");
+        return new RegisterRequestResult(false, "Unknown error occurred.", null);
     }
 }
