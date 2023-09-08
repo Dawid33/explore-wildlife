@@ -6,6 +6,9 @@
 The app is an android studio project. To run just load up that folder in android
 studio. 
 
+![](login.png)
+![](home.png)
+
 ## Backend Services
 
 The backend consists of:
